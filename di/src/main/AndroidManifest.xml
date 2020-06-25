@@ -1,4 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.globant.di">
+<manifest package="com.globant.di">
 
 </manifest>
