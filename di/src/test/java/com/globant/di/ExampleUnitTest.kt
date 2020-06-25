@@ -1,4 +1,4 @@
-package com.example.pokemontcgapp
+package com.globant.di
 
 import org.junit.Test
 
