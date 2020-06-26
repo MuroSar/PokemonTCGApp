@@ -24,6 +24,8 @@ android {
     }
 }
 
+preBuild.dependsOn ktlint
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ':di')
@@ -34,4 +36,5 @@ dependencies {
     implementation lib.kotlin
     implementation lib.appcompat
     implementation lib.corektx
+    implementation lib.constraintlayout
 }

@@ -6,3 +6,9 @@ dependencies {
 
     def lib = rootProject.ext.generalDependencies
 }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
+}.dependsOn ktlint
