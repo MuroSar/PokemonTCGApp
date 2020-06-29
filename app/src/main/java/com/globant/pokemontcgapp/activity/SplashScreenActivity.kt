@@ -24,7 +24,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
             Glide.with(applicationContext).load(R.drawable.app_logo).into(binding.activitySplashScreenTitleImageView)
 
-            delay(3000)
+            delay(SPLASH_DELAY_TIME)
             startActivity(MainActivity.getIntent(this@SplashScreenActivity))
             finish()
         }
@@ -33,5 +33,9 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onPause() {
         activityScope.cancel()
         super.onPause()
+    }
+
+    companion object {
+        private const val SPLASH_DELAY_TIME = 3000L
     }
 }
