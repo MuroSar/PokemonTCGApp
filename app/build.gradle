@@ -37,4 +37,10 @@ dependencies {
     implementation lib.appcompat
     implementation lib.corektx
     implementation lib.constraintlayout
+    implementation lib.androidxlifecycle
+    implementation lib.androidxlifecycleruntime
+    implementation lib.kotlinxcoroutinesandroid
+    implementation lib.kotlinxcoroutinescore
+    implementation lib.glide
+    implementation lib.lottie
 }
