@@ -1,8 +1,6 @@
-package com.globant.pokemontcgapp.splashscreentest
+package com.globant.pokemontcgapp.splashscreenviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.globant.pokemontcgapp.contract.SplashScreenContract
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
+import com.globant.pokemontcgapp.testObserver
 
 @RunWith(MockitoJUnitRunner::class)
 class SplashScreenViewModelTest {
@@ -58,17 +57,6 @@ class SplashScreenViewModelTest {
         assertEquals(SplashScreenViewModel.SplashScreenStatus.INIT, liveDataUnderTest.observedValues[ZERO])
         assertEquals(SplashScreenViewModel.SplashScreenStatus.FINISH, liveDataUnderTest.observedValues[ONE])
     }
-
-    class TestObserver<T> : Observer<T> {
-
-        val observedValues = mutableListOf<T?>()
-
-        override fun onChanged(value: T?) {
-            observedValues.add(value)
-        }
-    }
-
-    private fun <T> LiveData<T>.testObserver() = TestObserver<T>().also { observeForever(it) }
 
     companion object {
         private const val UI_THREAD = "UI thread"

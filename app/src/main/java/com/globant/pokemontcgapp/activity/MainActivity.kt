@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.globant.pokemontcgapp.R
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+    // TODO implementation and functionalities
 
     companion object {
         fun getIntent(context: Context?): Intent {

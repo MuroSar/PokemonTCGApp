@@ -7,6 +7,6 @@ import kotlinx.coroutines.Job
 interface SplashScreenContract {
     interface ViewModel {
         fun initSplashScreen(): Job
-        fun initSplashScreenLiveData(): LiveData<SplashScreenViewModel.SplashScreenData>
+        fun initSplashScreenLiveData(): LiveData<SplashScreenViewModel.SplashScreenStatus>
     }
 }

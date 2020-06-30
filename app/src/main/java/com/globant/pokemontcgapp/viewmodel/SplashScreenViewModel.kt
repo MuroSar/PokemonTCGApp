@@ -12,19 +12,17 @@ import kotlinx.coroutines.withContext
 
 class SplashScreenViewModel : ViewModel(), SplashScreenContract.ViewModel {
 
-    private var mutableMainState: MutableLiveData<SplashScreenData> = MutableLiveData()
+    private var mutableMainState: MutableLiveData<SplashScreenStatus> = MutableLiveData()
 
-    override fun initSplashScreenLiveData(): LiveData<SplashScreenData> = mutableMainState
+    override fun initSplashScreenLiveData(): LiveData<SplashScreenStatus> = mutableMainState
 
     override fun initSplashScreen() = viewModelScope.launch {
-        mutableMainState.value = SplashScreenData(SplashScreenStatus.INIT)
+        mutableMainState.value = SplashScreenStatus.INIT
         withContext(Dispatchers.IO) {
             delay(SPLASH_DELAY_TIME)
         }
-        mutableMainState.value = SplashScreenData(SplashScreenStatus.FINISH)
+        mutableMainState.value = SplashScreenStatus.FINISH
     }
-
-    data class SplashScreenData(val status: SplashScreenStatus)
 
     enum class SplashScreenStatus {
         INIT,

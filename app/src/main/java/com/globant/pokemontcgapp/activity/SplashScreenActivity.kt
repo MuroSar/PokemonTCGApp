@@ -25,8 +25,8 @@ class SplashScreenActivity : AppCompatActivity() {
         viewModel.initSplashScreen()
     }
 
-    private fun updateUI(data: SplashScreenViewModel.SplashScreenData) {
-        when (data.status) {
+    private fun updateUI(status: SplashScreenViewModel.SplashScreenStatus) {
+        when (status) {
             INIT -> showSplashScreen()
             FINISH -> changeActivity()
         }
