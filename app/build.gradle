@@ -51,4 +51,10 @@ dependencies {
     implementation lib.koinandroidxviewmodel
     implementation lib.koinandroid
     implementation lib.koinandroidxscope
+    testImplementation lib.kotlinxcoroutinestest
+    testImplementation lib.coretest
+    testImplementation lib.junit
+    testImplementation lib.mockitokotlin2
+    testImplementation lib.mockitocore
+    testImplementation lib.mockitoinline
 }
