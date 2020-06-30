@@ -6,8 +6,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
-        applicationId "com.example.pokemontcgapp"
+        applicationId "com.globant.pokemontcgapp"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -37,4 +41,20 @@ dependencies {
     implementation lib.appcompat
     implementation lib.corektx
     implementation lib.constraintlayout
+    implementation lib.androidxviewmodel
+    implementation lib.androidxlifecycle
+    implementation lib.androidxlifecycleruntime
+    implementation lib.kotlinxcoroutinesandroid
+    implementation lib.kotlinxcoroutinescore
+    implementation lib.glide
+    implementation lib.lottie
+    implementation lib.koinandroidxviewmodel
+    implementation lib.koinandroid
+    implementation lib.koinandroidxscope
+    testImplementation lib.kotlinxcoroutinestest
+    testImplementation lib.coretest
+    testImplementation lib.junit
+    testImplementation lib.mockitokotlin2
+    testImplementation lib.mockitocore
+    testImplementation lib.mockitoinline
 }
