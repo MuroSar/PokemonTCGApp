@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.pokemontcgapp"
+        applicationId "com.globant.pokemontcgapp"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -41,10 +41,14 @@ dependencies {
     implementation lib.appcompat
     implementation lib.corektx
     implementation lib.constraintlayout
+    implementation lib.androidxviewmodel
     implementation lib.androidxlifecycle
     implementation lib.androidxlifecycleruntime
     implementation lib.kotlinxcoroutinesandroid
     implementation lib.kotlinxcoroutinescore
     implementation lib.glide
     implementation lib.lottie
+    implementation lib.koinandroidxviewmodel
+    implementation lib.koinandroid
+    implementation lib.koinandroidxscope
 }

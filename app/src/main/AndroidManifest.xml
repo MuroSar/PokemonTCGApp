@@ -3,16 +3,14 @@
     package="com.globant.pokemontcgapp">
 
     <application
+        android:name=".SampleApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:largeHeap="true"
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity
-            android:name="com.globant.pokemontcgapp.activity.SplashScreenActivity"
-            android:hardwareAccelerated="true">
+        <activity android:name="com.globant.pokemontcgapp.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

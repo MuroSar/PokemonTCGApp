@@ -3,22 +3,27 @@ ext {
     appcompat = "1.1.0"
     corektx = "1.3.0"
     constraintlayout = "1.1.3"
-    androidxlifecycle = "2.2.0"
+    androidxversion = "2.2.0"
     androidxlifecycleruntime = "2.3.0-alpha05"
     kotlinxcoroutinesversion = "1.3.7"
     glideversion = "4.11.0"
     lottie = "3.4.1"
+    koinversion = "2.1.5"
 
     generalDependencies = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin}",
             appcompat               : "androidx.appcompat:appcompat:${appcompat}",
             corektx                 : "androidx.core:core-ktx:${corektx}",
             constraintlayout        : "androidx.constraintlayout:constraintlayout:${constraintlayout}",
-            androidxlifecycle       : "androidx.lifecycle:lifecycle-extensions:${androidxlifecycle}",
+            androidxviewmodel       : "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidxversion}",
+            androidxlifecycle       : "androidx.lifecycle:lifecycle-extensions:${androidxversion}",
             androidxlifecycleruntime: "androidx.lifecycle:lifecycle-runtime-ktx:${androidxlifecycleruntime}",
             kotlinxcoroutinesandroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinxcoroutinesversion}",
             kotlinxcoroutinescore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinxcoroutinesversion}",
             glide                   : "com.github.bumptech.glide:glide:${glideversion}",
-            lottie                  : "com.airbnb.android:lottie:${lottie}"
+            lottie                  : "com.airbnb.android:lottie:${lottie}",
+            koinandroidxviewmodel   : "org.koin:koin-androidx-viewmodel:${koinversion}",
+            koinandroid             : "org.koin:koin-android:${koinversion}",
+            koinandroidxscope       : "org.koin:koin-androidx-scope:${koinversion}"
     ]
 }
