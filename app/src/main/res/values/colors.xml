@@ -3,6 +3,11 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="gradientEndColor">#65aaeb</color>
-    <color name="gradientStartColor">#004b8f</color>
+    <color name="gradient_appbar_end_color">#65aaeb</color>
+    <color name="gradient_appbar_start_color">#004b8f</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gradient_end_color">#ffa401</color>
+    <color name="gradient_start_color">#ff112b</color>
+    <color name="tab_indicator_red">#fd0d32</color>
+    <color name="pokemon_orange">#fcc22d</color>
 </resources>

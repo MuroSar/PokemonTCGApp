@@ -1,7 +1,7 @@
 package com.globant.pokemontcgapp.splashscreenviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.globant.pokemontcgapp.contract.SplashScreenContract
+import com.globant.pokemontcgapp.viewmodel.contract.SplashScreenContract
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

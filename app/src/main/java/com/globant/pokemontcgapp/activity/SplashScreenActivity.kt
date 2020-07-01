@@ -37,7 +37,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun changeActivity() {
-        startActivity(MainActivity.getIntent(this@SplashScreenActivity))
+        startActivity(MainPokemonActivity.getIntent(this@SplashScreenActivity))
         finish()
     }
 }

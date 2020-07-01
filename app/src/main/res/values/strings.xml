@@ -3,4 +3,10 @@
     <string name="splash_screen_title_image">splash screen title image</string>
     <string name="splash_screen_title_text">splash screen title text</string>
     <string name="splash_screen_gif">splash screen gif</string>
+    <string name="pokemon_types">types</string>
+    <string name="pokemon_supertypes">supertypes</string>
+    <string name="pokemon_subtypes">subtypes</string>
+    <string name="pokemon_type_fragment">Pokemon Type Fragment</string>
+    <string name="pokemon_supertype_fragment">Pokemon Supertype Fragment</string>
+    <string name="pokemon_subtype_fragment">Pokemon Subtype Fragment</string>
 </resources>

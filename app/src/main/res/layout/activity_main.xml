@@ -4,15 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    android:background="@drawable/gradient_background"
+    tools:context=".activity.MainPokemonActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <ImageView
+        android:id="@+id/activity_main_app_title_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_main_title_icon_height"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/activity_main_appbar_layout"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/activity_main_appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_main_appbar_margin_top"
+        android:background="@drawable/gradient_appbar_background"
+        app:layout_constraintTop_toBottomOf="@id/activity_main_app_title_icon">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/AppTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/tab_indicator_red"
+            app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"
+            app:tabMaxWidth="0dp"
+            app:tabTextColor="@color/pokemon_orange" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_main_appbar_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

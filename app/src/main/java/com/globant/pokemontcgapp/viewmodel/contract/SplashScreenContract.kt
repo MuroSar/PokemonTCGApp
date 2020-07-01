@@ -1,4 +1,4 @@
-package com.globant.pokemontcgapp.contract
+package com.globant.pokemontcgapp.viewmodel.contract
 
 import androidx.lifecycle.LiveData
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel

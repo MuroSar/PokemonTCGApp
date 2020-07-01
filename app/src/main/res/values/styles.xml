@@ -12,4 +12,12 @@
         <item name="android:windowDisablePreview">true</item>
     </style>
 
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/YourTextAppearance</item>
+    </style>
+
+    <style name="YourTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:fontFamily">@font/pokemon_font</item>
+        <item name="android:textColor">@color/pokemon_orange</item>
+    </style>
 </resources>
