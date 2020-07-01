@@ -1,4 +1,4 @@
-package com.globant.pokemontcgapp.view.fragment
+package com.globant.pokemontcgapp.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

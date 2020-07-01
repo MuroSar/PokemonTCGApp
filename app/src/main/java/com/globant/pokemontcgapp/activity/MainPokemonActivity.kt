@@ -1,4 +1,4 @@
-package com.globant.pokemontcgapp.view.activity
+package com.globant.pokemontcgapp.activity
 
 import android.content.Context
 import android.content.Intent
@@ -35,8 +35,6 @@ class MainPokemonActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun getIntent(context: Context?): Intent {
-            return Intent(context, MainPokemonActivity::class.java)
-        }
+        fun getIntent(context: Context): Intent = Intent(context, MainPokemonActivity::class.java)
     }
 }

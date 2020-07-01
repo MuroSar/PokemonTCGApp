@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
-    tools:context=".view.activity.MainPokemonActivity">
+    tools:context=".activity.MainPokemonActivity">
 
     <ImageView
         android:id="@+id/activity_main_app_title_icon"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/red"
+            app:tabIndicatorColor="@color/tab_indicator_red"
             app:tabIndicatorHeight="@dimen/activity_main_tab_indicator_height"
             app:tabMaxWidth="0dp"
             app:tabTextColor="@color/pokemon_orange" />

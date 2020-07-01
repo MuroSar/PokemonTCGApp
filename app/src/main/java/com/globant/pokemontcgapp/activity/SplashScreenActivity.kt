@@ -1,4 +1,4 @@
-package com.globant.pokemontcgapp.view.activity
+package com.globant.pokemontcgapp.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

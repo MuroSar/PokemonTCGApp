@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.globant.pokemontcgapp.view.fragment.PokemonSubTypeFragment
-import com.globant.pokemontcgapp.view.fragment.PokemonSuperTypeFragment
-import com.globant.pokemontcgapp.view.fragment.PokemonTypeFragment
+import com.globant.pokemontcgapp.fragment.PokemonSubTypeFragment
+import com.globant.pokemontcgapp.fragment.PokemonSuperTypeFragment
+import com.globant.pokemontcgapp.fragment.PokemonTypeFragment
 
 class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
