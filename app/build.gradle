@@ -48,6 +48,10 @@ dependencies {
     implementation lib.kotlinxcoroutinescore
     implementation lib.glide
     implementation lib.lottie
+    implementation lib.viewpager2
+    implementation lib.tablayout
+    implementation lib.androidxlifecycle
+    implementation lib.recyclerview
     implementation lib.koinandroidxviewmodel
     implementation lib.koinandroid
     implementation lib.koinandroidxscope

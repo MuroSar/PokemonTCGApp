@@ -1,4 +1,4 @@
-package com.globant.pokemontcgapp.activity
+package com.globant.pokemontcgapp.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +37,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun changeActivity() {
-        startActivity(MainActivity.getIntent(this@SplashScreenActivity))
+        startActivity(MainPokemonActivity.getIntent(this@SplashScreenActivity))
         finish()
     }
 }

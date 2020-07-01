@@ -10,14 +10,14 @@
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.globant.pokemontcgapp.activity.SplashScreenActivity">
+        <activity android:name="com.globant.pokemontcgapp.view.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name="com.globant.pokemontcgapp.view.activity.MainPokemonActivity" />
     </application>
 
 </manifest>
