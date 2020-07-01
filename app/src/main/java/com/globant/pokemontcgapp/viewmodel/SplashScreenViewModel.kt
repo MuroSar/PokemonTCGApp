@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globant.pokemontcgapp.contract.SplashScreenContract
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,7 +17,7 @@ class SplashScreenViewModel : ViewModel(), SplashScreenContract.ViewModel {
 
     override fun initSplashScreen() = viewModelScope.launch {
         mutableMainState.value = SplashScreenStatus.INIT
-        withContext(Dispatchers.IO) {
+        withContext(coroutineContext) {
             delay(SPLASH_DELAY_TIME)
         }
         mutableMainState.value = SplashScreenStatus.FINISH
