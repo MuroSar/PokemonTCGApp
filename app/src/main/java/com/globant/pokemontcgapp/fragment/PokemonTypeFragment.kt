@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonTypeLayoutBinding
+import com.globant.pokemontcgapp.util.getColumnsByOrientation
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.PokemonTypeState
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.PokemonTypeData
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,9 +40,16 @@ class PokemonTypeFragment : Fragment() {
     }
 
     private fun showPokemonTypes(pokemonTypes: List<String>) {
-        binding.pokemonTypeProgressBar.visibility = View.GONE
         pokemonTypesAdapter.submitList(pokemonTypes)
-        binding.pokemonTypeRecyclerView.layoutManager = GridLayoutManager(context, 4)
+
+        binding.pokemonTypeProgressBar.visibility = View.GONE
+        binding.pokemonTypeRecyclerView.layoutManager =
+            GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
         binding.pokemonTypeRecyclerView.adapter = pokemonTypesAdapter
+    }
+
+    companion object {
+        private const val COLUMNS_PORTRAIT = 4
+        private const val COLUMNS_LANDSCAPE = 7
     }
 }

@@ -24,6 +24,9 @@
     <style name="PokemonTypeCardView">
         <item name="android:shape">ring</item>
         <item name="cardCornerRadius">@dimen/pokemon_type_card_corner_radius</item>
+        <item name="cardElevation">@dimen/pokemon_type_card_view_card_elevation</item>
+        <item name="cardMaxElevation">@dimen/pokemon_type_card_view_max_card_elevation</item>
         <item name="android:layout_margin">@dimen/pokemon_type_card_layout_margin</item>
     </style>
+
 </resources>
