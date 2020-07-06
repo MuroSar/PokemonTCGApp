@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globant.pokemontcgapp.MockedPokemonTypes
+import com.globant.pokemontcgapp.util.PokemonTypeData
+import com.globant.pokemontcgapp.util.PokemonTypeState
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
 import kotlinx.coroutines.launch
 
@@ -17,7 +19,4 @@ class PokemonTypeViewModel : ViewModel(), PokemonTypeContract.ViewModel {
         pokemonTypesMutableLiveData.value = PokemonTypeData(PokemonTypeState.POKEMON_TYPE_DATA, MockedPokemonTypes())
         // TODO: Recover the list of types from the API using a use case
     }
-
-    data class PokemonTypeData(val state: PokemonTypeState, val data: MockedPokemonTypes? = null)
-    enum class PokemonTypeState { LOADING, POKEMON_TYPE_DATA }
 }

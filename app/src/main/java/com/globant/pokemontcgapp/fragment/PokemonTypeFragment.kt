@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonTypeLayoutBinding
+import com.globant.pokemontcgapp.util.PokemonTypeData
+import com.globant.pokemontcgapp.util.PokemonTypeState
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
-import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.PokemonTypeState
-import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.PokemonTypeData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
 
@@ -50,6 +50,6 @@ class PokemonTypeFragment : Fragment() {
 
     companion object {
         private const val COLUMNS_PORTRAIT = 4
-        private const val COLUMNS_LANDSCAPE = 7
+        private const val COLUMNS_LANDSCAPE = 6
     }
 }

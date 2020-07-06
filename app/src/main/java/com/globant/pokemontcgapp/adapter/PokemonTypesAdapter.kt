@@ -38,10 +38,11 @@ class PokemonTypesAdapter : RecyclerView.Adapter<PokemonTypesAdapter.ViewHolder>
         private val binding = PokemonTypeElementBinding.bind(itemView)
 
         fun bind(item: String) = with(itemView) {
+            binding.pokemonTypeTextViewName.text = item
             Glide.with(context)
                 .load(pokemonTypeImageMapper(item))
                 .transform(CircleCrop())
-                .into(binding.pokemonTypeSymbol)
+                .into(binding.pokemonTypeImageViewSymbol)
         }
     }
 }
