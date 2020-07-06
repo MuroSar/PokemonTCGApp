@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class PokemonTypeViewModelTest {
 
     @ObsoleteCoroutinesApi
-    private var mainThreadSurrogate = newSingleThreadContext(UI_THREAD)
+    private var mainThreadSurrogate = newSingleThreadContext(TEST_THREAD)
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -62,7 +62,7 @@ class PokemonTypeViewModelTest {
     }
 
     companion object {
-        private const val UI_THREAD = "UI thread"
+        private const val TEST_THREAD = "test thread"
         private const val ZERO = 0
     }
 }
