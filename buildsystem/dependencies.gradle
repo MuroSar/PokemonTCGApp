@@ -9,6 +9,7 @@ ext {
     viewpager2 = "1.0.0"
     tablayout = "1.2.0-alpha04"
     recyclerview = "1.1.0"
+    cardview = "1.0.0"
     glideversion = "4.11.0"
     lottie = "3.4.1"
     koinversion = "2.1.5"
@@ -37,6 +38,7 @@ ext {
             viewpager2              : "androidx.viewpager2:viewpager2:${viewpager2}",
             tablayout               : "com.google.android.material:material:${tablayout}",
             recyclerview            : "androidx.recyclerview:recyclerview:${recyclerview}",
+            cardview                : "androidx.cardview:cardview:${cardview}",
             kotlinxcoroutinestest   : "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinxcoroutinestest}",
             coretest                : "androidx.arch.core:core-testing:${coretest}",
             junit                   : "junit:junit:${junit}",
