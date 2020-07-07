@@ -1,11 +1,16 @@
 package com.globant.pokemontcgapp.pokemontypeviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.globant.pokemontcgapp.MockedPokemonTypes
+import com.globant.domain.entity.PokemonType
+import com.globant.domain.usecase.GetPokemonTypesUseCase
+import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
-import com.globant.pokemontcgapp.util.PokemonTypeState
+import com.globant.pokemontcgapp.util.Status
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -14,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,14 +36,15 @@ class PokemonTypeViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonTypeContract.ViewModel
-    private val pokemonTypesList: List<String> = MockedPokemonTypes().pokemonTypesList
+    private val mockedGetPokemonTypesUseCase: GetPokemonTypesUseCase = mock()
+    private val pokemonTypesList: List<PokemonType> = mock()
 
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        viewModel = PokemonTypeViewModel()
+        viewModel = PokemonTypeViewModel(mockedGetPokemonTypesUseCase)
     }
 
     @ExperimentalCoroutinesApi
@@ -50,19 +56,43 @@ class PokemonTypeViewModelTest {
     }
 
     @Test
-    fun `on getPokemonTypes called`() {
+    fun `on getPokemonTypes called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
+        val successResult: Result.Success<List<PokemonType>> = mock()
 
+        whenever(mockedGetPokemonTypesUseCase.invoke()).thenReturn(successResult)
+        whenever(successResult.data).thenReturn(pokemonTypesList)
         runBlocking {
             viewModel.getPokemonTypes().join()
         }
 
-        Assert.assertEquals(PokemonTypeState.POKEMON_TYPE_DATA, liveDataUnderTest.observedValues[ZERO]?.state)
-        Assert.assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[ZERO]?.data?.pokemonTypesList)
+        verify(mockedGetPokemonTypesUseCase).invoke()
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+    }
+
+    @Test
+    fun `on getPokemonTypes called with error`() {
+        val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
+        val failureResult: Result.Failure = mock()
+        val exception: Exception = mock()
+
+        whenever(mockedGetPokemonTypesUseCase.invoke()).thenReturn(failureResult)
+        whenever(failureResult.exception).thenReturn(exception)
+        runBlocking {
+            viewModel.getPokemonTypes().join()
+        }
+        verify(mockedGetPokemonTypesUseCase).invoke()
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
     }
 
     companion object {
         private const val TEST_THREAD = "test thread"
-        private const val ZERO = 0
+        private const val FIRST_RESPONSE = 0
+        private const val SECOND_RESPONSE = 1
     }
 }
