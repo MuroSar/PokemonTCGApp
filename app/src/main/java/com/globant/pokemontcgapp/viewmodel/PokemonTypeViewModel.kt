@@ -4,19 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.globant.pokemontcgapp.MockedPokemonTypes
-import com.globant.pokemontcgapp.util.PokemonTypeData
-import com.globant.pokemontcgapp.util.PokemonTypeState
+import com.globant.domain.entity.PokemonType
+import com.globant.domain.usecase.GetPokemonTypesUseCase
+import com.globant.domain.util.Result
+import com.globant.pokemontcgapp.util.Data
+import com.globant.pokemontcgapp.util.Event
+import com.globant.pokemontcgapp.util.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class PokemonTypeViewModel : ViewModel(), PokemonTypeContract.ViewModel {
+class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUseCase) : ViewModel(), PokemonTypeContract.ViewModel {
 
-    private val pokemonTypesMutableLiveData = MutableLiveData<PokemonTypeData>()
-    override fun getPokemonTypesLiveData(): LiveData<PokemonTypeData> = pokemonTypesMutableLiveData
+    private val pokemonTypesMutableLiveData = MutableLiveData<Event<Data<List<PokemonType>>>>()
+    override fun getPokemonTypesLiveData(): LiveData<Event<Data<List<PokemonType>>>> = pokemonTypesMutableLiveData
 
     override fun getPokemonTypes() = viewModelScope.launch {
-        pokemonTypesMutableLiveData.value = PokemonTypeData(PokemonTypeState.POKEMON_TYPE_DATA, MockedPokemonTypes())
-        // TODO: Recover the list of types from the API using a use case
+        pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
+        withContext(Dispatchers.IO) { getPokemonTypesUseCase.invoke() }.let { result ->
+            when (result) {
+                is Result.Success -> {
+                    pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.SUCCESS, data = result.data)))
+                }
+                is Result.Failure -> {
+                    pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.ERROR, error = result.exception)))
+                }
+            }
+        }
     }
 }

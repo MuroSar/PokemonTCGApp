@@ -1,9 +1,10 @@
 package com.globant.pokemontcgapp.util
 
+import com.globant.domain.entity.PokemonType
 import com.globant.pokemontcgapp.R
 
-fun pokemonTypeImageMapper(type: String): Int =
-    when (type) {
+fun pokemonTypeImageMapper(type: PokemonType): Int =
+    when (type.name) {
         "Colorless" -> R.drawable.pokemon_colorless_type
         "Water" -> R.drawable.pokemon_water_type
         "Fire" -> R.drawable.pokemon_fire_type
