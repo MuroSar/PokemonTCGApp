@@ -36,4 +36,5 @@ dependencies {
     implementation lib.kotlin
     implementation lib.appcompat
     implementation lib.corektx
+    implementation lib.koinandroidxviewmodel
 }
