@@ -6,5 +6,6 @@ import com.globant.domain.usecase.GetPokemonTypesUseCase
 import com.globant.domain.util.Result
 
 class GetPokemonTypesUseCaseImpl(private val pokemonTypesService: PokemonTypesService) : GetPokemonTypesUseCase {
-    override fun invoke(): Result<List<PokemonType>> = pokemonTypesService.getPokemonTypesFromAPI()
+    override fun invoke(listOfPokemonTypesResources: List<Pair<Int, Int>>): Result<List<PokemonType>> =
+        pokemonTypesService.getPokemonTypesFromAPI(listOfPokemonTypesResources)
 }

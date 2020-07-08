@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonType
 import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonTypeLayoutBinding
-import com.globant.pokemontcgapp.util.Data
 import com.globant.pokemontcgapp.util.Event
-import com.globant.pokemontcgapp.util.Status
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
+import com.globant.pokemontcgapp.util.listOfPokemonTypesResources
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
+import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Data
+import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PokemonTypeFragment : Fragment() {
@@ -31,42 +32,36 @@ class PokemonTypeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pokemonTypeViewModel.getPokemonTypesLiveData().observe(::getLifecycle, ::updateUI)
-        pokemonTypeViewModel.getPokemonTypes()
-    }
-
-    override fun onPause() {
-        binding.pokemonTypeRecyclerView.visibility = View.GONE
-        super.onPause()
+        pokemonTypeViewModel.getPokemonTypes(listOfPokemonTypesResources)
     }
 
     override fun onResume() {
         super.onResume()
-        pokemonTypeViewModel.getPokemonTypes()
+        binding.pokemonTypeLoading.visibility = View.GONE
+        pokemonTypeViewModel.getPokemonTypes(listOfPokemonTypesResources)
     }
 
     private fun updateUI(data: Event<Data<List<PokemonType>>>) {
         val pokemonTypesData = data.getContentIfNotHandled()
         when (pokemonTypesData?.status) {
-            Status.LOADING -> binding.pokemonTypeProgressBar.visibility = View.VISIBLE
+            Status.LOADING -> binding.pokemonTypeLoading.visibility = View.VISIBLE
             Status.SUCCESS -> pokemonTypesData.data?.let { showPokemonTypes(it) }
             Status.ERROR -> showPokemonTypesError(pokemonTypesData.error?.message)
         }
     }
 
     private fun showPokemonTypes(pokemonTypes: List<PokemonType>) {
-        val pokemonTypesAdapter = PokemonTypesAdapter(pokemonTypes)
-
-        binding.pokemonTypeProgressBar.visibility = View.GONE
+        binding.pokemonTypeLoading.visibility = View.GONE
         binding.pokemonTypeRecyclerView.apply {
             layoutManager =
                 GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
-            adapter = pokemonTypesAdapter
+            adapter = PokemonTypesAdapter(pokemonTypes)
             visibility = View.VISIBLE
         }
     }
 
     private fun showPokemonTypesError(error: String?) {
-        binding.pokemonTypeProgressBar.visibility = View.GONE
+        binding.pokemonTypeLoading.visibility = View.GONE
         error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
     }
 

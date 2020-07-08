@@ -10,4 +10,16 @@
     <color name="gradient_start_color">#ff112b</color>
     <color name="tab_indicator_red">#fd0d32</color>
     <color name="pokemon_orange">#fcc22d</color>
+    <color name="loading_bg">#99000000</color>
+    <color name="pokemon_type_colorless">#a8a8a8</color>
+    <color name="pokemon_type_water">#0877ce</color>
+    <color name="pokemon_type_darkness">#474747</color>
+    <color name="pokemon_type_dragon">#a68720</color>
+    <color name="pokemon_type_fairy">#fd268a</color>
+    <color name="pokemon_type_fighting">#e27c25</color>
+    <color name="pokemon_type_fire">#e62400</color>
+    <color name="pokemon_type_grass">#279e18</color>
+    <color name="pokemon_type_lightning">#e9d801</color>
+    <color name="pokemon_type_metal">#525152</color>
+    <color name="pokemon_type_psychic">#783b9e</color>
 </resources>

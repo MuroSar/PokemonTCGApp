@@ -4,5 +4,5 @@ import com.globant.domain.entity.PokemonType
 import com.globant.domain.util.Result
 
 interface PokemonTypesService {
-    fun getPokemonTypesFromAPI(): Result<List<PokemonType>>
+    fun getPokemonTypesFromAPI(listOfPokemonTypesResources: List<Pair<Int, Int>>): Result<List<PokemonType>>
 }

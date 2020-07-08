@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.globant.domain.entity.PokemonType
 import com.globant.domain.usecase.GetPokemonTypesUseCase
 import com.globant.domain.util.Result
-import com.globant.pokemontcgapp.util.Data
 import com.globant.pokemontcgapp.util.Event
-import com.globant.pokemontcgapp.util.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,9 +18,9 @@ class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUs
     private val pokemonTypesMutableLiveData = MutableLiveData<Event<Data<List<PokemonType>>>>()
     override fun getPokemonTypesLiveData(): LiveData<Event<Data<List<PokemonType>>>> = pokemonTypesMutableLiveData
 
-    override fun getPokemonTypes() = viewModelScope.launch {
+    override fun getPokemonTypes(listOfPokemonTypesResources: List<Pair<Int, Int>>) = viewModelScope.launch {
         pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
-        withContext(Dispatchers.IO) { getPokemonTypesUseCase.invoke() }.let { result ->
+        withContext(Dispatchers.IO) { getPokemonTypesUseCase.invoke(listOfPokemonTypesResources) }.let { result ->
             when (result) {
                 is Result.Success -> {
                     pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.SUCCESS, data = result.data)))
@@ -32,5 +30,13 @@ class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUs
                 }
             }
         }
+    }
+
+    data class Data<RequestData>(var status: Status, var data: RequestData? = null, var error: Exception? = null)
+
+    enum class Status {
+        LOADING,
+        SUCCESS,
+        ERROR
     }
 }

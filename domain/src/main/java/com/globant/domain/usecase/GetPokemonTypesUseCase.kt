@@ -4,5 +4,5 @@ import com.globant.domain.entity.PokemonType
 import com.globant.domain.util.Result
 
 interface GetPokemonTypesUseCase {
-    fun invoke(): Result<List<PokemonType>>
+    fun invoke(listOfPokemonTypesResources: List<Pair<Int, Int>>): Result<List<PokemonType>>
 }
