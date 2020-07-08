@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/PokemonTypeCardView"
+    android:id="@+id/pokemon_type_card_view"
     android:layout_width="@dimen/pokemon_type_card_view_width"
     android:layout_height="@dimen/pokemon_type_card_view_height">
 
