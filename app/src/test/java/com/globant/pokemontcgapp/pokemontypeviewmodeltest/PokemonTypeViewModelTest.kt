@@ -5,8 +5,8 @@ import com.globant.domain.entity.PokemonType
 import com.globant.domain.usecase.GetPokemonTypesUseCase
 import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
-import com.globant.pokemontcgapp.util.Status
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
+import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -38,6 +38,7 @@ class PokemonTypeViewModelTest {
     private lateinit var viewModel: PokemonTypeContract.ViewModel
     private val mockedGetPokemonTypesUseCase: GetPokemonTypesUseCase = mock()
     private val pokemonTypesList: List<PokemonType> = mock()
+    private val pokemonTypesListResources: List<Pair<Int, Int>> = mock()
 
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
@@ -60,13 +61,13 @@ class PokemonTypeViewModelTest {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
         val successResult: Result.Success<List<PokemonType>> = mock()
 
-        whenever(mockedGetPokemonTypesUseCase.invoke()).thenReturn(successResult)
+        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesListResources)).thenReturn(successResult)
         whenever(successResult.data).thenReturn(pokemonTypesList)
         runBlocking {
-            viewModel.getPokemonTypes().join()
+            viewModel.getPokemonTypes(pokemonTypesListResources).join()
         }
 
-        verify(mockedGetPokemonTypesUseCase).invoke()
+        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesListResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -79,12 +80,12 @@ class PokemonTypeViewModelTest {
         val failureResult: Result.Failure = mock()
         val exception: Exception = mock()
 
-        whenever(mockedGetPokemonTypesUseCase.invoke()).thenReturn(failureResult)
+        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesListResources)).thenReturn(failureResult)
         whenever(failureResult.exception).thenReturn(exception)
         runBlocking {
-            viewModel.getPokemonTypes().join()
+            viewModel.getPokemonTypes(pokemonTypesListResources).join()
         }
-        verify(mockedGetPokemonTypesUseCase).invoke()
+        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesListResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
