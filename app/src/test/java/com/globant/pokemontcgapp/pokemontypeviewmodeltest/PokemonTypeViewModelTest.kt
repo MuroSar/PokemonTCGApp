@@ -38,7 +38,7 @@ class PokemonTypeViewModelTest {
     private lateinit var viewModel: PokemonTypeContract.ViewModel
     private val mockedGetPokemonTypesUseCase: GetPokemonTypesUseCase = mock()
     private val pokemonTypesList: List<PokemonType> = mock()
-    private val pokemonTypesListResources: List<Pair<Int, Int>> = mock()
+    private val pokemonTypesResources: MutableMap<String, Pair<Int, Int>> = mock()
 
     @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
@@ -61,13 +61,13 @@ class PokemonTypeViewModelTest {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
         val successResult: Result.Success<List<PokemonType>> = mock()
 
-        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesListResources)).thenReturn(successResult)
+        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesResources)).thenReturn(successResult)
         whenever(successResult.data).thenReturn(pokemonTypesList)
         runBlocking {
-            viewModel.getPokemonTypes(pokemonTypesListResources).join()
+            viewModel.getPokemonTypes(pokemonTypesResources).join()
         }
 
-        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesListResources)
+        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -80,12 +80,12 @@ class PokemonTypeViewModelTest {
         val failureResult: Result.Failure = mock()
         val exception: Exception = mock()
 
-        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesListResources)).thenReturn(failureResult)
+        whenever(mockedGetPokemonTypesUseCase.invoke(pokemonTypesResources)).thenReturn(failureResult)
         whenever(failureResult.exception).thenReturn(exception)
         runBlocking {
-            viewModel.getPokemonTypes(pokemonTypesListResources).join()
+            viewModel.getPokemonTypes(pokemonTypesResources).join()
         }
-        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesListResources)
+        verify(mockedGetPokemonTypesUseCase).invoke(pokemonTypesResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)

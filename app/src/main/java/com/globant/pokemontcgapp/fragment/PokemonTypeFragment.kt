@@ -12,7 +12,7 @@ import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonTypeLayoutBinding
 import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
-import com.globant.pokemontcgapp.util.listOfPokemonTypesResources
+import com.globant.pokemontcgapp.util.pokemonTypesResources
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Status
@@ -32,13 +32,13 @@ class PokemonTypeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pokemonTypeViewModel.getPokemonTypesLiveData().observe(::getLifecycle, ::updateUI)
-        pokemonTypeViewModel.getPokemonTypes(listOfPokemonTypesResources)
+        pokemonTypeViewModel.getPokemonTypes(pokemonTypesResources)
     }
 
     override fun onResume() {
         super.onResume()
         binding.pokemonTypeLoading.visibility = View.GONE
-        pokemonTypeViewModel.getPokemonTypes(listOfPokemonTypesResources)
+        pokemonTypeViewModel.getPokemonTypes(pokemonTypesResources)
     }
 
     private fun updateUI(data: Event<Data<List<PokemonType>>>) {

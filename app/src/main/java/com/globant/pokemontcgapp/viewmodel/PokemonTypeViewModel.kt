@@ -18,9 +18,9 @@ class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUs
     private val pokemonTypesMutableLiveData = MutableLiveData<Event<Data<List<PokemonType>>>>()
     override fun getPokemonTypesLiveData(): LiveData<Event<Data<List<PokemonType>>>> = pokemonTypesMutableLiveData
 
-    override fun getPokemonTypes(listOfPokemonTypesResources: List<Pair<Int, Int>>) = viewModelScope.launch {
+    override fun getPokemonTypes(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>) = viewModelScope.launch {
         pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
-        withContext(Dispatchers.IO) { getPokemonTypesUseCase.invoke(listOfPokemonTypesResources) }.let { result ->
+        withContext(Dispatchers.IO) { getPokemonTypesUseCase.invoke(pokemonTypesResources) }.let { result ->
             when (result) {
                 is Result.Success -> {
                     pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.SUCCESS, data = result.data)))
