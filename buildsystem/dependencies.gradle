@@ -14,6 +14,8 @@ ext {
     lottie = "3.4.1"
     retrofit = "2.0.0"
     koinversion = "2.1.5"
+    roomversion = "2.2.5"
+    stetho = "1.5.1"
     kotlinxcoroutinestest = "1.3.7"
     coretest = "2.1.0"
     junit = "4.13"
@@ -42,6 +44,10 @@ ext {
             cardview                : "androidx.cardview:cardview:${cardview}",
             retrofit                : "com.squareup.retrofit2:retrofit:${retrofit}",
             retrofitgson            : "com.squareup.retrofit2:converter-gson:${retrofit}",
+            roomruntime             : "androidx.room:room-runtime:${roomversion}",
+            roomcompiler            : "androidx.room:room-compiler:${roomversion}",
+            roomktx                 : "androidx.room:room-ktx:${roomversion}",
+            stetho                  : "com.facebook.stetho:stetho:${stetho}",
             kotlinxcoroutinestest   : "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinxcoroutinestest}",
             coretest                : "androidx.arch.core:core-testing:${coretest}",
             junit                   : "junit:junit:${junit}",

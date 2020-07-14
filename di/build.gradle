@@ -37,4 +37,5 @@ dependencies {
     implementation lib.appcompat
     implementation lib.corektx
     implementation lib.koinandroidxviewmodel
+    implementation lib.roomruntime
 }
