@@ -3,7 +3,6 @@ package com.globant.pokemontcgapp
 import android.app.Application
 import com.facebook.stetho.Stetho
 import com.globant.di.databaseModule
-import com.globant.di.repositoryModule
 import com.globant.di.serviceModule
 import com.globant.di.useCaseModule
 import com.globant.pokemontcgapp.di.viewModelModule
@@ -17,7 +16,7 @@ class SampleApplication : Application() {
 
         startKoin {
             androidContext(this@SampleApplication)
-            modules(listOf(viewModelModule, useCaseModule, serviceModule, databaseModule, repositoryModule))
+            modules(listOf(viewModelModule, useCaseModule, serviceModule, databaseModule))
         }
     }
 }
