@@ -1,6 +1,5 @@
 package com.globant.domain.util
 
 object Constant {
-    const val EMPTY_STRING = ""
-    const val ZERO = 0
+    const val NOT_FOUND = "Pokemon Types Not Found"
 }
