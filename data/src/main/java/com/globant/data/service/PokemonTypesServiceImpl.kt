@@ -16,7 +16,7 @@ class PokemonTypesServiceImpl : PokemonTypesService {
             val response = callResponse.execute()
             if (response.isSuccessful)
                 response.body()?.types?.let {
-                    mapper.transformPokemonTypesList(it, pokemonTypesResources)
+                    mapper.transform(it, pokemonTypesResources)
                 }?.let {
                     return Result.Success(it)
                 }

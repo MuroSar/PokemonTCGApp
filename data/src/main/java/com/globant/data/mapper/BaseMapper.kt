@@ -1,7 +1,5 @@
 package com.globant.data.mapper
 
-import com.globant.domain.entity.PokemonType
-
 interface BaseMapper<E, D> {
-    fun transformPokemonTypesList(pokemonTypeResponse: E, pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): List<PokemonType>
+    fun transform(type: E, resourcesMap: MutableMap<String, Pair<Int, Int>>? = null): D
 }
