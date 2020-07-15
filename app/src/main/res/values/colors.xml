@@ -22,4 +22,7 @@
     <color name="pokemon_type_lightning">#e9d801</color>
     <color name="pokemon_type_metal">#525152</color>
     <color name="pokemon_type_psychic">#783b9e</color>
+    <color name="pokemon_supertype_energy">#a8a8a8</color>
+    <color name="pokemon_supertype_pokémon">#279e18</color>
+    <color name="pokemon_supertype_trainer">#e62400</color>
 </resources>
