@@ -32,7 +32,6 @@ class PokemonTypeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pokemonTypeViewModel.getPokemonTypesLiveData().observe(::getLifecycle, ::updateUI)
-        pokemonTypeViewModel.getPokemonTypes(pokemonTypesResources)
     }
 
     override fun onResume() {
