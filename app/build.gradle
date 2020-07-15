@@ -52,9 +52,11 @@ dependencies {
     implementation lib.tablayout
     implementation lib.androidxlifecycle
     implementation lib.recyclerview
+    implementation lib.cardview
     implementation lib.koinandroidxviewmodel
     implementation lib.koinandroid
     implementation lib.koinandroidxscope
+    implementation lib.stetho
     testImplementation lib.kotlinxcoroutinestest
     testImplementation lib.coretest
     testImplementation lib.junit

@@ -9,4 +9,17 @@
     <string name="pokemon_type_fragment">Pokemon Type Fragment</string>
     <string name="pokemon_supertype_fragment">Pokemon Supertype Fragment</string>
     <string name="pokemon_subtype_fragment">Pokemon Subtype Fragment</string>
+    <string name="colorless_type_image">colorless type image</string>
+    <string name="darkness_type_image">darkness type image</string>
+    <string name="dragon_type_image">dragon type image</string>
+    <string name="fairy_type_image">fairy type image</string>
+    <string name="fighting_type_image">fighting type image</string>
+    <string name="fire_type_image">fire type image</string>
+    <string name="grass_type_image">grass type image</string>
+    <string name="lightning_type_image">lightning type image</string>
+    <string name="metal_type_image">metal type image</string>
+    <string name="psychic_type_image">psychic type image</string>
+    <string name="water_type_image">water type image</string>
+    <string name="pokeball_image">pokeball image</string>
+    <string name="pokemon_type_image">pokemon type image</string>
 </resources>
