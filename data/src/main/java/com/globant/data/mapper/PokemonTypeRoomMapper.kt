@@ -3,8 +3,8 @@ package com.globant.data.mapper
 import com.globant.data.database.entity.PokemonTypeRoom
 import com.globant.domain.entity.PokemonType
 
-class PokemonTypeRoomMapper : BaseMapper<List<PokemonTypeRoom>, MutableList<PokemonType>> {
-    override fun transform(type: List<PokemonTypeRoom>, resourcesMap: MutableMap<String, Pair<Int, Int>>?): MutableList<PokemonType> {
+class PokemonTypeRoomMapper : BaseMapper<List<PokemonTypeRoom>, MutableList<PokemonType>, MutableMap<String, Pair<Int, Int>>?> {
+    override fun transform(type: List<PokemonTypeRoom>, resources: MutableMap<String, Pair<Int, Int>>?): MutableList<PokemonType> {
         val pokemonTypeRoomReturnList: MutableList<PokemonType> = mutableListOf()
 
         type.map { typeRoom ->
