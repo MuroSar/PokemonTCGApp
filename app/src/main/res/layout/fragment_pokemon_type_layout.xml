@@ -11,12 +11,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/pokemon_type_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/loading_bg"
-        android:elevation="@dimen/pokemon_type_loading_linear_elevation"
+        android:elevation="@dimen/pokemon_loading_linear_elevation"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
@@ -27,6 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

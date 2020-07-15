@@ -12,4 +12,7 @@ object Constant {
     const val PSYCHIC = "Psychic"
     const val FAIRY = "Fairy"
     const val DRAGON = "Dragon"
+    const val ENERGY = "Energy"
+    const val POKEMON = "Pokémon"
+    const val TRAINER = "Trainer"
 }

@@ -10,7 +10,7 @@ class PokemonTypesServiceImpl : PokemonTypesService {
     private val api = ServiceGenerator()
     private val mapper = PokemonTypeMapper()
 
-    override fun getPokemonTypesFromAPI(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): Result<List<PokemonType>> {
+    override fun getPokemonTypes(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): Result<List<PokemonType>> {
         try {
             val callResponse = api.createService(PokemonTCGApi::class.java).getPokemonTypes()
             val response = callResponse.execute()

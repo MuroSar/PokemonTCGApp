@@ -16,9 +16,8 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -29,11 +28,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PokemonTypeViewModelTest {
 
-    @ObsoleteCoroutinesApi
-    private var mainThreadSurrogate = newSingleThreadContext(TEST_THREAD)
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -48,34 +47,31 @@ class PokemonTypeViewModelTest {
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
 
-    @ObsoleteCoroutinesApi
-    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
+        Dispatchers.setMain(testDispatcher)
         getPokemonTypesUseCase = GetPokemonTypesUseCaseImpl(mockedPokemonTypeService, mockedPokemonTypeDatabase)
         viewModel = PokemonTypeViewModel(getPokemonTypesUseCase)
     }
 
-    @ExperimentalCoroutinesApi
-    @ObsoleteCoroutinesApi
     @After
     fun after() {
-        mainThreadSurrogate.close()
         Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
     fun `on getPokemonTypes called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
 
-        whenever(mockedPokemonTypeService.getPokemonTypesFromAPI(pokemonTypesResources)).thenReturn(resultIsSuccess)
+        whenever(mockedPokemonTypeService.getPokemonTypes(pokemonTypesResources)).thenReturn(resultIsSuccess)
         whenever(resultIsSuccess.data).thenReturn(pokemonTypesList)
         runBlocking {
             viewModel.getPokemonTypes(pokemonTypesResources).join()
         }
 
-        verify(mockedPokemonTypeService).getPokemonTypesFromAPI(pokemonTypesResources)
+        verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
+        verify(mockedPokemonTypeDatabase).insertLocalPokemonTypes(pokemonTypesList)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -86,14 +82,14 @@ class PokemonTypeViewModelTest {
     fun `on getPokemonTypes called with error, but request to database is successful`() {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
 
-        whenever(mockedPokemonTypeService.getPokemonTypesFromAPI(pokemonTypesResources)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonTypeService.getPokemonTypes(pokemonTypesResources)).thenReturn(resultIsFailure)
         whenever(mockedPokemonTypeDatabase.getLocalPokemonTypes()).thenReturn(resultIsSuccess)
         whenever(resultIsSuccess.data).thenReturn(pokemonTypesList)
 
         runBlocking {
             viewModel.getPokemonTypes(pokemonTypesResources).join()
         }
-        verify(mockedPokemonTypeService).getPokemonTypesFromAPI(pokemonTypesResources)
+        verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
         verify(mockedPokemonTypeDatabase).getLocalPokemonTypes()
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
@@ -105,14 +101,14 @@ class PokemonTypeViewModelTest {
     fun `on getPokemonTypes called with error, request to database with error as well`() {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
 
-        whenever(mockedPokemonTypeService.getPokemonTypesFromAPI(pokemonTypesResources)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonTypeService.getPokemonTypes(pokemonTypesResources)).thenReturn(resultIsFailure)
         whenever(mockedPokemonTypeDatabase.getLocalPokemonTypes()).thenReturn(resultIsFailure)
         whenever(resultIsFailure.exception).thenReturn(exception)
 
         runBlocking {
             viewModel.getPokemonTypes(pokemonTypesResources).join()
         }
-        verify(mockedPokemonTypeService).getPokemonTypesFromAPI(pokemonTypesResources)
+        verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
         verify(mockedPokemonTypeDatabase).getLocalPokemonTypes()
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
@@ -121,7 +117,6 @@ class PokemonTypeViewModelTest {
     }
 
     companion object {
-        private const val TEST_THREAD = "test thread"
         private const val FIRST_RESPONSE = 0
         private const val SECOND_RESPONSE = 1
     }
