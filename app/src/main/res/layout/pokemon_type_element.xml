@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PokemonTypeCardView"
+    style="@style/PokemonBaseCardView"
     android:id="@+id/pokemon_type_card_view"
     android:layout_width="@dimen/pokemon_type_card_view_width"
     android:layout_height="@dimen/pokemon_type_card_view_height">
@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/pokemon_type_text_view_name"
-            style="@style/TextViewPokemonElement"
+            style="@style/TextViewPokemonTypeElement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

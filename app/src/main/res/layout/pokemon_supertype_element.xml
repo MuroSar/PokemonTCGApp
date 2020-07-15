@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pokemon_supertype_card_view"
+    style="@style/PokemonBaseCardView"
+    android:layout_width="@dimen/pokemon_supertype_card_view_width"
+    android:layout_height="@dimen/pokemon_supertype_card_view_height">
+
+    <TextView
+        android:id="@+id/pokemon_supertype_text_view_name"
+        style="@style/TextViewPokemonSuperTypeElement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</androidx.cardview.widget.CardView>
