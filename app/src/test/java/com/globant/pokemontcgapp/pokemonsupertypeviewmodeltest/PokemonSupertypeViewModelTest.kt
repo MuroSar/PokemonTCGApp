@@ -51,7 +51,7 @@ class PokemonSupertypeViewModelTest {
     }
 
     @Test
-    fun `on getPokemonTypes called`() {
+    fun `on getPokemonSupertypes called`() {
         val liveDataUnderTest = viewModel.getPokemonSupertypesLiveData().testObserver()
 
         runBlocking {
