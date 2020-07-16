@@ -76,6 +76,7 @@ class PokemonTypeViewModelTest {
         }
 
         verify(mockedPokemonTypeService).getPokemonTypesFromAPI(pokemonTypesResources)
+        verify(mockedPokemonTypeDatabase).insertLocalPokemonTypes(pokemonTypesList)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)

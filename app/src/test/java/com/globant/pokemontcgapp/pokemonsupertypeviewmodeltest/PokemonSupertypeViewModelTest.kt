@@ -2,7 +2,9 @@ package com.globant.pokemontcgapp.pokemonsupertypeviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.usecase.GetPokemonSupertypesUseCase
+import com.globant.domain.usecase.implementation.GetPokemonSupertypesUseCaseImpl
 import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel
@@ -35,7 +37,8 @@ class PokemonSupertypeViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonSupertypeContract.ViewModel
-    private val mockedGetPokemonSupertypesUseCase: GetPokemonSupertypesUseCase = mock()
+    private lateinit var getPokemonSupertypesUseCase: GetPokemonSupertypesUseCase
+    private val mockedPokemonSupertypesService: PokemonSupertypesService = mock()
     private val pokemonSupertypesList: List<PokemonSupertype> = mock()
     private val pokemonSupertypesResources: MutableMap<String, Int> = mock()
 
@@ -44,7 +47,8 @@ class PokemonSupertypeViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        viewModel = PokemonSupertypeViewModel(mockedGetPokemonSupertypesUseCase)
+        getPokemonSupertypesUseCase = GetPokemonSupertypesUseCaseImpl(mockedPokemonSupertypesService)
+        viewModel = PokemonSupertypeViewModel(getPokemonSupertypesUseCase)
     }
 
     @ExperimentalCoroutinesApi
@@ -60,13 +64,13 @@ class PokemonSupertypeViewModelTest {
         val liveDataUnderTest = viewModel.getPokemonSupertypesLiveData().testObserver()
         val successResult: Result.Success<List<PokemonSupertype>> = mock()
 
-        whenever(mockedGetPokemonSupertypesUseCase.invoke(pokemonSupertypesResources)).thenReturn(successResult)
+        whenever(getPokemonSupertypesUseCase.invoke(pokemonSupertypesResources)).thenReturn(successResult)
         whenever(successResult.data).thenReturn(pokemonSupertypesList)
         runBlocking {
             viewModel.getPokemonSupertypes(pokemonSupertypesResources).join()
         }
 
-        verify(mockedGetPokemonSupertypesUseCase).invoke(pokemonSupertypesResources)
+        verify(mockedPokemonSupertypesService).getPokemonSupertypesFromAPI(pokemonSupertypesResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -79,12 +83,12 @@ class PokemonSupertypeViewModelTest {
         val failureResult: Result.Failure = mock()
         val exception: Exception = mock()
 
-        whenever(mockedGetPokemonSupertypesUseCase.invoke(pokemonSupertypesResources)).thenReturn(failureResult)
+        whenever(getPokemonSupertypesUseCase.invoke(pokemonSupertypesResources)).thenReturn(failureResult)
         whenever(failureResult.exception).thenReturn(exception)
         runBlocking {
             viewModel.getPokemonSupertypes(pokemonSupertypesResources).join()
         }
-        verify(mockedGetPokemonSupertypesUseCase).invoke(pokemonSupertypesResources)
+        verify(mockedPokemonSupertypesService).getPokemonSupertypesFromAPI(pokemonSupertypesResources)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
