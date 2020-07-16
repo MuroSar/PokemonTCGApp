@@ -16,9 +16,8 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -29,11 +28,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class PokemonTypeViewModelTest {
 
-    @ObsoleteCoroutinesApi
-    private var mainThreadSurrogate = newSingleThreadContext(TEST_THREAD)
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -48,21 +47,17 @@ class PokemonTypeViewModelTest {
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
 
-    @ObsoleteCoroutinesApi
-    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
+        Dispatchers.setMain(testDispatcher)
         getPokemonTypesUseCase = GetPokemonTypesUseCaseImpl(mockedPokemonTypeService, mockedPokemonTypeDatabase)
         viewModel = PokemonTypeViewModel(getPokemonTypesUseCase)
     }
 
-    @ExperimentalCoroutinesApi
-    @ObsoleteCoroutinesApi
     @After
     fun after() {
-        mainThreadSurrogate.close()
         Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
@@ -122,7 +117,6 @@ class PokemonTypeViewModelTest {
     }
 
     companion object {
-        private const val TEST_THREAD = "test thread"
         private const val FIRST_RESPONSE = 0
         private const val SECOND_RESPONSE = 1
     }
