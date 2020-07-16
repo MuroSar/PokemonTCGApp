@@ -3,19 +3,25 @@ package com.globant.di
 import androidx.room.Room
 import com.globant.data.database.PokemonDatabase
 import com.globant.data.database.PokemonTypeDatabaseImpl
+import com.globant.data.service.PokemonSupertypesServiceImpl
 import com.globant.data.service.PokemonTypesServiceImpl
 import com.globant.domain.database.PokemonTypeDatabase
+import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.service.PokemonTypesService
+import com.globant.domain.usecase.GetPokemonSupertypesUseCase
 import com.globant.domain.usecase.GetPokemonTypesUseCase
+import com.globant.domain.usecase.implementation.GetPokemonSupertypesUseCaseImpl
 import com.globant.domain.usecase.implementation.GetPokemonTypesUseCaseImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
     single<PokemonTypesService> { PokemonTypesServiceImpl() }
+    single<PokemonSupertypesService> { PokemonSupertypesServiceImpl() }
 }
 
 val useCaseModule = module {
     single<GetPokemonTypesUseCase> { GetPokemonTypesUseCaseImpl(get(), get()) }
+    single<GetPokemonSupertypesUseCase> { GetPokemonSupertypesUseCaseImpl(get()) }
 }
 
 val databaseModule = module {

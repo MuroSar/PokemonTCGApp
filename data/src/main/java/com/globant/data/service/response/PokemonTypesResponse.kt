@@ -1,5 +1,5 @@
 package com.globant.data.service.response
 
-class PokemonTypesBaseResponse<T>(
+class PokemonTypesResponse<T>(
     var types: T?
 )

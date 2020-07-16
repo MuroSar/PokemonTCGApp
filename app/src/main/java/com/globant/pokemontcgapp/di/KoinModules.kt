@@ -9,5 +9,5 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { SplashScreenViewModel() }
     viewModel { PokemonTypeViewModel(get()) }
-    viewModel { PokemonSupertypeViewModel() }
+    viewModel { PokemonSupertypeViewModel(get()) }
 }
