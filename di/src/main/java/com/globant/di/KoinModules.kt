@@ -33,4 +33,4 @@ val databaseModule = module {
     single<PokemonSupertypeDatabase> { PokemonSupertypeDatabaseImpl(get()) }
 }
 
-private const val DATA_BASE_NAME = "pokemon_type_database"
+private const val DATA_BASE_NAME = "pokemon_database"
