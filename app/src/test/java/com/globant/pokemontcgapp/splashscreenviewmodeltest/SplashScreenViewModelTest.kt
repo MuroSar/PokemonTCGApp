@@ -1,14 +1,15 @@
 package com.globant.pokemontcgapp.splashscreenviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.globant.pokemontcgapp.viewmodel.contract.SplashScreenContract
+import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel
+import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel.SplashScreenStatus
+import com.globant.pokemontcgapp.viewmodel.contract.SplashScreenContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -17,50 +18,44 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import com.globant.pokemontcgapp.testObserver
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class SplashScreenViewModelTest {
 
-    @ObsoleteCoroutinesApi
-    private var mainThreadSurrogate = newSingleThreadContext(UI_THREAD)
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: SplashScreenContract.ViewModel
 
-    @ObsoleteCoroutinesApi
-    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
+        Dispatchers.setMain(testDispatcher)
         viewModel = SplashScreenViewModel()
     }
 
-    @ExperimentalCoroutinesApi
-    @ObsoleteCoroutinesApi
     @After
     fun after() {
-        mainThreadSurrogate.close()
         Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
     fun `on initSplashScreen called`() {
         val liveDataUnderTest = viewModel.initSplashScreenLiveData().testObserver()
 
-        runBlocking {
+        runBlockingTest(testDispatcher) {
             viewModel.initSplashScreen().join()
         }
 
-        assertEquals(SplashScreenViewModel.SplashScreenStatus.INIT, liveDataUnderTest.observedValues[ZERO])
-        assertEquals(SplashScreenViewModel.SplashScreenStatus.FINISH, liveDataUnderTest.observedValues[ONE])
+        assertEquals(SplashScreenStatus.INIT, liveDataUnderTest.observedValues[FIRST_RESPONSE])
+        assertEquals(SplashScreenStatus.FINISH, liveDataUnderTest.observedValues[SECOND_RESPONSE])
     }
 
     companion object {
-        private const val UI_THREAD = "UI thread"
-        private const val ZERO = 0
-        private const val ONE = 1
+        private const val FIRST_RESPONSE = 0
+        private const val SECOND_RESPONSE = 1
     }
 }

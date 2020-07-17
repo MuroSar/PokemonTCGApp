@@ -11,7 +11,7 @@ class GetPokemonTypesUseCaseImpl(
     private val pokemonTypeDatabase: PokemonTypeDatabase
 ) : GetPokemonTypesUseCase {
     override fun invoke(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): Result<List<PokemonType>> =
-        when (val result = pokemonTypesService.getPokemonTypesFromAPI(pokemonTypesResources)) {
+        when (val result = pokemonTypesService.getPokemonTypes(pokemonTypesResources)) {
             is Result.Success -> {
                 pokemonTypeDatabase.insertLocalPokemonTypes(result.data)
                 result
