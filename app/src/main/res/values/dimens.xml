@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="activity_main_tab_indicator_height">4dp</dimen>
-    <dimen name="fragment_text_view_margin_top">100dp</dimen>
-    <dimen name="fragment_text_view_text_size">36sp</dimen>
     <dimen name="activity_main_appbar_margin_top">10dp</dimen>
     <dimen name="activity_main_title_icon_height">100dp</dimen>
     <dimen name="pokemon_type_card_view_width">70dp</dimen>
@@ -17,7 +15,7 @@
     <dimen name="pokemon_type_card_text_view_margin_top">5dp</dimen>
     <dimen name="pokemon_type_constraint_padding_horizontal">2dp</dimen>
     <dimen name="pokemon_loading_linear_elevation">5dp</dimen>
-    <dimen name="pokemon_supertype_card_view_width">100dp</dimen>
-    <dimen name="pokemon_supertype_card_view_height">100dp</dimen>
-    <dimen name="pokemon_supertype_card_text_view_text_size">30sp</dimen>
+    <dimen name="pokemon_secondary_type_card_view_width">100dp</dimen>
+    <dimen name="pokemon_secondary_type_card_view_height">100dp</dimen>
+    <dimen name="pokemon_secondary_type_card_text_view_text_size">30sp</dimen>
 </resources>
