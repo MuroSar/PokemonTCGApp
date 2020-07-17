@@ -3,7 +3,6 @@ package com.globant.data.database
 import com.globant.data.mapper.PokemonTypeDatabaseMapper
 import com.globant.domain.database.PokemonTypeDatabase
 import com.globant.domain.entity.PokemonType
-import com.globant.domain.util.Constant.TYPES_NOT_FOUND
 import com.globant.domain.util.Result
 
 class PokemonTypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonTypeDatabase {
@@ -21,5 +20,9 @@ class PokemonTypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonTypeD
 
     override fun insertLocalPokemonTypes(pokemonTypes: List<PokemonType>) {
         pokemonTypes.forEach { pokemonDao.insertPokemonType(pokemonTypeDatabaseMapper.transformToPokemonTypeDatabaseEntity(it)) }
+    }
+
+    companion object {
+        private const val TYPES_NOT_FOUND = "Pokemon Types Not Found"
     }
 }

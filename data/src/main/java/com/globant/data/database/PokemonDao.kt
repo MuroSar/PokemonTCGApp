@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.globant.data.database.entity.PokemonSubtypeDatabaseEntity
 import com.globant.data.database.entity.PokemonSupertypeDatabaseEntity
 import com.globant.data.database.entity.PokemonTypeDatabaseEntity
 
@@ -20,4 +21,10 @@ interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemonSupertype(pokemonSupertypeDatabaseEntity: PokemonSupertypeDatabaseEntity)
+
+    @Query("SELECT * FROM pokemon_subtype_table")
+    fun getPokemonSubtypes(): List<PokemonSubtypeDatabaseEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPokemonSubtype(pokemonSubtypeDatabaseEntity: PokemonSubtypeDatabaseEntity)
 }

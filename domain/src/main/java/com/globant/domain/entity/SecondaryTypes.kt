@@ -1,6 +1,6 @@
 package com.globant.domain.entity
 
-class PokemonSupertype(
+class SecondaryTypes(
     var name: String,
     var bgColor: Int
 )

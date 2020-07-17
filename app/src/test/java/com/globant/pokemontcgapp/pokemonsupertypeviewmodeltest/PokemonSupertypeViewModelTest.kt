@@ -2,7 +2,7 @@ package com.globant.pokemontcgapp.pokemonsupertypeviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonSupertypeDatabase
-import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.usecase.GetPokemonSupertypesUseCase
 import com.globant.domain.usecase.implementation.GetPokemonSupertypesUseCaseImpl
@@ -41,9 +41,9 @@ class PokemonSupertypeViewModelTest {
     private lateinit var getPokemonSupertypesUseCase: GetPokemonSupertypesUseCase
     private val mockedPokemonSupertypeDatabase: PokemonSupertypeDatabase = mock()
     private val mockedPokemonSupertypeService: PokemonSupertypesService = mock()
-    private val pokemonSupertypesList: List<PokemonSupertype> = mock()
+    private val pokemonSupertypesList: List<SecondaryTypes> = mock()
     private val pokemonSupertypesResources: MutableMap<String, Int> = mock()
-    private val resultIsSuccess: Result.Success<List<PokemonSupertype>> = mock()
+    private val resultIsSuccess: Result.Success<List<SecondaryTypes>> = mock()
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
 

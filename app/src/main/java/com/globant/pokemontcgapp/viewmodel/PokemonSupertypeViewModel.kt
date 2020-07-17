@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.usecase.GetPokemonSupertypesUseCase
 import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.util.Event
@@ -17,8 +17,8 @@ class PokemonSupertypeViewModel(private val getPokemonSupertypesUseCase: GetPoke
     ViewModel(),
     PokemonSupertypeContract.ViewModel {
 
-    private val pokemonSupertypesMutableLiveData = MutableLiveData<Event<Data<List<PokemonSupertype>>>>()
-    override fun getPokemonSupertypesLiveData(): LiveData<Event<Data<List<PokemonSupertype>>>> = pokemonSupertypesMutableLiveData
+    private val pokemonSupertypesMutableLiveData = MutableLiveData<Event<Data<List<SecondaryTypes>>>>()
+    override fun getPokemonSupertypesLiveData(): LiveData<Event<Data<List<SecondaryTypes>>>> = pokemonSupertypesMutableLiveData
 
     override fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>) = viewModelScope.launch {
         pokemonSupertypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))

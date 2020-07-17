@@ -25,4 +25,25 @@
     <color name="pokemon_supertype_energy">#a8a8a8</color>
     <color name="pokemon_supertype_pokémon">#279e18</color>
     <color name="pokemon_supertype_trainer">#e62400</color>
+    <color name="pokemon_subtype_stadium">#0877ce</color>
+    <color name="pokemon_subtype_mega">#a68720</color>
+    <color name="pokemon_subtype_v">#fd268a</color>
+    <color name="pokemon_subtype_item">#783b9e</color>
+    <color name="pokemon_subtype_level_up">#0877ce</color>
+    <color name="pokemon_subtype_stage_2">#a68720</color>
+    <color name="pokemon_subtype_break">#fd268a</color>
+    <color name="pokemon_subtype_stage_1">#783b9e</color>
+    <color name="pokemon_subtype_v_max">#0877ce</color>
+    <color name="pokemon_subtype_rockets_secret_machine">#a68720</color>
+    <color name="pokemon_subtype_basic">#fd268a</color>
+    <color name="pokemon_subtype_pokemon_tool">#783b9e</color>
+    <color name="pokemon_subtype_technical_machine">#0877ce</color>
+    <color name="pokemon_subtype_ex">#a68720</color>
+    <color name="pokemon_subtype_legend">#fd268a</color>
+    <color name="pokemon_subtype_special">#783b9e</color>
+    <color name="pokemon_subtype_tag_team">#0877ce</color>
+    <color name="pokemon_subtype_rare_holo">#a68720</color>
+    <color name="pokemon_subtype_gx">#fd268a</color>
+    <color name="pokemon_subtype_supporter">#783b9e</color>
+    <color name="pokemon_subtype_restored">#0877ce</color>
 </resources>
