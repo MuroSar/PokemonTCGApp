@@ -1,5 +1,6 @@
 package com.globant.data.service.api
 
+import com.globant.data.service.response.PokemonSubtypesResponse
 import com.globant.data.service.response.PokemonSupertypesResponse
 import com.globant.data.service.response.PokemonTypesResponse
 import retrofit2.Call
@@ -11,4 +12,7 @@ interface PokemonTCGApi {
 
     @GET("v1/supertypes")
     fun getPokemonSupertypes(): Call<PokemonSupertypesResponse>
+
+    @GET("v1/subtypes")
+    fun getPokemonSubtypes(): Call<PokemonSubtypesResponse>
 }

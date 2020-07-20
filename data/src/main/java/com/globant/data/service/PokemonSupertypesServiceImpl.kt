@@ -1,16 +1,16 @@
 package com.globant.data.service
 
-import com.globant.data.mapper.PokemonSupertypeMapper
+import com.globant.data.mapper.PokemonSecondaryTypesMapper
 import com.globant.data.service.api.PokemonTCGApi
-import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.util.Result
 
 class PokemonSupertypesServiceImpl : PokemonSupertypesService {
     private val api = ServiceGenerator()
-    private val mapper = PokemonSupertypeMapper()
+    private val mapper = PokemonSecondaryTypesMapper()
 
-    override fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>): Result<List<PokemonSupertype>> {
+    override fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>): Result<List<SecondaryTypes>> {
         try {
             val callResponse = api.createService(PokemonTCGApi::class.java).getPokemonSupertypes()
             val response = callResponse.execute()
