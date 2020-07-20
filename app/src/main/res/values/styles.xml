@@ -40,8 +40,8 @@
         <item name="android:layout_marginTop">@dimen/pokemon_type_card_text_view_margin_top</item>
     </style>
 
-    <style name="TextViewPokemonSuperTypeElement" parent="BaseTextViewPokemonElement">
-        <item name="android:textSize">@dimen/pokemon_supertype_card_text_view_text_size</item>
+    <style name="TextViewPokemonSecondaryTypeElement" parent="BaseTextViewPokemonElement">
+        <item name="android:textSize">@dimen/pokemon_secondary_type_card_text_view_text_size</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
