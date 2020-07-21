@@ -3,7 +3,6 @@ package com.globant.data.database
 import com.globant.data.mapper.PokemonSubtypeDatabaseMapper
 import com.globant.domain.database.PokemonSubtypeDatabase
 import com.globant.domain.entity.SecondaryTypes
-import com.globant.domain.util.Constant.SUBTYPES_NOT_FOUND
 import com.globant.domain.util.Result
 
 class PokemonSubtypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonSubtypeDatabase {
@@ -23,5 +22,9 @@ class PokemonSubtypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonSu
         pokemonSubtypes.forEach {
             pokemonDao.insertPokemonSubtype(pokemonSubtypeDatabaseMapper.transformToPokemonSubtypeDatabaseEntity(it))
         }
+    }
+
+    companion object {
+        private const val SUBTYPES_NOT_FOUND = "Pokemon Subtypes Not Found"
     }
 }

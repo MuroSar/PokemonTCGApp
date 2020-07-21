@@ -3,7 +3,6 @@ package com.globant.data.database
 import com.globant.data.mapper.PokemonSupertypeDatabaseMapper
 import com.globant.domain.database.PokemonSupertypeDatabase
 import com.globant.domain.entity.SecondaryTypes
-import com.globant.domain.util.Constant.SUPERTYPES_NOT_FOUND
 import com.globant.domain.util.Result
 
 class PokemonSupertypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonSupertypeDatabase {
@@ -25,5 +24,9 @@ class PokemonSupertypeDatabaseImpl(private val pokemonDao: PokemonDao) : Pokemon
                 pokemonSupertypeDatabaseMapper.transformToPokemonSupertypeDatabaseEntity(it)
             )
         }
+    }
+
+    companion object {
+        private const val SUPERTYPES_NOT_FOUND = "Pokemon Supertypes Not Found"
     }
 }
