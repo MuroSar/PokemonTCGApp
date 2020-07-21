@@ -3,7 +3,7 @@ package com.globant.data.database
 import com.globant.data.mapper.PokemonSupertypeDatabaseMapper
 import com.globant.domain.database.PokemonSupertypeDatabase
 import com.globant.domain.entity.SecondaryTypes
-import com.globant.domain.util.Constant
+import com.globant.domain.util.Constant.SUPERTYPES_NOT_FOUND
 import com.globant.domain.util.Result
 
 class PokemonSupertypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonSupertypeDatabase {
@@ -16,7 +16,7 @@ class PokemonSupertypeDatabaseImpl(private val pokemonDao: PokemonDao) : Pokemon
             if (it.isNotEmpty())
                 return Result.Success(pokemonSupertypeDatabaseMapper.transform(pokemonDao.getPokemonSupertypes()))
         }
-        return Result.Failure(Exception(Constant.SUPERTYPES_NOT_FOUND))
+        return Result.Failure(Exception(SUPERTYPES_NOT_FOUND))
     }
 
     override fun insertLocalPokemonSupertypes(pokemonSupertypes: List<SecondaryTypes>) {

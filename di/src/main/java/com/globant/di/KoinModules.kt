@@ -2,11 +2,13 @@ package com.globant.di
 
 import androidx.room.Room
 import com.globant.data.database.PokemonDatabase
+import com.globant.data.database.PokemonSubtypeDatabaseImpl
 import com.globant.data.database.PokemonSupertypeDatabaseImpl
 import com.globant.data.database.PokemonTypeDatabaseImpl
 import com.globant.data.service.PokemonSubtypesServiceImpl
 import com.globant.data.service.PokemonSupertypesServiceImpl
 import com.globant.data.service.PokemonTypesServiceImpl
+import com.globant.domain.database.PokemonSubtypeDatabase
 import com.globant.domain.database.PokemonSupertypeDatabase
 import com.globant.domain.database.PokemonTypeDatabase
 import com.globant.domain.service.PokemonSubtypesService
@@ -29,7 +31,7 @@ val serviceModule = module {
 val useCaseModule = module {
     single<GetPokemonTypesUseCase> { GetPokemonTypesUseCaseImpl(get(), get()) }
     single<GetPokemonSupertypesUseCase> { GetPokemonSupertypesUseCaseImpl(get(), get()) }
-    single<GetPokemonSubtypesUseCase> { GetPokemonSubtypesUseCaseImpl(get()) }
+    single<GetPokemonSubtypesUseCase> { GetPokemonSubtypesUseCaseImpl(get(), get()) }
 }
 
 val databaseModule = module {
@@ -37,6 +39,7 @@ val databaseModule = module {
     single { get<PokemonDatabase>().pokemonDao() }
     single<PokemonTypeDatabase> { PokemonTypeDatabaseImpl(get()) }
     single<PokemonSupertypeDatabase> { PokemonSupertypeDatabaseImpl(get()) }
+    single<PokemonSubtypeDatabase> { PokemonSubtypeDatabaseImpl(get()) }
 }
 
 private const val DATA_BASE_NAME = "pokemon_database"
