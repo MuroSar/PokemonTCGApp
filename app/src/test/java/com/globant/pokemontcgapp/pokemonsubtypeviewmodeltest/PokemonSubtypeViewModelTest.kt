@@ -1,6 +1,7 @@
 package com.globant.pokemontcgapp.pokemonsubtypeviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.globant.domain.database.PokemonSubtypeDatabase
 import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.service.PokemonSubtypesService
 import com.globant.domain.usecase.GetPokemonSubtypesUseCase
@@ -38,6 +39,7 @@ class PokemonSubtypeViewModelTest {
 
     private lateinit var viewModel: PokemonSubtypeContract.ViewModel
     private lateinit var getPokemonSubtypesUseCase: GetPokemonSubtypesUseCase
+    private val mockedPokemonSubtypeDatabase: PokemonSubtypeDatabase = mock()
     private val mockedPokemonSubtypeService: PokemonSubtypesService = mock()
     private val pokemonSubtypesList: List<SecondaryTypes> = mock()
     private val pokemonSubtypesResources: MutableMap<String, Int> = mock()
@@ -48,7 +50,7 @@ class PokemonSubtypeViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        getPokemonSubtypesUseCase = GetPokemonSubtypesUseCaseImpl(mockedPokemonSubtypeService)
+        getPokemonSubtypesUseCase = GetPokemonSubtypesUseCaseImpl(mockedPokemonSubtypeService, mockedPokemonSubtypeDatabase)
         viewModel = PokemonSubtypeViewModel(getPokemonSubtypesUseCase)
     }
 
@@ -62,13 +64,14 @@ class PokemonSubtypeViewModelTest {
     fun `on getPokemonSubtypes called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonSubtypesLiveData().testObserver()
 
-        whenever(getPokemonSubtypesUseCase.invoke(pokemonSubtypesResources)).thenReturn(resultIsSuccess)
+        whenever(mockedPokemonSubtypeService.getPokemonSubtypes(pokemonSubtypesResources)).thenReturn(resultIsSuccess)
         whenever(resultIsSuccess.data).thenReturn(pokemonSubtypesList)
         runBlocking {
             viewModel.getPokemonSubtypes(pokemonSubtypesResources).join()
         }
 
         verify(mockedPokemonSubtypeService).getPokemonSubtypes(pokemonSubtypesResources)
+        verify(mockedPokemonSubtypeDatabase).insertLocalPokemonSubtypes(pokemonSubtypesList)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -76,18 +79,41 @@ class PokemonSubtypeViewModelTest {
     }
 
     @Test
-    fun `on getPokemonSubtypes called with error`() {
+    fun `on getPokemonSubtypes called with error, but request to database is successful`() {
         val liveDataUnderTest = viewModel.getPokemonSubtypesLiveData().testObserver()
 
-        whenever(getPokemonSubtypesUseCase.invoke(pokemonSubtypesResources)).thenReturn(resultIsFailure)
-        whenever(resultIsFailure.exception).thenReturn(exception)
+        whenever(mockedPokemonSubtypeService.getPokemonSubtypes(pokemonSubtypesResources)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonSubtypeDatabase.getLocalPokemonSubtypes()).thenReturn(resultIsSuccess)
+        whenever(resultIsSuccess.data).thenReturn(pokemonSubtypesList)
+
         runBlocking {
             viewModel.getPokemonSubtypes(pokemonSubtypesResources).join()
         }
         verify(mockedPokemonSubtypeService).getPokemonSubtypes(pokemonSubtypesResources)
+        verify(mockedPokemonSubtypeDatabase).getLocalPokemonSubtypes()
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonSubtypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+    }
+
+    @Test
+    fun `on getPokemonSubtypes called with error, request to database with error as well`() {
+        val liveDataUnderTest = viewModel.getPokemonSubtypesLiveData().testObserver()
+
+        whenever(mockedPokemonSubtypeService.getPokemonSubtypes(pokemonSubtypesResources)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonSubtypeDatabase.getLocalPokemonSubtypes()).thenReturn(resultIsFailure)
+        whenever(resultIsFailure.exception).thenReturn(exception)
+
+        runBlocking {
+            viewModel.getPokemonSubtypes(pokemonSubtypesResources).join()
+        }
+        verify(mockedPokemonSubtypeService).getPokemonSubtypes(pokemonSubtypesResources)
+        verify(mockedPokemonSubtypeDatabase).getLocalPokemonSubtypes()
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 
     companion object {
