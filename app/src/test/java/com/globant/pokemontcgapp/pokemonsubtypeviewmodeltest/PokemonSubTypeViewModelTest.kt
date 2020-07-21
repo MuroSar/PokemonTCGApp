@@ -1,12 +1,18 @@
 package com.globant.pokemontcgapp.pokemonsubtypeviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.globant.domain.entity.PokemonSubtype
-import com.globant.pokemontcgapp.MockedPokemonSubtypes
+import com.globant.domain.entity.SecondaryTypes
+import com.globant.domain.service.PokemonSubtypesService
+import com.globant.domain.usecase.GetPokemonSubtypesUseCase
+import com.globant.domain.usecase.implementation.GetPokemonSubtypesUseCaseImpl
+import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonSubtypeContract
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -23,7 +29,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class PokemonSubTypeViewModelTest {
+class PokemonSubtypeViewModelTest {
 
     private val testDispatcher = TestCoroutineDispatcher()
 
@@ -31,12 +37,19 @@ class PokemonSubTypeViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonSubtypeContract.ViewModel
-    private val pokemonSubtypesList: List<PokemonSubtype> = MockedPokemonSubtypes().pokemonSubtypesList
+    private lateinit var getPokemonSubtypesUseCase: GetPokemonSubtypesUseCase
+    private val mockedPokemonSubtypeService: PokemonSubtypesService = mock()
+    private val pokemonSubtypesList: List<SecondaryTypes> = mock()
+    private val pokemonSubtypesResources: MutableMap<String, Int> = mock()
+    private val resultIsSuccess: Result.Success<List<SecondaryTypes>> = mock()
+    private val resultIsFailure: Result.Failure = mock()
+    private val exception: Exception = mock()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = PokemonSubtypeViewModel()
+        getPokemonSubtypesUseCase = GetPokemonSubtypesUseCaseImpl(mockedPokemonSubtypeService)
+        viewModel = PokemonSubtypeViewModel(getPokemonSubtypesUseCase)
     }
 
     @After
@@ -46,21 +59,39 @@ class PokemonSubTypeViewModelTest {
     }
 
     @Test
-    fun `on getPokemonSubtypes called`() {
+    fun `on getPokemonSubtypes called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonSubtypesLiveData().testObserver()
 
+        whenever(getPokemonSubtypesUseCase.invoke(pokemonSubtypesResources)).thenReturn(resultIsSuccess)
+        whenever(resultIsSuccess.data).thenReturn(pokemonSubtypesList)
         runBlocking {
-            viewModel.getPokemonSubtypes().join()
+            viewModel.getPokemonSubtypes(pokemonSubtypesResources).join()
         }
 
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ZERO]?.status)
-        assertEquals(
-            pokemonSubtypesList[ZERO].name,
-            liveDataUnderTest.observedValues[ZERO]?.data?.pokemonSubtypesList?.get(ZERO)?.name
-        )
+        verify(mockedPokemonSubtypeService).getPokemonSubtypes(pokemonSubtypesResources)
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonSubtypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+    }
+
+    @Test
+    fun `on getPokemonSubtypes called with error`() {
+        val liveDataUnderTest = viewModel.getPokemonSubtypesLiveData().testObserver()
+
+        whenever(getPokemonSubtypesUseCase.invoke(pokemonSubtypesResources)).thenReturn(resultIsFailure)
+        whenever(resultIsFailure.exception).thenReturn(exception)
+        runBlocking {
+            viewModel.getPokemonSubtypes(pokemonSubtypesResources).join()
+        }
+        verify(mockedPokemonSubtypeService).getPokemonSubtypes(pokemonSubtypesResources)
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
     }
 
     companion object {
-        private const val ZERO = 0
+        private const val FIRST_RESPONSE = 0
+        private const val SECOND_RESPONSE = 1
     }
 }

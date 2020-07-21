@@ -11,5 +11,5 @@ val viewModelModule = module {
     viewModel { SplashScreenViewModel() }
     viewModel { PokemonTypeViewModel(get()) }
     viewModel { PokemonSupertypeViewModel(get()) }
-    viewModel { PokemonSubtypeViewModel() }
+    viewModel { PokemonSubtypeViewModel(get()) }
 }

@@ -1,6 +1,6 @@
 package com.globant.domain.entity
 
-open class SecondaryTypes(
+class SecondaryTypes(
     var name: String,
     var bgColor: Int
 )

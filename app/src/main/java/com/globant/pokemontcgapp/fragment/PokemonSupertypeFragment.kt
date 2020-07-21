@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.entity.SecondaryTypes
 import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
 import com.globant.pokemontcgapp.util.Event
@@ -40,7 +40,7 @@ class PokemonSupertypeFragment : Fragment() {
         pokemonSupertypeViewModel.getPokemonSupertypes(pokemonSupertypesResources)
     }
 
-    private fun updateUI(data: Event<Data<List<PokemonSupertype>>>) {
+    private fun updateUI(data: Event<Data<List<SecondaryTypes>>>) {
         val pokemonSupertypesData = data.getContentIfNotHandled()
         when (pokemonSupertypesData?.status) {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE
@@ -49,7 +49,7 @@ class PokemonSupertypeFragment : Fragment() {
         }
     }
 
-    private fun showPokemonSupertypes(pokemonSupertypes: List<PokemonSupertype>) {
+    private fun showPokemonSupertypes(pokemonSupertypes: List<SecondaryTypes>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
         binding.pokemonAlltypesRecyclerView.apply {
             layoutManager =
