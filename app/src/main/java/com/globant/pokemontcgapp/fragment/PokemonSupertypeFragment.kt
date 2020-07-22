@@ -8,8 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.SecondaryTypes
+import com.globant.pokemontcgapp.activity.PokemonCardListActivity
 import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
+import com.globant.pokemontcgapp.util.Constant.POKEMON_GROUP
+import com.globant.pokemontcgapp.util.Constant.SELECTION
+import com.globant.pokemontcgapp.util.Constant.SELECTION_COLOR
 import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
 import com.globant.pokemontcgapp.util.pokemonSupertypesResources
@@ -51,17 +55,30 @@ class PokemonSupertypeFragment : Fragment() {
 
     private fun showPokemonSupertypes(pokemonSupertypes: List<SecondaryTypes>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        binding.pokemonAlltypesRecyclerView.apply {
-            layoutManager =
-                GridLayoutManager(
-                    context,
-                    resources.configuration.getColumnsByOrientation(
-                        COLUMNS_PORTRAIT,
-                        COLUMNS_LANDSCAPE
-                    )
+        pokemonSupertypes.let {
+            val pokemonSupertypesAdapter = PokemonSecondaryTypesAdapter(pokemonSupertypes) { pokemonSupertypeElement ->
+                startActivity(
+                    context?.let { it1 ->
+                        PokemonCardListActivity.getIntent(it1).apply {
+                            putExtra(POKEMON_GROUP, SUPERTYPE)
+                            putExtra(SELECTION, pokemonSupertypeElement.name)
+                            putExtra(SELECTION_COLOR, pokemonSupertypeElement.bgColor)
+                        }
+                    }
                 )
-            adapter = PokemonSecondaryTypesAdapter(pokemonSupertypes)
-            visibility = View.VISIBLE
+            }
+            binding.pokemonAlltypesRecyclerView.apply {
+                layoutManager =
+                    GridLayoutManager(
+                        context,
+                        resources.configuration.getColumnsByOrientation(
+                            COLUMNS_PORTRAIT,
+                            COLUMNS_LANDSCAPE
+                        )
+                    )
+                adapter = pokemonSupertypesAdapter
+                visibility = View.VISIBLE
+            }
         }
     }
 
@@ -71,6 +88,7 @@ class PokemonSupertypeFragment : Fragment() {
     }
 
     companion object {
+        private const val SUPERTYPE = "supertype"
         private const val COLUMNS_PORTRAIT = 1
         private const val COLUMNS_LANDSCAPE = 3
     }

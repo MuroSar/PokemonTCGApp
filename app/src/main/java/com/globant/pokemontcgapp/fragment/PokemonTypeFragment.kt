@@ -8,8 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonType
+import com.globant.pokemontcgapp.activity.PokemonCardListActivity
 import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
+import com.globant.pokemontcgapp.util.Constant.POKEMON_GROUP
+import com.globant.pokemontcgapp.util.Constant.SELECTION
+import com.globant.pokemontcgapp.util.Constant.SELECTION_COLOR
 import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
 import com.globant.pokemontcgapp.util.pokemonTypesResources
@@ -51,11 +55,24 @@ class PokemonTypeFragment : Fragment() {
 
     private fun showPokemonTypes(pokemonTypes: List<PokemonType>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        binding.pokemonAlltypesRecyclerView.apply {
-            layoutManager =
-                GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
-            adapter = PokemonTypesAdapter(pokemonTypes)
-            visibility = View.VISIBLE
+        pokemonTypes.let {
+            val pokemonTypesAdapter = PokemonTypesAdapter(pokemonTypes) { pokemonTypeElement ->
+                startActivity(
+                    context?.let { it1 ->
+                        PokemonCardListActivity.getIntent(it1).apply {
+                            putExtra(POKEMON_GROUP, TYPE)
+                            putExtra(SELECTION, pokemonTypeElement.name)
+                            putExtra(SELECTION_COLOR, pokemonTypeElement.bgColor)
+                        }
+                    }
+                )
+            }
+            binding.pokemonAlltypesRecyclerView.apply {
+                layoutManager =
+                    GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
+                adapter = pokemonTypesAdapter
+                visibility = View.VISIBLE
+            }
         }
     }
 
@@ -65,6 +82,7 @@ class PokemonTypeFragment : Fragment() {
     }
 
     companion object {
+        private const val TYPE = "type"
         private const val COLUMNS_PORTRAIT = 4
         private const val COLUMNS_LANDSCAPE = 6
     }

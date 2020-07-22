@@ -11,7 +11,8 @@ import com.globant.domain.entity.PokemonType
 import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonTypeElementBinding
 
-class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>) : RecyclerView.Adapter<PokemonTypesAdapter.ViewHolder>() {
+class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>, private val onPokemonTypeClicked: (PokemonType) -> Unit) :
+    RecyclerView.Adapter<PokemonTypesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -19,7 +20,8 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>) : Recycle
                 R.layout.pokemon_type_element,
                 parent,
                 false
-            )
+            ),
+            onPokemonTypeClicked
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -28,11 +30,12 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>) : Recycle
 
     override fun getItemCount(): Int = pokemonTypes.size
 
-    class ViewHolder(itemView: View) :
+    class ViewHolder(itemView: View, private val onPokemonTypeClicked: (PokemonType) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         private val binding = PokemonTypeElementBinding.bind(itemView)
 
         fun bind(item: PokemonType) = with(itemView) {
+            setOnClickListener { onPokemonTypeClicked(item) }
             binding.pokemonTypeTextViewName.text = item.name
             binding.pokemonTypeCardView.setCardBackgroundColor(ContextCompat.getColor(context, item.bgColor))
             Glide.with(context)
