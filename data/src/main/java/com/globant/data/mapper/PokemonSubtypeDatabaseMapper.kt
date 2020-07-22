@@ -1,12 +1,11 @@
 package com.globant.data.mapper
 
-import com.globant.data.database.entity.PokemonSupertypeDatabaseEntity
+import com.globant.data.database.entity.PokemonSubtypeDatabaseEntity
 import com.globant.domain.entity.SecondaryTypes
 
-class PokemonSupertypeDatabaseMapper :
-    BaseMapper<List<PokemonSupertypeDatabaseEntity>, MutableList<SecondaryTypes>, MutableMap<String, Int>?> {
+class PokemonSubtypeDatabaseMapper : BaseMapper<List<PokemonSubtypeDatabaseEntity>, MutableList<SecondaryTypes>, MutableMap<String, Int>?> {
     override fun transform(
-        type: List<PokemonSupertypeDatabaseEntity>,
+        type: List<PokemonSubtypeDatabaseEntity>,
         resources: MutableMap<String, Int>?
     ): MutableList<SecondaryTypes> {
         val pokemonSecondaryTypesDatabaseEntityReturnList: MutableList<SecondaryTypes> = mutableListOf()
@@ -17,9 +16,9 @@ class PokemonSupertypeDatabaseMapper :
         return pokemonSecondaryTypesDatabaseEntityReturnList
     }
 
-    fun transformToPokemonSupertypeDatabaseEntity(pokemonSupertype: SecondaryTypes): PokemonSupertypeDatabaseEntity =
-        PokemonSupertypeDatabaseEntity(
-            pokemonSupertype.name,
-            pokemonSupertype.bgColor
+    fun transformToPokemonSubtypeDatabaseEntity(pokemonSubtype: SecondaryTypes): PokemonSubtypeDatabaseEntity =
+        PokemonSubtypeDatabaseEntity(
+            pokemonSubtype.name,
+            pokemonSubtype.bgColor
         )
 }

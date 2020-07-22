@@ -1,9 +1,9 @@
 package com.globant.domain.database
 
-import com.globant.domain.entity.PokemonSupertype
+import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.util.Result
 
 interface PokemonSupertypeDatabase {
-    fun getLocalPokemonSupertypes(): Result<List<PokemonSupertype>>
-    fun insertLocalPokemonSupertypes(pokemonSupertypes: List<PokemonSupertype>)
+    fun getLocalPokemonSupertypes(): Result<List<SecondaryTypes>>
+    fun insertLocalPokemonSupertypes(pokemonSupertypes: List<SecondaryTypes>)
 }
