@@ -36,4 +36,7 @@ object Constant {
     const val V_MAX = "VMAX"
     const val TAG_TEAM = "TAG TEAM"
     const val RARE_HOLO = "Rare Holo"
+    const val POKEMON_GROUP = "pokemonGroup"
+    const val SELECTION = "selection"
+    const val SELECTION_COLOR = "selectionColor"
 }

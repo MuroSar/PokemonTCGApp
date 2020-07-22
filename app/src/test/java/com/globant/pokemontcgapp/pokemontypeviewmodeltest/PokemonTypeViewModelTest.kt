@@ -6,8 +6,13 @@ import com.globant.domain.entity.PokemonType
 import com.globant.domain.service.PokemonTypesService
 import com.globant.domain.usecase.GetPokemonTypesUseCase
 import com.globant.domain.usecase.implementation.GetPokemonTypesUseCaseImpl
+import com.globant.domain.util.FIRST_RESPONSE
 import com.globant.domain.util.Result
+import com.globant.domain.util.SECOND_RESPONSE
 import com.globant.pokemontcgapp.testObserver
+import com.globant.pokemontcgapp.util.Color
+import com.globant.pokemontcgapp.util.Constant
+import com.globant.pokemontcgapp.util.Drawable
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonTypeContract
@@ -46,6 +51,11 @@ class PokemonTypeViewModelTest {
     private val resultIsSuccess: Result.Success<List<PokemonType>> = mock()
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
+    private val typeSelected: PokemonType = PokemonType(
+        Constant.COLORLESS,
+        Drawable.pokemon_colorless_type,
+        Color.pokemon_type_colorless
+    )
 
     @Before
     fun setUp() {
@@ -116,8 +126,13 @@ class PokemonTypeViewModelTest {
         assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 
-    companion object {
-        private const val FIRST_RESPONSE = 0
-        private const val SECOND_RESPONSE = 1
+    @Test
+    fun `on onPokemonTypeSelected called`() {
+        val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
+
+        viewModel.onPokemonTypeSelected(typeSelected)
+
+        assertEquals(Status.ON_TYPE_CLICKED, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(typeSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonType)
     }
 }

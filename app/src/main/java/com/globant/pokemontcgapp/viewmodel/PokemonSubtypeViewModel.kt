@@ -17,8 +17,8 @@ class PokemonSubtypeViewModel(private val getPokemonSubtypesUseCase: GetPokemonS
     ViewModel(),
     PokemonSubtypeContract.ViewModel {
 
-    private val pokemonSubtypesMutableLiveData = MutableLiveData<Event<Data<List<SecondaryTypes>>>>()
-    override fun getPokemonSubtypesLiveData(): LiveData<Event<Data<List<SecondaryTypes>>>> = pokemonSubtypesMutableLiveData
+    private val pokemonSubtypesMutableLiveData = MutableLiveData<Event<Data>>()
+    override fun getPokemonSubtypesLiveData(): LiveData<Event<Data>> = pokemonSubtypesMutableLiveData
 
     override fun getPokemonSubtypes(pokemonSubtypesResources: MutableMap<String, Int>) = viewModelScope.launch {
         pokemonSubtypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
@@ -34,11 +34,26 @@ class PokemonSubtypeViewModel(private val getPokemonSubtypesUseCase: GetPokemonS
         }
     }
 
-    data class Data<RequestData>(var status: Status, var data: RequestData? = null, var error: Exception? = null)
+    override fun onPokemonSubtypeSelected(subtypeSelected: SecondaryTypes) {
+        pokemonSubtypesMutableLiveData.value = Event(
+            Data(
+                status = Status.ON_SUBTYPE_CLICKED,
+                pokemonSubtype = subtypeSelected
+            )
+        )
+    }
+
+    data class Data(
+        var status: Status,
+        var data: List<SecondaryTypes> = emptyList(),
+        var error: Exception? = null,
+        var pokemonSubtype: SecondaryTypes? = null
+    )
 
     enum class Status {
         LOADING,
         SUCCESS,
-        ERROR
+        ERROR,
+        ON_SUBTYPE_CLICKED
     }
 }

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonType
+import com.globant.pokemontcgapp.activity.PokemonCardListActivity
+import com.globant.pokemontcgapp.adapter.PokemonTypeSelected
 import com.globant.pokemontcgapp.adapter.PokemonTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
 import com.globant.pokemontcgapp.util.Event
@@ -18,7 +20,7 @@ import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PokemonTypeFragment : Fragment() {
+class PokemonTypeFragment : Fragment(), PokemonTypeSelected {
 
     private val pokemonTypeViewModel by viewModel<PokemonTypeViewModel>()
     private lateinit var binding: FragmentPokemonAlltypesLayoutBinding
@@ -40,31 +42,49 @@ class PokemonTypeFragment : Fragment() {
         pokemonTypeViewModel.getPokemonTypes(pokemonTypesResources)
     }
 
-    private fun updateUI(data: Event<Data<List<PokemonType>>>) {
+    private fun updateUI(data: Event<Data>) {
         val pokemonTypesData = data.getContentIfNotHandled()
         when (pokemonTypesData?.status) {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE
-            Status.SUCCESS -> pokemonTypesData.data?.let { showPokemonTypes(it) }
+            Status.SUCCESS -> showPokemonTypes(pokemonTypesData.data)
             Status.ERROR -> showPokemonTypesError(pokemonTypesData.error?.message)
+            Status.ON_TYPE_CLICKED -> pokemonTypesData.pokemonType?.let { onTypeClicked(it) }
         }
     }
 
     private fun showPokemonTypes(pokemonTypes: List<PokemonType>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        binding.pokemonAlltypesRecyclerView.apply {
-            layoutManager =
-                GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
-            adapter = PokemonTypesAdapter(pokemonTypes)
-            visibility = View.VISIBLE
+        pokemonTypes.let {
+            val pokemonTypesAdapter = PokemonTypesAdapter(pokemonTypes, this)
+            binding.pokemonAlltypesRecyclerView.apply {
+                layoutManager =
+                    GridLayoutManager(context, resources.configuration.getColumnsByOrientation(COLUMNS_PORTRAIT, COLUMNS_LANDSCAPE))
+                adapter = pokemonTypesAdapter
+                visibility = View.VISIBLE
+            }
         }
     }
 
     private fun showPokemonTypesError(error: String?) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPokemonTypeSelected(typeSelected: PokemonType) {
+        pokemonTypeViewModel.onPokemonTypeSelected(typeSelected)
+    }
+
+    private fun onTypeClicked(typeSelected: PokemonType) {
+        startActivity(
+            PokemonCardListActivity.getIntent(
+                requireContext(),
+                Triple(TYPE, typeSelected.name, typeSelected.bgColor)
+            )
+        )
     }
 
     companion object {
+        private const val TYPE = "types"
         private const val COLUMNS_PORTRAIT = 4
         private const val COLUMNS_LANDSCAPE = 6
     }

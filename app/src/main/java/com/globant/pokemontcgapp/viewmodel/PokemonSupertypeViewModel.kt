@@ -17,8 +17,8 @@ class PokemonSupertypeViewModel(private val getPokemonSupertypesUseCase: GetPoke
     ViewModel(),
     PokemonSupertypeContract.ViewModel {
 
-    private val pokemonSupertypesMutableLiveData = MutableLiveData<Event<Data<List<SecondaryTypes>>>>()
-    override fun getPokemonSupertypesLiveData(): LiveData<Event<Data<List<SecondaryTypes>>>> = pokemonSupertypesMutableLiveData
+    private val pokemonSupertypesMutableLiveData = MutableLiveData<Event<Data>>()
+    override fun getPokemonSupertypesLiveData(): LiveData<Event<Data>> = pokemonSupertypesMutableLiveData
 
     override fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>) = viewModelScope.launch {
         pokemonSupertypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
@@ -34,11 +34,26 @@ class PokemonSupertypeViewModel(private val getPokemonSupertypesUseCase: GetPoke
         }
     }
 
-    data class Data<RequestData>(var status: Status, var data: RequestData? = null, var error: Exception? = null)
+    override fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes) {
+        pokemonSupertypesMutableLiveData.value = Event(
+            Data(
+                status = Status.ON_SUPERTYPE_CLICKED,
+                pokemonSupertype = supertypeSelected
+            )
+        )
+    }
+
+    data class Data(
+        var status: Status,
+        var data: List<SecondaryTypes> = emptyList(),
+        var error: Exception? = null,
+        var pokemonSupertype: SecondaryTypes? = null
+    )
 
     enum class Status {
         LOADING,
         SUCCESS,
-        ERROR
+        ERROR,
+        ON_SUPERTYPE_CLICKED
     }
 }

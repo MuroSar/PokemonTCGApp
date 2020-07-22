@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.globant.data.database.entity.PokemonCardDatabaseEntity
 import com.globant.data.database.entity.PokemonSubtypeDatabaseEntity
 import com.globant.data.database.entity.PokemonSupertypeDatabaseEntity
 import com.globant.data.database.entity.PokemonTypeDatabaseEntity
@@ -27,4 +28,16 @@ interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemonSubtype(pokemonSubtypeDatabaseEntity: PokemonSubtypeDatabaseEntity)
+
+    @Query("SELECT * FROM pokemon_card_table WHERE type = :pokemonCardGroupSelected")
+    fun getPokemonCardListType(pokemonCardGroupSelected: String): List<PokemonCardDatabaseEntity>
+
+    @Query("SELECT * FROM pokemon_card_table WHERE supertype = :pokemonCardGroupSelected")
+    fun getPokemonCardListSupertype(pokemonCardGroupSelected: String): List<PokemonCardDatabaseEntity>
+
+    @Query("SELECT * FROM pokemon_card_table WHERE subtype = :pokemonCardGroupSelected")
+    fun getPokemonCardListSubtype(pokemonCardGroupSelected: String): List<PokemonCardDatabaseEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPokemonCard(pokemonCardDatabaseEntity: PokemonCardDatabaseEntity)
 }

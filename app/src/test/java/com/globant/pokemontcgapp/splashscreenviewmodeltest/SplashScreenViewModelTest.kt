@@ -1,6 +1,8 @@
 package com.globant.pokemontcgapp.splashscreenviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.globant.domain.util.FIRST_RESPONSE
+import com.globant.domain.util.SECOND_RESPONSE
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel
 import com.globant.pokemontcgapp.viewmodel.SplashScreenViewModel.SplashScreenStatus
@@ -52,10 +54,5 @@ class SplashScreenViewModelTest {
 
         assertEquals(SplashScreenStatus.INIT, liveDataUnderTest.observedValues[FIRST_RESPONSE])
         assertEquals(SplashScreenStatus.FINISH, liveDataUnderTest.observedValues[SECOND_RESPONSE])
-    }
-
-    companion object {
-        private const val FIRST_RESPONSE = 0
-        private const val SECOND_RESPONSE = 1
     }
 }

@@ -15,8 +15,8 @@ import kotlinx.coroutines.withContext
 
 class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUseCase) : ViewModel(), PokemonTypeContract.ViewModel {
 
-    private val pokemonTypesMutableLiveData = MutableLiveData<Event<Data<List<PokemonType>>>>()
-    override fun getPokemonTypesLiveData(): LiveData<Event<Data<List<PokemonType>>>> = pokemonTypesMutableLiveData
+    private val pokemonTypesMutableLiveData = MutableLiveData<Event<Data>>()
+    override fun getPokemonTypesLiveData(): LiveData<Event<Data>> = pokemonTypesMutableLiveData
 
     override fun getPokemonTypes(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>) = viewModelScope.launch {
         pokemonTypesMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
@@ -32,11 +32,21 @@ class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUs
         }
     }
 
-    data class Data<RequestData>(var status: Status, var data: RequestData? = null, var error: Exception? = null)
+    override fun onPokemonTypeSelected(typeSelected: PokemonType) {
+        pokemonTypesMutableLiveData.value = Event(Data(status = Status.ON_TYPE_CLICKED, pokemonType = typeSelected))
+    }
+
+    data class Data(
+        var status: Status,
+        var data: List<PokemonType> = emptyList(),
+        var error: Exception? = null,
+        var pokemonType: PokemonType? = null
+    )
 
     enum class Status {
         LOADING,
         SUCCESS,
-        ERROR
+        ERROR,
+        ON_TYPE_CLICKED
     }
 }

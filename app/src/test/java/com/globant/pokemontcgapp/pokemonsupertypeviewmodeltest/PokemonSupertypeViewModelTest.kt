@@ -6,8 +6,12 @@ import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.usecase.GetPokemonSupertypesUseCase
 import com.globant.domain.usecase.implementation.GetPokemonSupertypesUseCaseImpl
+import com.globant.domain.util.FIRST_RESPONSE
 import com.globant.domain.util.Result
+import com.globant.domain.util.SECOND_RESPONSE
 import com.globant.pokemontcgapp.testObserver
+import com.globant.pokemontcgapp.util.Color
+import com.globant.pokemontcgapp.util.Constant
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonSupertypeContract
@@ -46,6 +50,7 @@ class PokemonSupertypeViewModelTest {
     private val resultIsSuccess: Result.Success<List<SecondaryTypes>> = mock()
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
+    private val supertypeSelected: SecondaryTypes = SecondaryTypes(Constant.TRAINER, Color.pokemon_supertype_trainer)
 
     @Before
     fun setUp() {
@@ -116,8 +121,13 @@ class PokemonSupertypeViewModelTest {
         assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 
-    companion object {
-        private const val FIRST_RESPONSE = 0
-        private const val SECOND_RESPONSE = 1
+    @Test
+    fun `on onPokemonSupertypeSelected called`() {
+        val liveDataUnderTest = viewModel.getPokemonSupertypesLiveData().testObserver()
+
+        viewModel.onPokemonSupertypeSelected(supertypeSelected)
+
+        assertEquals(Status.ON_SUPERTYPE_CLICKED, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(supertypeSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonSupertype)
     }
 }

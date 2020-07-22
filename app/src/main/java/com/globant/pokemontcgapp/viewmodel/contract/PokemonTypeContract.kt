@@ -8,7 +8,8 @@ import kotlinx.coroutines.Job
 
 interface PokemonTypeContract {
     interface ViewModel {
-        fun getPokemonTypesLiveData(): LiveData<Event<Data<List<PokemonType>>>>
+        fun getPokemonTypesLiveData(): LiveData<Event<Data>>
         fun getPokemonTypes(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): Job
+        fun onPokemonTypeSelected(typeSelected: PokemonType)
     }
 }
