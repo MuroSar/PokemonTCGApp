@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.SecondaryTypes
+import com.globant.pokemontcgapp.activity.PokemonCardListActivity
+import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypeSelected
 import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
 import com.globant.pokemontcgapp.util.Event
@@ -18,7 +20,7 @@ import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PokemonSubtypeFragment : Fragment() {
+class PokemonSubtypeFragment : Fragment(), PokemonSecondaryTypeSelected {
 
     private val pokemonSubtypeViewModel by viewModel<PokemonSubtypeViewModel>()
     private lateinit var binding: FragmentPokemonAlltypesLayoutBinding
@@ -51,26 +53,39 @@ class PokemonSubtypeFragment : Fragment() {
 
     private fun showPokemonSubtypes(pokemonSubtypes: List<SecondaryTypes>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        binding.pokemonAlltypesRecyclerView.apply {
-            layoutManager =
-                GridLayoutManager(
-                    context,
-                    resources.configuration.getColumnsByOrientation(
-                        COLUMNS_PORTRAIT,
-                        COLUMNS_LANDSCAPE
+        pokemonSubtypes.let {
+            val pokemonSubtypesAdapter = PokemonSecondaryTypesAdapter(pokemonSubtypes, this)
+            binding.pokemonAlltypesRecyclerView.apply {
+                layoutManager =
+                    GridLayoutManager(
+                        context,
+                        resources.configuration.getColumnsByOrientation(
+                            COLUMNS_PORTRAIT,
+                            COLUMNS_LANDSCAPE
+                        )
                     )
-                )
-            adapter = PokemonSecondaryTypesAdapter(pokemonSubtypes)
-            visibility = View.VISIBLE
+                adapter = pokemonSubtypesAdapter
+                visibility = View.VISIBLE
+            }
         }
     }
 
     private fun showPokemonSubtypesError(error: String?) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes) {
+        startActivity(
+            PokemonCardListActivity.getIntent(
+                requireContext(),
+                Triple(SUBTYPE, secondaryTypeSelected.name, secondaryTypeSelected.bgColor)
+            )
+        )
     }
 
     companion object {
+        private const val SUBTYPE = "subtype"
         private const val COLUMNS_PORTRAIT = 2
         private const val COLUMNS_LANDSCAPE = 4
     }
