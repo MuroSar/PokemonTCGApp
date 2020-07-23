@@ -2,11 +2,17 @@ package com.globant.pokemontcgapp.pokemoncardlistviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.entity.PokemonCard
-import com.globant.pokemontcgapp.MockedPokemonCardList
+import com.globant.domain.service.PokemonCardListService
+import com.globant.domain.usecase.GetPokemonCardListUseCase
+import com.globant.domain.usecase.implementation.GetPokemonCardListUseCaseImpl
+import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonCardListContract
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -31,12 +37,20 @@ class PokemonCardListViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonCardListContract.ViewModel
-    private val pokemonCardListList: List<PokemonCard> = MockedPokemonCardList().pokemonCardList
+    private lateinit var getPokemonCardListUseCase: GetPokemonCardListUseCase
+    private val mockedPokemonCardListService: PokemonCardListService = mock()
+    private val pokemonCardList: List<PokemonCard> = mock()
+    private val resultIsSuccess: Result.Success<List<PokemonCard>> = mock()
+    private val resultIsFailure: Result.Failure = mock()
+    private val exception: Exception = mock()
+    private val group: String = TYPE
+    private val groupSelected: String = COLORLESS
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = PokemonCardListViewModel()
+        getPokemonCardListUseCase = GetPokemonCardListUseCaseImpl(mockedPokemonCardListService)
+        viewModel = PokemonCardListViewModel(getPokemonCardListUseCase)
     }
 
     @After
@@ -46,21 +60,41 @@ class PokemonCardListViewModelTest {
     }
 
     @Test
-    fun `on getPokemonCardList called`() {
+    fun `on getPokemonCardList called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
+        whenever(getPokemonCardListUseCase.invoke(group, groupSelected)).thenReturn(resultIsSuccess)
+        whenever(resultIsSuccess.data).thenReturn(pokemonCardList)
         runBlocking {
-            viewModel.getPokemonCardList().join()
+            viewModel.getPokemonCardList(group, groupSelected).join()
         }
 
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ZERO]?.status)
-        assertEquals(
-            pokemonCardListList[ZERO].name,
-            liveDataUnderTest.observedValues[ZERO]?.data?.pokemonCardList?.get(ZERO)?.name
-        )
+        verify(mockedPokemonCardListService).getPokemonCardList(group, groupSelected)
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+    }
+
+    @Test
+    fun `on getPokemonCardList called with error`() {
+        val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
+
+        whenever(getPokemonCardListUseCase.invoke(group, groupSelected)).thenReturn(resultIsFailure)
+        whenever(resultIsFailure.exception).thenReturn(exception)
+        runBlocking {
+            viewModel.getPokemonCardList(group, groupSelected).join()
+        }
+        verify(mockedPokemonCardListService).getPokemonCardList(group, groupSelected)
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
     }
 
     companion object {
-        private const val ZERO = 0
+        private const val FIRST_RESPONSE = 0
+        private const val SECOND_RESPONSE = 1
+        private const val TYPE = "type"
+        private const val COLORLESS = "Colorless"
     }
 }
