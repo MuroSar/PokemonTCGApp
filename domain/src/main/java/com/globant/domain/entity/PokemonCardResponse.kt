@@ -1,7 +1,7 @@
 package com.globant.domain.entity
 
-class PokemonCard(
+class PokemonCardResponse(
     var id: String,
     var name: String,
-    var image: String
+    var imageUrl: String
 )
