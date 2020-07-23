@@ -70,7 +70,7 @@ class PokemonTypeFragment : Fragment(), PokemonTypeSelected {
     }
 
     companion object {
-        private const val TYPE = "type"
+        private const val TYPE = "types"
         private const val COLUMNS_PORTRAIT = 4
         private const val COLUMNS_LANDSCAPE = 6
     }

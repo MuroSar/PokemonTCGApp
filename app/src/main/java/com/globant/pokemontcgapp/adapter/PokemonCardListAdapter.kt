@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.globant.domain.entity.PokemonCard
 import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonCardListElementBinding
+import com.globant.pokemontcgapp.util.Drawable
 
 class PokemonCardListAdapter(private val pokemonCardList: List<PokemonCard>) :
     RecyclerView.Adapter<PokemonCardListAdapter.ViewHolder>() {
@@ -35,6 +36,7 @@ class PokemonCardListAdapter(private val pokemonCardList: List<PokemonCard>) :
             binding.pokemonCardListViewName.text = item.name
             Glide.with(context)
                 .load((item.image))
+                .placeholder(Drawable.pokemon_cardback)
                 .into(binding.pokemonCardListImageViewImage)
         }
     }
