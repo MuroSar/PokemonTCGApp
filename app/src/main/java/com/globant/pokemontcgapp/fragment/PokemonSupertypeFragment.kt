@@ -9,11 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.SecondaryTypes
 import com.globant.pokemontcgapp.activity.PokemonCardListActivity
+import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypeSelected
 import com.globant.pokemontcgapp.adapter.PokemonSecondaryTypesAdapter
 import com.globant.pokemontcgapp.databinding.FragmentPokemonAlltypesLayoutBinding
-import com.globant.pokemontcgapp.util.Constant.POKEMON_GROUP
-import com.globant.pokemontcgapp.util.Constant.SELECTION
-import com.globant.pokemontcgapp.util.Constant.SELECTION_COLOR
 import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
 import com.globant.pokemontcgapp.util.pokemonSupertypesResources
@@ -22,7 +20,7 @@ import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PokemonSupertypeFragment : Fragment() {
+class PokemonSupertypeFragment : Fragment(), PokemonSecondaryTypeSelected {
 
     private val pokemonSupertypeViewModel by viewModel<PokemonSupertypeViewModel>()
     private lateinit var binding: FragmentPokemonAlltypesLayoutBinding
@@ -56,17 +54,7 @@ class PokemonSupertypeFragment : Fragment() {
     private fun showPokemonSupertypes(pokemonSupertypes: List<SecondaryTypes>) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
         pokemonSupertypes.let {
-            val pokemonSupertypesAdapter = PokemonSecondaryTypesAdapter(pokemonSupertypes) { pokemonSupertypeElement ->
-                startActivity(
-                    context?.let { it1 ->
-                        PokemonCardListActivity.getIntent(it1).apply {
-                            putExtra(POKEMON_GROUP, SUPERTYPE)
-                            putExtra(SELECTION, pokemonSupertypeElement.name)
-                            putExtra(SELECTION_COLOR, pokemonSupertypeElement.bgColor)
-                        }
-                    }
-                )
-            }
+            val pokemonSupertypesAdapter = PokemonSecondaryTypesAdapter(pokemonSupertypes, this)
             binding.pokemonAlltypesRecyclerView.apply {
                 layoutManager =
                     GridLayoutManager(
@@ -84,7 +72,16 @@ class PokemonSupertypeFragment : Fragment() {
 
     private fun showPokemonSupertypesError(error: String?) {
         binding.pokemonAlltypesLoading.visibility = View.GONE
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes) {
+        startActivity(
+            PokemonCardListActivity.getIntent(
+                requireContext(),
+                Triple(SUPERTYPE, secondaryTypeSelected.name, secondaryTypeSelected.bgColor)
+            )
+        )
     }
 
     companion object {

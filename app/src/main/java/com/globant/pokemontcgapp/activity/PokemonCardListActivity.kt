@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonCard
 import com.globant.pokemontcgapp.adapter.PokemonCardListAdapter
 import com.globant.pokemontcgapp.databinding.ActivityPokemonCardListBinding
+import com.globant.pokemontcgapp.util.Constant.POKEMON_GROUP
 import com.globant.pokemontcgapp.util.Constant.SELECTION
 import com.globant.pokemontcgapp.util.Constant.SELECTION_COLOR
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
@@ -70,6 +71,11 @@ class PokemonCardListActivity : AppCompatActivity() {
         private const val DEFAULT_VALUE = -1
         private const val COLUMNS_PORTRAIT = 1
         private const val COLUMNS_LANDSCAPE = 2
-        fun getIntent(context: Context): Intent = Intent(context, PokemonCardListActivity::class.java)
+        fun getIntent(context: Context, data: Triple<String, String, Int>): Intent =
+            Intent(context, PokemonCardListActivity::class.java).apply {
+                putExtra(POKEMON_GROUP, data.first)
+                putExtra(SELECTION, data.second)
+                putExtra(SELECTION_COLOR, data.third)
+            }
     }
 }

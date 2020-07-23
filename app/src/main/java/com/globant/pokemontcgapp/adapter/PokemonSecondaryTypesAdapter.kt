@@ -9,9 +9,13 @@ import com.globant.domain.entity.SecondaryTypes
 import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonSecondaryTypeElementBinding
 
+interface PokemonSecondaryTypeSelected {
+    fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes)
+}
+
 class PokemonSecondaryTypesAdapter(
     private val pokemonSecondaryTypes: List<SecondaryTypes>,
-    private val onSecondaryTypeClicked: (SecondaryTypes) -> Unit
+    private val onSecondaryTypeClicked: PokemonSecondaryTypeSelected
 ) :
     RecyclerView.Adapter<PokemonSecondaryTypesAdapter.ViewHolder>() {
 
@@ -31,11 +35,11 @@ class PokemonSecondaryTypesAdapter(
 
     override fun getItemCount(): Int = pokemonSecondaryTypes.size
 
-    class ViewHolder(itemView: View, private val onSecondaryTypeClicked: (SecondaryTypes) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val onSecondaryTypeClicked: PokemonSecondaryTypeSelected) : RecyclerView.ViewHolder(itemView) {
         private val binding = PokemonSecondaryTypeElementBinding.bind(itemView)
 
         fun bind(item: SecondaryTypes) = with(itemView) {
-            setOnClickListener { onSecondaryTypeClicked(item) }
+            setOnClickListener { onSecondaryTypeClicked.onPokemonSecondaryTypeSelected(item) }
             binding.pokemonSecondaryTypeTextViewName.text = item.name
             binding.pokemonSecondaryTypeCardView.setCardBackgroundColor(ContextCompat.getColor(context, item.bgColor))
         }
