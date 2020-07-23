@@ -19,5 +19,5 @@ interface PokemonTCGApi {
     fun getPokemonSubtypes(): Call<PokemonSubtypesResponse>
 
     @GET("v1/cards")
-    fun getPokemonCardList(@QueryMap group: Map<String, String>): Call<PokemonCardListResponse>
+    fun getPokemonCardList(@QueryMap pokemonCardGroup: Map<String, String>): Call<PokemonCardListResponse>
 }

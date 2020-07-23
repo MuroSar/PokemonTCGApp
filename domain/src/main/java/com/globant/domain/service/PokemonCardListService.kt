@@ -4,5 +4,5 @@ import com.globant.domain.entity.PokemonCard
 import com.globant.domain.util.Result
 
 interface PokemonCardListService {
-    fun getPokemonCardList(group: String, groupSelected: String): Result<List<PokemonCard>>
+    fun getPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String): Result<List<PokemonCard>>
 }

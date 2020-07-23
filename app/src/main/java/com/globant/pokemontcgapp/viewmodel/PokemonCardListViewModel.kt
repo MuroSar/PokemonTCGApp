@@ -19,9 +19,9 @@ class PokemonCardListViewModel(private val getPokemonCardListUseCase: GetPokemon
     private val pokemonCardListMutableLiveData = MutableLiveData<Event<Data<List<PokemonCard>>>>()
     override fun getPokemonCardListLiveData(): LiveData<Event<Data<List<PokemonCard>>>> = pokemonCardListMutableLiveData
 
-    override fun getPokemonCardList(group: String, groupSelected: String) = viewModelScope.launch {
+    override fun getPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String) = viewModelScope.launch {
         pokemonCardListMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
-        withContext(Dispatchers.IO) { getPokemonCardListUseCase.invoke(group, groupSelected) }.let { result ->
+        withContext(Dispatchers.IO) { getPokemonCardListUseCase.invoke(pokemonCardGroup, pokemonCardGroupSelected) }.let { result ->
             when (result) {
                 is Result.Success -> {
                     pokemonCardListMutableLiveData.postValue(Event(Data(status = Status.SUCCESS, data = result.data)))

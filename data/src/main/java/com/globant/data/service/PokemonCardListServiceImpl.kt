@@ -11,10 +11,10 @@ class PokemonCardListServiceImpl : PokemonCardListService {
     private val api = ServiceGenerator()
     private val mapper = PokemonCardListMapper()
 
-    override fun getPokemonCardList(group: String, groupSelected: String): Result<List<PokemonCard>> {
+    override fun getPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String): Result<List<PokemonCard>> {
         try {
             val data: HashMap<String, String> = hashMapOf()
-            data[group] = groupSelected
+            data[pokemonCardGroup] = pokemonCardGroupSelected
 
             val callResponse = api.createService(PokemonTCGApi::class.java).getPokemonCardList(data)
             val response = callResponse.execute()

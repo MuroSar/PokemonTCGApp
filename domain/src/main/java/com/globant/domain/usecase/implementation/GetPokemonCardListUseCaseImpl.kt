@@ -6,6 +6,6 @@ import com.globant.domain.usecase.GetPokemonCardListUseCase
 import com.globant.domain.util.Result
 
 class GetPokemonCardListUseCaseImpl(private val pokemonCardListService: PokemonCardListService) : GetPokemonCardListUseCase {
-    override fun invoke(group: String, groupSelected: String): Result<List<PokemonCard>> =
-        pokemonCardListService.getPokemonCardList(group, groupSelected)
+    override fun invoke(pokemonCardGroup: String, pokemonCardGroupSelected: String): Result<List<PokemonCard>> =
+        pokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 }

@@ -25,25 +25,25 @@ class PokemonCardListActivity : AppCompatActivity() {
 
     private val pokemonCardListViewModel by viewModel<PokemonCardListViewModel>()
     private lateinit var binding: ActivityPokemonCardListBinding
-    private lateinit var group: String
-    private lateinit var groupSelected: String
+    private lateinit var pokemonCardGroup: String
+    private lateinit var pokemonCardGroupSelected: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPokemonCardListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        group = intent.getStringExtra(POKEMON_GROUP)
-        groupSelected = intent.getStringExtra(SELECTION)
+        pokemonCardGroup = intent.getStringExtra(POKEMON_GROUP)
+        pokemonCardGroupSelected = intent.getStringExtra(SELECTION)
         val groupSelectedColor = intent.getIntExtra(SELECTION_COLOR, DEFAULT_VALUE)
-        initUi(groupSelected, groupSelectedColor)
+        initUi(pokemonCardGroupSelected, groupSelectedColor)
         pokemonCardListViewModel.getPokemonCardListLiveData().observe(::getLifecycle, ::updateUI)
     }
 
     override fun onResume() {
         super.onResume()
         binding.activityPokemonCardListLoading.visibility = View.GONE
-        pokemonCardListViewModel.getPokemonCardList(group, groupSelected)
+        pokemonCardListViewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
     }
 
     private fun initUi(selection: String?, selectionColor: Int) {

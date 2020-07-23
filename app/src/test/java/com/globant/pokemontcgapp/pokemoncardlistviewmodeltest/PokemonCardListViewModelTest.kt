@@ -43,8 +43,8 @@ class PokemonCardListViewModelTest {
     private val resultIsSuccess: Result.Success<List<PokemonCard>> = mock()
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
-    private val group: String = TYPE
-    private val groupSelected: String = COLORLESS
+    private val pokemonCardGroup: String = TYPE
+    private val pokemonCardGroupSelected: String = COLORLESS
 
     @Before
     fun setUp() {
@@ -63,13 +63,13 @@ class PokemonCardListViewModelTest {
     fun `on getPokemonCardList called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        whenever(getPokemonCardListUseCase.invoke(group, groupSelected)).thenReturn(resultIsSuccess)
+        whenever(getPokemonCardListUseCase.invoke(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsSuccess)
         whenever(resultIsSuccess.data).thenReturn(pokemonCardList)
         runBlocking {
-            viewModel.getPokemonCardList(group, groupSelected).join()
+            viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
 
-        verify(mockedPokemonCardListService).getPokemonCardList(group, groupSelected)
+        verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -80,12 +80,12 @@ class PokemonCardListViewModelTest {
     fun `on getPokemonCardList called with error`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        whenever(getPokemonCardListUseCase.invoke(group, groupSelected)).thenReturn(resultIsFailure)
+        whenever(getPokemonCardListUseCase.invoke(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
         whenever(resultIsFailure.exception).thenReturn(exception)
         runBlocking {
-            viewModel.getPokemonCardList(group, groupSelected).join()
+            viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
-        verify(mockedPokemonCardListService).getPokemonCardList(group, groupSelected)
+        verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
