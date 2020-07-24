@@ -9,6 +9,6 @@ import kotlinx.coroutines.Job
 interface PokemonCardListContract {
     interface ViewModel {
         fun getPokemonCardListLiveData(): LiveData<Event<Data<List<PokemonCard>>>>
-        fun getPokemonCardList(group: String, groupSelected: String): Job
+        fun getPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String): Job
     }
 }

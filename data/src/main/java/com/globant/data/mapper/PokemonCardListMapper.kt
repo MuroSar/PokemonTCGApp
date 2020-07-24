@@ -10,8 +10,12 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
         val pokemonCardReturnList: MutableList<PokemonCard> = mutableListOf()
 
         type.map {
-            pokemonCardReturnList.add(PokemonCard(it.id, it.name, it.imageUrl))
+            pokemonCardReturnList.add(PokemonCard(it.id, it.name, it.imageUrl, it.types?.get(ZERO), it.supertype, it.subtype))
         }
         return pokemonCardReturnList
+    }
+
+    companion object {
+        private const val ZERO = 0
     }
 }
