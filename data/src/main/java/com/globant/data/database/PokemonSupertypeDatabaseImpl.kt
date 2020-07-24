@@ -13,7 +13,7 @@ class PokemonSupertypeDatabaseImpl(private val pokemonDao: PokemonDao) : Pokemon
         val pokemonSupertypes = pokemonDao.getPokemonSupertypes()
         pokemonSupertypes.let {
             if (it.isNotEmpty())
-                return Result.Success(pokemonSupertypeDatabaseMapper.transform(pokemonDao.getPokemonSupertypes()))
+                return Result.Success(pokemonSupertypeDatabaseMapper.transform(it))
         }
         return Result.Failure(Exception(SUPERTYPES_NOT_FOUND))
     }

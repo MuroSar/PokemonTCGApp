@@ -84,14 +84,16 @@ class PokemonCardListViewModelTest {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
         whenever(mockedPokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
-        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardListType(pokemonCardGroupSelected)).thenReturn(resultIsSuccess)
+        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(
+            resultIsSuccess
+        )
         whenever(resultIsSuccess.data).thenReturn(pokemonCardList)
 
         runBlocking {
             viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
-        verify(mockedPokemonCardListDatabase).getLocalPokemonCardListType(pokemonCardGroupSelected)
+        verify(mockedPokemonCardListDatabase).getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -103,14 +105,15 @@ class PokemonCardListViewModelTest {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
         whenever(mockedPokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
-        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardListType(pokemonCardGroupSelected)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected))
+            .thenReturn(resultIsFailure)
         whenever(resultIsFailure.exception).thenReturn(exception)
 
         runBlocking {
             viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
-        verify(mockedPokemonCardListDatabase).getLocalPokemonCardListType(pokemonCardGroupSelected)
+        verify(mockedPokemonCardListDatabase).getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)

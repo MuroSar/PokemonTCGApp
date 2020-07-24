@@ -13,7 +13,7 @@ class PokemonSubtypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonSu
         val pokemonSubtypes = pokemonDao.getPokemonSubtypes()
         pokemonSubtypes.let {
             if (it.isNotEmpty())
-                return Result.Success(pokemonSubtypeDatabaseMapper.transform(pokemonDao.getPokemonSubtypes()))
+                return Result.Success(pokemonSubtypeDatabaseMapper.transform(it))
         }
         return Result.Failure(Exception(SUBTYPES_NOT_FOUND))
     }

@@ -17,18 +17,7 @@ class GetPokemonCardListUseCaseImpl(
                 result
             }
             is Result.Failure -> {
-                when (pokemonCardGroup) {
-                    TYPE -> pokemonCardDatabase.getLocalPokemonCardListType(pokemonCardGroupSelected)
-                    SUPERTYPE -> pokemonCardDatabase.getLocalPokemonCardListSupertype(pokemonCardGroupSelected)
-                    SUBTYPE -> pokemonCardDatabase.getLocalPokemonCardListSubtype(pokemonCardGroupSelected)
-                    else -> Result.Failure(Exception())
-                }
+                pokemonCardDatabase.getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
             }
         }
-
-    companion object {
-        private const val TYPE = "types"
-        private const val SUPERTYPE = "supertype"
-        private const val SUBTYPE = "subtype"
-    }
 }
