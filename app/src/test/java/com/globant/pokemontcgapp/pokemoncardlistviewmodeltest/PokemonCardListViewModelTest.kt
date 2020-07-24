@@ -6,6 +6,8 @@ import com.globant.domain.entity.PokemonCard
 import com.globant.domain.service.PokemonCardListService
 import com.globant.domain.usecase.GetPokemonCardListUseCase
 import com.globant.domain.usecase.implementation.GetPokemonCardListUseCaseImpl
+import com.globant.domain.util.NumberConstants.ONE_INT
+import com.globant.domain.util.NumberConstants.ZERO_INT
 import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel
@@ -74,9 +76,9 @@ class PokemonCardListViewModelTest {
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
         verify(mockedPokemonCardListDatabase).insertLocalPokemonCardList(pokemonCardList)
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
     }
 
     @Test
@@ -95,9 +97,9 @@ class PokemonCardListViewModelTest {
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
         verify(mockedPokemonCardListDatabase).getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
     }
 
     @Test
@@ -115,14 +117,12 @@ class PokemonCardListViewModelTest {
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
         verify(mockedPokemonCardListDatabase).getLocalPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.error)
     }
 
     companion object {
-        private const val FIRST_RESPONSE = 0
-        private const val SECOND_RESPONSE = 1
         private const val TYPE = "types"
         private const val COLORLESS = "Colorless"
     }

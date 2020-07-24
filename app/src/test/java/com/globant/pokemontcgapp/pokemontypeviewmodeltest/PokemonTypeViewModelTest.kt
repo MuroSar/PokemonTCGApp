@@ -6,6 +6,8 @@ import com.globant.domain.entity.PokemonType
 import com.globant.domain.service.PokemonTypesService
 import com.globant.domain.usecase.GetPokemonTypesUseCase
 import com.globant.domain.usecase.implementation.GetPokemonTypesUseCaseImpl
+import com.globant.domain.util.NumberConstants.ONE_INT
+import com.globant.domain.util.NumberConstants.ZERO_INT
 import com.globant.domain.util.Result
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonTypeViewModel
@@ -73,9 +75,9 @@ class PokemonTypeViewModelTest {
         verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
         verify(mockedPokemonTypeDatabase).insertLocalPokemonTypes(pokemonTypesList)
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
     }
 
     @Test
@@ -92,9 +94,9 @@ class PokemonTypeViewModelTest {
         verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
         verify(mockedPokemonTypeDatabase).getLocalPokemonTypes()
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(pokemonTypesList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
     }
 
     @Test
@@ -111,13 +113,8 @@ class PokemonTypeViewModelTest {
         verify(mockedPokemonTypeService).getPokemonTypes(pokemonTypesResources)
         verify(mockedPokemonTypeDatabase).getLocalPokemonTypes()
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
-        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
-        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
-    }
-
-    companion object {
-        private const val FIRST_RESPONSE = 0
-        private const val SECOND_RESPONSE = 1
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
+        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.error)
     }
 }
