@@ -1,6 +1,7 @@
 package com.globant.pokemontcgapp.pokemoncardlistviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.globant.domain.database.PokemonCardDatabase
 import com.globant.domain.entity.PokemonCard
 import com.globant.domain.service.PokemonCardListService
 import com.globant.domain.usecase.GetPokemonCardListUseCase
@@ -38,6 +39,7 @@ class PokemonCardListViewModelTest {
 
     private lateinit var viewModel: PokemonCardListContract.ViewModel
     private lateinit var getPokemonCardListUseCase: GetPokemonCardListUseCase
+    private val mockedPokemonCardListDatabase: PokemonCardDatabase = mock()
     private val mockedPokemonCardListService: PokemonCardListService = mock()
     private val pokemonCardList: List<PokemonCard> = mock()
     private val resultIsSuccess: Result.Success<List<PokemonCard>> = mock()
@@ -49,7 +51,7 @@ class PokemonCardListViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        getPokemonCardListUseCase = GetPokemonCardListUseCaseImpl(mockedPokemonCardListService)
+        getPokemonCardListUseCase = GetPokemonCardListUseCaseImpl(mockedPokemonCardListService, mockedPokemonCardListDatabase)
         viewModel = PokemonCardListViewModel(getPokemonCardListUseCase)
     }
 
@@ -63,13 +65,14 @@ class PokemonCardListViewModelTest {
     fun `on getPokemonCardList called successfully`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        whenever(getPokemonCardListUseCase.invoke(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsSuccess)
+        whenever(mockedPokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsSuccess)
         whenever(resultIsSuccess.data).thenReturn(pokemonCardList)
         runBlocking {
             viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
 
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
+        verify(mockedPokemonCardListDatabase).insertLocalPokemonCardList(pokemonCardList)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
@@ -77,24 +80,47 @@ class PokemonCardListViewModelTest {
     }
 
     @Test
-    fun `on getPokemonCardList called with error`() {
+    fun `on getPokemonCardList called with error, but request to database is successful`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        whenever(getPokemonCardListUseCase.invoke(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
-        whenever(resultIsFailure.exception).thenReturn(exception)
+        whenever(mockedPokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardListType(pokemonCardGroupSelected)).thenReturn(resultIsSuccess)
+        whenever(resultIsSuccess.data).thenReturn(pokemonCardList)
+
         runBlocking {
             viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
         }
         verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
+        verify(mockedPokemonCardListDatabase).getLocalPokemonCardListType(pokemonCardGroupSelected)
+
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonCardList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
+    }
+
+    @Test
+    fun `on getPokemonCardList called with error, request to database with error as well`() {
+        val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
+
+        whenever(mockedPokemonCardListService.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)).thenReturn(resultIsFailure)
+        whenever(mockedPokemonCardListDatabase.getLocalPokemonCardListType(pokemonCardGroupSelected)).thenReturn(resultIsFailure)
+        whenever(resultIsFailure.exception).thenReturn(exception)
+
+        runBlocking {
+            viewModel.getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected).join()
+        }
+        verify(mockedPokemonCardListService).getPokemonCardList(pokemonCardGroup, pokemonCardGroupSelected)
+        verify(mockedPokemonCardListDatabase).getLocalPokemonCardListType(pokemonCardGroupSelected)
 
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 
     companion object {
         private const val FIRST_RESPONSE = 0
         private const val SECOND_RESPONSE = 1
-        private const val TYPE = "type"
+        private const val TYPE = "types"
         private const val COLORLESS = "Colorless"
     }
 }
