@@ -8,7 +8,8 @@ import kotlinx.coroutines.Job
 
 interface PokemonSubtypeContract {
     interface ViewModel {
-        fun getPokemonSubtypesLiveData(): LiveData<Event<Data<List<SecondaryTypes>>>>
+        fun getPokemonSubtypesLiveData(): LiveData<Event<Data>>
         fun getPokemonSubtypes(pokemonSubtypesResources: MutableMap<String, Int>): Job
+        fun onPokemonSubtypeSelected(subtypeSelected: SecondaryTypes)
     }
 }

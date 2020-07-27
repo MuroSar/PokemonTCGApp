@@ -8,7 +8,8 @@ import kotlinx.coroutines.Job
 
 interface PokemonSupertypeContract {
     interface ViewModel {
-        fun getPokemonSupertypesLiveData(): LiveData<Event<Data<List<SecondaryTypes>>>>
+        fun getPokemonSupertypesLiveData(): LiveData<Event<Data>>
         fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>): Job
+        fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes)
     }
 }

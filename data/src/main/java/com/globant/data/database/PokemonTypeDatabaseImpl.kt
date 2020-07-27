@@ -13,7 +13,7 @@ class PokemonTypeDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonTypeD
         val pokemonTypes = pokemonDao.getPokemonTypes()
         pokemonTypes.let {
             if (it.isNotEmpty())
-                return Result.Success(pokemonTypeDatabaseMapper.transform(pokemonDao.getPokemonTypes()))
+                return Result.Success(pokemonTypeDatabaseMapper.transform(it))
         }
         return Result.Failure(Exception(TYPES_NOT_FOUND))
     }
