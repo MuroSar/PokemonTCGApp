@@ -6,9 +6,9 @@ import com.globant.domain.entity.SecondaryTypes
 import com.globant.domain.service.PokemonSupertypesService
 import com.globant.domain.usecase.GetPokemonSupertypesUseCase
 import com.globant.domain.usecase.implementation.GetPokemonSupertypesUseCaseImpl
-import com.globant.domain.util.NumberConstants.ONE_INT
-import com.globant.domain.util.NumberConstants.ZERO_INT
+import com.globant.domain.util.FIRST_RESPONSE
 import com.globant.domain.util.Result
+import com.globant.domain.util.SECOND_RESPONSE
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel.Status
@@ -75,9 +75,9 @@ class PokemonSupertypeViewModelTest {
         verify(mockedPokemonSupertypeService).getPokemonSupertypes(pokemonSupertypesResources)
         verify(mockedPokemonSupertypeDatabase).insertLocalPokemonSupertypes(pokemonSupertypesList)
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
-        assertEquals(pokemonSupertypesList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonSupertypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
     }
 
     @Test
@@ -94,9 +94,9 @@ class PokemonSupertypeViewModelTest {
         verify(mockedPokemonSupertypeService).getPokemonSupertypes(pokemonSupertypesResources)
         verify(mockedPokemonSupertypeDatabase).getLocalPokemonSupertypes()
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
-        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
-        assertEquals(pokemonSupertypesList, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.data)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(pokemonSupertypesList, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.data)
     }
 
     @Test
@@ -113,8 +113,8 @@ class PokemonSupertypeViewModelTest {
         verify(mockedPokemonSupertypeService).getPokemonSupertypes(pokemonSupertypesResources)
         verify(mockedPokemonSupertypeDatabase).getLocalPokemonSupertypes()
 
-        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[ZERO_INT]?.peekContent()?.status)
-        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.status)
-        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[ONE_INT]?.peekContent()?.error)
+        assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
+        assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 }

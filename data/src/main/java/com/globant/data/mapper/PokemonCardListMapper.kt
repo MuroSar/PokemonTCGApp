@@ -2,7 +2,6 @@ package com.globant.data.mapper
 
 import com.globant.domain.entity.PokemonCard
 import com.globant.domain.entity.PokemonCardResponse
-import com.globant.domain.util.NumberConstants.ZERO_INT
 
 class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<PokemonCard>, MutableMap<String, Int>?> {
 
@@ -11,8 +10,12 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
         val pokemonCardReturnList: MutableList<PokemonCard> = mutableListOf()
 
         type.map {
-            pokemonCardReturnList.add(PokemonCard(it.id, it.name, it.imageUrl, it.types?.get(ZERO_INT), it.supertype, it.subtype))
+            pokemonCardReturnList.add(PokemonCard(it.id, it.name, it.imageUrl, it.types?.get(TYPE_VALUE), it.supertype, it.subtype))
         }
         return pokemonCardReturnList
+    }
+
+    companion object {
+        private const val TYPE_VALUE = 0
     }
 }
