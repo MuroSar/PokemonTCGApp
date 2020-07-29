@@ -27,6 +27,7 @@
         <item name="cardMaxElevation">@dimen/pokemon_card_view_max_card_elevation</item>
         <item name="cardCornerRadius">@dimen/pokemon_card_view_corner_radius</item>
         <item name="android:layout_margin">@dimen/pokemon_card_layout_margin</item>
+        <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
     <style name="BaseTextViewPokemonElement">
@@ -48,6 +49,10 @@
 
     <style name="TextViewCardListTitle" parent="BaseTextViewPokemonElement">
         <item name="android:textSize">@dimen/activity_pokemon_card_list_text_view_text_size</item>
+    </style>
+
+    <style name="TextViewCardListCardName" parent="BaseTextViewPokemonElement">
+        <item name="android:textSize">@dimen/activity_pokemon_card_list_element_card_name_text_view_text_size</item>
     </style>
 
 </resources>
