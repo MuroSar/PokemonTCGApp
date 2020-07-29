@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel.contract
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import com.globant.domain.entity.PokemonType
 import com.globant.pokemontcgapp.util.Event
@@ -10,6 +11,6 @@ interface PokemonTypeContract {
     interface ViewModel {
         fun getPokemonTypesLiveData(): LiveData<Event<Data>>
         fun getPokemonTypes(pokemonTypesResources: MutableMap<String, Pair<Int, Int>>): Job
-        fun onPokemonTypeSelected(typeSelected: PokemonType)
+        fun onPokemonTypeSelected(typeSelected: PokemonType, sharedView: View)
     }
 }

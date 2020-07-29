@@ -21,4 +21,5 @@
     <dimen name="activity_pokemon_card_list_text_view_text_size">36sp</dimen>
     <dimen name="activity_pokemon_card_list_appbar_margin_top">10dp</dimen>
     <dimen name="activity_pokemon_card_list_title_icon_height">100dp</dimen>
+    <dimen name="activity_pokemon_card_list_element_card_name_text_view_text_size">36sp</dimen>
 </resources>

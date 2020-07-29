@@ -4,8 +4,7 @@
     android:id="@+id/pokemon_type_card_view"
     style="@style/PokemonBaseCardView"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,10 +13,9 @@
 
         <ImageView
             android:id="@+id/pokemon_card_list_image_view_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:contentDescription="@string/pokemon_type_image"
-            android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@id/pokemon_card_list_view_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,9 +23,9 @@
 
         <TextView
             android:id="@+id/pokemon_card_list_view_name"
-            style="@style/TextViewPokemonTypeElement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewCardListCardName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textColor="@color/loading_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,10 +1,12 @@
 package com.globant.pokemontcgapp.fragment
 
+import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.SecondaryTypes
@@ -47,7 +49,7 @@ class PokemonSubtypeFragment : Fragment(), PokemonSecondaryTypeSelected {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE
             Status.SUCCESS -> showPokemonSubtypes(pokemonSubtypesData.data)
             Status.ERROR -> showPokemonSubtypesError(pokemonSubtypesData.error?.message)
-            Status.ON_SUBTYPE_CLICKED -> pokemonSubtypesData.pokemonSubtype?.let { onSubtypeClicked(it) }
+            Status.ON_SUBTYPE_CLICKED -> pokemonSubtypesData.let { onSubtypeClicked(it.pokemonSubtype, it.sharedView) }
         }
     }
 
@@ -75,17 +77,21 @@ class PokemonSubtypeFragment : Fragment(), PokemonSecondaryTypeSelected {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes) {
-        pokemonSubtypeViewModel.onPokemonSubtypeSelected(secondaryTypeSelected)
+    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes, sharedView: View) {
+        pokemonSubtypeViewModel.onPokemonSubtypeSelected(secondaryTypeSelected, sharedView)
     }
 
-    private fun onSubtypeClicked(subtypeSelected: SecondaryTypes) {
-        startActivity(
-            PokemonCardListActivity.getIntent(
-                requireContext(),
-                Triple(SUBTYPE, subtypeSelected.name, subtypeSelected.bgColor)
+    private fun onSubtypeClicked(subtypeSelected: SecondaryTypes?, sharedView: View?) {
+        subtypeSelected?.let {
+            startActivity(
+                PokemonCardListActivity.getIntent(
+                    requireContext(),
+                    Triple(SUBTYPE, subtypeSelected.name, subtypeSelected.bgColor)
+                ),
+                ActivityOptions.makeSceneTransitionAnimation(activity, sharedView, sharedView?.let { ViewCompat.getTransitionName(it) })
+                    .toBundle()
             )
-        )
+        }
     }
 
     companion object {

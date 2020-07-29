@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,11 +35,12 @@ class PokemonSubtypeViewModel(private val getPokemonSubtypesUseCase: GetPokemonS
         }
     }
 
-    override fun onPokemonSubtypeSelected(subtypeSelected: SecondaryTypes) {
+    override fun onPokemonSubtypeSelected(subtypeSelected: SecondaryTypes, sharedView: View) {
         pokemonSubtypesMutableLiveData.value = Event(
             Data(
                 status = Status.ON_SUBTYPE_CLICKED,
-                pokemonSubtype = subtypeSelected
+                pokemonSubtype = subtypeSelected,
+                sharedView = sharedView
             )
         )
     }
@@ -46,6 +48,7 @@ class PokemonSubtypeViewModel(private val getPokemonSubtypesUseCase: GetPokemonS
     data class Data(
         var status: Status,
         var data: List<SecondaryTypes> = emptyList(),
+        var sharedView: View? = null,
         var error: Exception? = null,
         var pokemonSubtype: SecondaryTypes? = null
     )

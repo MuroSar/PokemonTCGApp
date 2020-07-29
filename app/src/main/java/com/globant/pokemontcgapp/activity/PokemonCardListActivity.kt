@@ -47,8 +47,14 @@ class PokemonCardListActivity : AppCompatActivity() {
     }
 
     private fun initUi(selection: String?, selectionColor: Int) {
-        binding.activityPokemonCardListAppBarTitle.text = selection
-        binding.activityPokemonCardListAppbarLayout.setBackgroundColor(ContextCompat.getColor(this, selectionColor))
+        val pokemonCardListCardView = binding.activityPokemonCardListCardView
+        supportPostponeEnterTransition()
+
+        binding.activityPokemonCardListCardViewTitle.text = selection
+        pokemonCardListCardView.setBackgroundColor(ContextCompat.getColor(this, selectionColor))
+        pokemonCardListCardView.transitionName = pokemonCardGroupSelected
+
+        supportStartPostponedEnterTransition()
     }
 
     private fun updateUI(data: Event<Data<List<PokemonCard>>>) {

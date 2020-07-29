@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,13 +33,15 @@ class PokemonTypeViewModel(private val getPokemonTypesUseCase: GetPokemonTypesUs
         }
     }
 
-    override fun onPokemonTypeSelected(typeSelected: PokemonType) {
-        pokemonTypesMutableLiveData.value = Event(Data(status = Status.ON_TYPE_CLICKED, pokemonType = typeSelected))
+    override fun onPokemonTypeSelected(typeSelected: PokemonType, sharedView: View) {
+        pokemonTypesMutableLiveData.value =
+            Event(Data(status = Status.ON_TYPE_CLICKED, pokemonType = typeSelected, sharedView = sharedView))
     }
 
     data class Data(
         var status: Status,
         var data: List<PokemonType> = emptyList(),
+        var sharedView: View? = null,
         var error: Exception? = null,
         var pokemonType: PokemonType? = null
     )

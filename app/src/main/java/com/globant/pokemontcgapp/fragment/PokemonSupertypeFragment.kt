@@ -1,10 +1,12 @@
 package com.globant.pokemontcgapp.fragment
 
+import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.SecondaryTypes
@@ -48,7 +50,7 @@ class PokemonSupertypeFragment : Fragment(), PokemonSecondaryTypeSelected {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE
             Status.SUCCESS -> showPokemonSupertypes(pokemonSupertypesData.data)
             Status.ERROR -> showPokemonSupertypesError(pokemonSupertypesData.error?.message)
-            Status.ON_SUPERTYPE_CLICKED -> pokemonSupertypesData.pokemonSupertype?.let { onSupertypeClicked(it) }
+            Status.ON_SUPERTYPE_CLICKED -> pokemonSupertypesData.let { onSupertypeClicked(it.pokemonSupertype, it.sharedView) }
         }
     }
 
@@ -76,17 +78,21 @@ class PokemonSupertypeFragment : Fragment(), PokemonSecondaryTypeSelected {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes) {
-        pokemonSupertypeViewModel.onPokemonSupertypeSelected(secondaryTypeSelected)
+    override fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes, sharedView: View) {
+        pokemonSupertypeViewModel.onPokemonSupertypeSelected(secondaryTypeSelected, sharedView)
     }
 
-    private fun onSupertypeClicked(supertypeSelected: SecondaryTypes) {
-        startActivity(
-            PokemonCardListActivity.getIntent(
-                requireContext(),
-                Triple(SUPERTYPE, supertypeSelected.name, supertypeSelected.bgColor)
+    private fun onSupertypeClicked(supertypeSelected: SecondaryTypes?, sharedView: View?) {
+        supertypeSelected?.let {
+            startActivity(
+                PokemonCardListActivity.getIntent(
+                    requireContext(),
+                    Triple(SUPERTYPE, supertypeSelected.name, supertypeSelected.bgColor)
+                ),
+                ActivityOptions.makeSceneTransitionAnimation(activity, sharedView, sharedView?.let { ViewCompat.getTransitionName(it) })
+                    .toBundle()
             )
-        )
+        }
     }
 
     companion object {
