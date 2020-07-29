@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel.contract
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import com.globant.domain.entity.SecondaryTypes
 import com.globant.pokemontcgapp.util.Event
@@ -10,6 +11,6 @@ interface PokemonSupertypeContract {
     interface ViewModel {
         fun getPokemonSupertypesLiveData(): LiveData<Event<Data>>
         fun getPokemonSupertypes(pokemonSupertypesResources: MutableMap<String, Int>): Job
-        fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes)
+        fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes, sharedView: View)
     }
 }

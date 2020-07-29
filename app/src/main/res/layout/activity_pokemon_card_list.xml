@@ -11,11 +11,12 @@
         android:layout_height="@dimen/activity_pokemon_card_list_title_icon_height"
         android:contentDescription="@string/app_name"
         android:src="@drawable/app_logo"
-        app:layout_constraintBottom_toTopOf="@+id/activity_pokemon_card_list_appbar_layout"
+        app:layout_constraintBottom_toTopOf="@+id/activity_pokemon_card_list_card_view"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/activity_pokemon_card_list_appbar_layout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/activity_pokemon_card_list_card_view"
+        style="@style/PokemonBaseCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_pokemon_card_list_appbar_margin_top"
@@ -23,19 +24,19 @@
         app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_list_app_title_icon">
 
         <TextView
-            android:id="@+id/activity_pokemon_card_list_app_bar_title"
+            android:id="@+id/activity_pokemon_card_list_card_view_title"
             style="@style/TextViewCardListTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/activity_pokemon_card_list_barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="activity_pokemon_card_list_appbar_layout" />
+        app:constraint_referenced_ids="activity_pokemon_card_list_card_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_pokemon_card_list_recycler_view"
@@ -49,12 +50,16 @@
     <RelativeLayout
         android:id="@+id/activity_pokemon_card_list_loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/loading_bg"
         android:elevation="@dimen/pokemon_loading_linear_elevation"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_list_barrier">
 
         <ProgressBar
             android:id="@+id/activity_pokemon_card_list_progress_bar"

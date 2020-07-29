@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,11 +35,12 @@ class PokemonSupertypeViewModel(private val getPokemonSupertypesUseCase: GetPoke
         }
     }
 
-    override fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes) {
+    override fun onPokemonSupertypeSelected(supertypeSelected: SecondaryTypes, sharedView: View) {
         pokemonSupertypesMutableLiveData.value = Event(
             Data(
                 status = Status.ON_SUPERTYPE_CLICKED,
-                pokemonSupertype = supertypeSelected
+                pokemonSupertype = supertypeSelected,
+                sharedView = sharedView
             )
         )
     }
@@ -46,6 +48,7 @@ class PokemonSupertypeViewModel(private val getPokemonSupertypesUseCase: GetPoke
     data class Data(
         var status: Status,
         var data: List<SecondaryTypes> = emptyList(),
+        var sharedView: View? = null,
         var error: Exception? = null,
         var pokemonSupertype: SecondaryTypes? = null
     )

@@ -12,7 +12,7 @@ import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonTypeElementBinding
 
 interface PokemonTypeSelected {
-    fun onPokemonTypeSelected(typeSelected: PokemonType)
+    fun onPokemonTypeSelected(typeSelected: PokemonType, sharedView: View)
 }
 
 class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>, private val onPokemonTypeClicked: PokemonTypeSelected) :
@@ -39,9 +39,11 @@ class PokemonTypesAdapter(private val pokemonTypes: List<PokemonType>, private v
         private val binding = PokemonTypeElementBinding.bind(itemView)
 
         fun bind(item: PokemonType) = with(itemView) {
-            setOnClickListener { onPokemonTypeClicked.onPokemonTypeSelected(item) }
+            val pokemonTypeCardView = binding.pokemonTypeCardView
+            pokemonTypeCardView.transitionName = item.name
+            setOnClickListener { onPokemonTypeClicked.onPokemonTypeSelected(item, pokemonTypeCardView) }
             binding.pokemonTypeTextViewName.text = item.name
-            binding.pokemonTypeCardView.setCardBackgroundColor(ContextCompat.getColor(context, item.bgColor))
+            pokemonTypeCardView.setCardBackgroundColor(ContextCompat.getColor(context, item.bgColor))
             Glide.with(context)
                 .load((item.image))
                 .transform(CircleCrop())

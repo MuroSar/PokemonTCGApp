@@ -1,10 +1,12 @@
 package com.globant.pokemontcgapp.fragment
 
+import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonType
@@ -48,7 +50,7 @@ class PokemonTypeFragment : Fragment(), PokemonTypeSelected {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE
             Status.SUCCESS -> showPokemonTypes(pokemonTypesData.data)
             Status.ERROR -> showPokemonTypesError(pokemonTypesData.error?.message)
-            Status.ON_TYPE_CLICKED -> pokemonTypesData.pokemonType?.let { onTypeClicked(it) }
+            Status.ON_TYPE_CLICKED -> pokemonTypesData.let { onTypeClicked(it.pokemonType, it.sharedView) }
         }
     }
 
@@ -70,17 +72,21 @@ class PokemonTypeFragment : Fragment(), PokemonTypeSelected {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onPokemonTypeSelected(typeSelected: PokemonType) {
-        pokemonTypeViewModel.onPokemonTypeSelected(typeSelected)
+    override fun onPokemonTypeSelected(typeSelected: PokemonType, sharedView: View) {
+        pokemonTypeViewModel.onPokemonTypeSelected(typeSelected, sharedView)
     }
 
-    private fun onTypeClicked(typeSelected: PokemonType) {
-        startActivity(
-            PokemonCardListActivity.getIntent(
-                requireContext(),
-                Triple(TYPE, typeSelected.name, typeSelected.bgColor)
+    private fun onTypeClicked(typeSelected: PokemonType?, sharedView: View?) {
+        typeSelected?.let { type ->
+            startActivity(
+                PokemonCardListActivity.getIntent(
+                    requireContext(),
+                    Triple(TYPE, type.name, type.bgColor)
+                ),
+                ActivityOptions.makeSceneTransitionAnimation(activity, sharedView, sharedView?.let { ViewCompat.getTransitionName(it) })
+                    .toBundle()
             )
-        )
+        }
     }
 
     companion object {

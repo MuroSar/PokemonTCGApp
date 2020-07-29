@@ -10,7 +10,7 @@ import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonSecondaryTypeElementBinding
 
 interface PokemonSecondaryTypeSelected {
-    fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes)
+    fun onPokemonSecondaryTypeSelected(secondaryTypeSelected: SecondaryTypes, sharedView: View)
 }
 
 class PokemonSecondaryTypesAdapter(
@@ -39,7 +39,9 @@ class PokemonSecondaryTypesAdapter(
         private val binding = PokemonSecondaryTypeElementBinding.bind(itemView)
 
         fun bind(item: SecondaryTypes) = with(itemView) {
-            setOnClickListener { onSecondaryTypeClicked.onPokemonSecondaryTypeSelected(item) }
+            val pokemonSecondaryTypeCardView = binding.pokemonSecondaryTypeCardView
+            pokemonSecondaryTypeCardView.transitionName = item.name
+            setOnClickListener { onSecondaryTypeClicked.onPokemonSecondaryTypeSelected(item, pokemonSecondaryTypeCardView) }
             binding.pokemonSecondaryTypeTextViewName.text = item.name
             binding.pokemonSecondaryTypeCardView.setCardBackgroundColor(ContextCompat.getColor(context, item.bgColor))
         }
