@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.pokemonsupertypeviewmodeltest
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonSupertypeDatabase
 import com.globant.domain.entity.SecondaryTypes
@@ -51,6 +52,7 @@ class PokemonSupertypeViewModelTest {
     private val resultIsFailure: Result.Failure = mock()
     private val exception: Exception = mock()
     private val supertypeSelected: SecondaryTypes = SecondaryTypes(Constant.TRAINER, Color.pokemon_supertype_trainer)
+    private val sharedView: View = mock()
 
     @Before
     fun setUp() {
@@ -125,7 +127,7 @@ class PokemonSupertypeViewModelTest {
     fun `on onPokemonSupertypeSelected called`() {
         val liveDataUnderTest = viewModel.getPokemonSupertypesLiveData().testObserver()
 
-        viewModel.onPokemonSupertypeSelected(supertypeSelected)
+        sharedView?.let { viewModel.onPokemonSupertypeSelected(supertypeSelected, it) }
 
         assertEquals(Status.ON_SUPERTYPE_CLICKED, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(supertypeSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonSupertype)

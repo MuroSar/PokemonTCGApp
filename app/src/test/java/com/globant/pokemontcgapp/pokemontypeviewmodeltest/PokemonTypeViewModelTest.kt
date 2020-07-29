@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.pokemontypeviewmodeltest
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonTypeDatabase
 import com.globant.domain.entity.PokemonType
@@ -56,6 +57,7 @@ class PokemonTypeViewModelTest {
         Drawable.pokemon_colorless_type,
         Color.pokemon_type_colorless
     )
+    private val sharedView: View = mock()
 
     @Before
     fun setUp() {
@@ -130,9 +132,12 @@ class PokemonTypeViewModelTest {
     fun `on onPokemonTypeSelected called`() {
         val liveDataUnderTest = viewModel.getPokemonTypesLiveData().testObserver()
 
-        viewModel.onPokemonTypeSelected(typeSelected)
+        viewModel.onPokemonTypeSelected(typeSelected, sharedView)
 
-        assertEquals(Status.ON_TYPE_CLICKED, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
+        assertEquals(
+            Status.ON_TYPE_CLICKED,
+            liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status
+        )
         assertEquals(typeSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonType)
     }
 }
