@@ -9,6 +9,7 @@ import com.globant.domain.usecase.implementation.GetPokemonCardListUseCaseImpl
 import com.globant.domain.util.FIRST_RESPONSE
 import com.globant.domain.util.Result
 import com.globant.domain.util.SECOND_RESPONSE
+import com.globant.pokemontcgapp.MockedPokemonCard
 import com.globant.pokemontcgapp.testObserver
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel.Status
@@ -49,6 +50,7 @@ class PokemonCardListViewModelTest {
     private val exception: Exception = mock()
     private val pokemonCardGroup: String = TYPE
     private val pokemonCardGroupSelected: String = COLORLESS
+    private val pokemonCardSelected: PokemonCard = MockedPokemonCard().pokemonCardSelected
 
     @Before
     fun setUp() {
@@ -120,6 +122,19 @@ class PokemonCardListViewModelTest {
         assertEquals(Status.LOADING, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(Status.ERROR, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.status)
         assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
+    }
+
+    @Test
+    fun `on onPokemonCardSelected called`() {
+        val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
+
+        viewModel.onPokemonCardSelected(pokemonCardSelected)
+
+        assertEquals(
+            Status.ON_CARD_CLICKED,
+            liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status
+        )
+        assertEquals(pokemonCardSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonCard)
     }
 
     companion object {
