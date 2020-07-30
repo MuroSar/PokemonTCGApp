@@ -1,10 +1,9 @@
 package com.globant.pokemontcgapp.pokemoncarddetailviewmodeltest
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.globant.domain.entity.PokemonCard
 import com.globant.domain.util.FIRST_RESPONSE
-import com.globant.pokemontcgapp.MockedPokemonCard
 import com.globant.pokemontcgapp.testObserver
+import com.globant.pokemontcgapp.util.Constant
 import com.globant.pokemontcgapp.viewmodel.PokemonCardDetailViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardDetailViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonCardDetailContract
@@ -32,7 +31,6 @@ class PokemonCardDetailViewModelTest {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PokemonCardDetailContract.ViewModel
-    private val pokemonCard: PokemonCard = MockedPokemonCard().pokemonCardSelected
 
     @Before
     fun setUp() {
@@ -56,7 +54,7 @@ class PokemonCardDetailViewModelTest {
 
         assertEquals(Status.SUCCESS, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.status)
         assertEquals(
-            pokemonCard.name,
+            Constant.pokemonCard.name,
             liveDataUnderTest.observedValues[FIRST_RESPONSE]?.data?.name
         )
     }

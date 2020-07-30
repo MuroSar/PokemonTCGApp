@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globant.domain.entity.PokemonCard
-import com.globant.pokemontcgapp.MockedPokemonCard
+import com.globant.pokemontcgapp.util.Constant
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonCardDetailContract
 import kotlinx.coroutines.launch
 
@@ -17,12 +17,16 @@ class PokemonCardDetailViewModel :
 
     override fun getPokemonCard() = viewModelScope.launch {
         // TODO: Recover the card information from the API using a use case
-        pokemonCardMutableLiveData.value = Data(Status.SUCCESS, MockedPokemonCard().pokemonCardSelected)
+        pokemonCardMutableLiveData.value = Data(
+            Status.SUCCESS,
+            Constant.pokemonCard
+        )
     }
 
     data class Data(var status: Status, val data: PokemonCard)
 
     enum class Status {
+        LOADING,
         SUCCESS
     }
 }

@@ -38,6 +38,7 @@ class PokemonCardDetailActivity : AppCompatActivity() {
 
     private fun updateUI(pokemonCardDetailData: Data) {
         when (pokemonCardDetailData.status) {
+            Status.LOADING -> binding.activityPokemonCardDetailLoader.visibility = View.VISIBLE
             Status.SUCCESS -> showPokemonCardDetails(pokemonCardDetailData.data)
         }
     }

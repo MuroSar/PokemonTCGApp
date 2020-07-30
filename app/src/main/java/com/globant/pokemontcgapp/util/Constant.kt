@@ -1,5 +1,8 @@
 package com.globant.pokemontcgapp.util
 
+import com.globant.domain.entity.PokemonCard
+import com.globant.domain.entity.PokemonCardDetails
+
 object Constant {
     const val COLORLESS = "Colorless"
     const val WATER = "Water"
@@ -40,4 +43,24 @@ object Constant {
     const val SELECTION = "selection"
     const val SELECTION_COLOR = "selectionColor"
     const val ID = "id"
+
+    val pokemonCard: PokemonCard = PokemonCard(
+        "xy7-4",
+        "Bellossom",
+        "https://images.pokemontcg.io/xy7/4.png",
+        "Grass",
+        "Pokémon",
+        "Stage 2",
+        PokemonCardDetails(
+            "182",
+            "Gloom",
+            "120",
+            "4",
+            "Mizue",
+            "Uncommon",
+            "XY",
+            "Ancient Origins",
+            "xy7"
+        )
+    )
 }
