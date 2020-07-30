@@ -15,6 +15,7 @@ import com.globant.pokemontcgapp.util.Constant.WATER
 
 typealias Drawable = R.drawable
 typealias Color = R.color
+typealias StringResource = R.string
 
 val pokemonTypesResources = mutableMapOf(
     Pair(COLORLESS, Pair(Drawable.pokemon_colorless_type, Color.pokemon_type_colorless)),

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <ImageView
+        android:id="@+id/activity_pokemon_card_detail_app_title_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_pokemon_card_list_title_icon_height"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toTopOf="@id/activity_pokemon_card_detail_barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/activity_pokemon_card_detail_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="activity_pokemon_card_detail_app_title_icon" />
+
+
+    <ImageView
+        android:id="@+id/activity_pokemon_card_detail_image"
+        android:layout_width="@dimen/activity_pokemon_card_detail_image_view_width"
+        android:layout_height="@dimen/activity_pokemon_card_detail_image_view_height"
+        android:layout_marginTop="@dimen/activity_pokemon_card_detail_image_view_margin_top"
+        android:contentDescription="@string/pokemon_card_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_barrier"
+        tools:src="@drawable/pokemon_cardback" />
+
+    <ScrollView
+        android:id="@+id/activity_pokemon_card_detail_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/activity_pokemon_card_detail_scroll_view_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_pokemon_card_detail_scroll_view_margin_top"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_image">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_name"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_national_pokedex_number"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_name" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_type"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_national_pokedex_number" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_supertype"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_type" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_subtype"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_supertype" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_evolves_from"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_subtype" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_hp"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_evolves_from" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_number"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_hp" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_artist"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_number" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_rarity"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_artist" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_series"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_rarity" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_set"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_series" />
+
+            <TextView
+                android:id="@+id/activity_pokemon_card_detail_set_code"
+                style="@style/TextViewCardDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_set" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/activity_pokemon_card_detail_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/loading_bg"
+        android:elevation="@dimen/pokemon_loading_linear_elevation"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_pokemon_card_detail_image">
+
+        <ProgressBar
+            android:id="@+id/activity_pokemon_card_detail_progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

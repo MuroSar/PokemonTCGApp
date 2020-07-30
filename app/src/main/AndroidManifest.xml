@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".activity.MainPokemonActivity" />
         <activity android:name=".activity.PokemonCardListActivity" />
+        <activity android:name=".activity.PokemonCardDetailActivity" />
     </application>
 
 </manifest>

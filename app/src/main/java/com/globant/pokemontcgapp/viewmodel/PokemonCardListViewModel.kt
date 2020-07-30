@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +17,8 @@ import kotlinx.coroutines.withContext
 class PokemonCardListViewModel(private val getPokemonCardListUseCase: GetPokemonCardListUseCase) :
     ViewModel(), PokemonCardListContract.ViewModel {
 
-    private val pokemonCardListMutableLiveData = MutableLiveData<Event<Data<List<PokemonCard>>>>()
-    override fun getPokemonCardListLiveData(): LiveData<Event<Data<List<PokemonCard>>>> = pokemonCardListMutableLiveData
+    private val pokemonCardListMutableLiveData = MutableLiveData<Event<Data>>()
+    override fun getPokemonCardListLiveData(): LiveData<Event<Data>> = pokemonCardListMutableLiveData
 
     override fun getPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String) = viewModelScope.launch {
         pokemonCardListMutableLiveData.postValue(Event(Data(status = Status.LOADING)))
@@ -33,11 +34,28 @@ class PokemonCardListViewModel(private val getPokemonCardListUseCase: GetPokemon
         }
     }
 
-    data class Data<RequestData>(var status: Status, var data: RequestData? = null, var error: Exception? = null)
+    override fun onPokemonCardSelected(cardSelected: PokemonCard, sharedView: View) {
+        pokemonCardListMutableLiveData.value = Event(
+            Data(
+                status = Status.ON_CARD_CLICKED,
+                pokemonCard = cardSelected,
+                sharedView = sharedView
+            )
+        )
+    }
+
+    data class Data(
+        var status: Status,
+        var data: List<PokemonCard> = emptyList(),
+        var sharedView: View? = null,
+        var error: Exception? = null,
+        var pokemonCard: PokemonCard? = null
+    )
 
     enum class Status {
         LOADING,
         SUCCESS,
-        ERROR
+        ERROR,
+        ON_CARD_CLICKED
     }
 }
