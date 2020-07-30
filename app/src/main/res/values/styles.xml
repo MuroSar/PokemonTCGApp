@@ -55,4 +55,10 @@
         <item name="android:textSize">@dimen/activity_pokemon_card_list_element_card_name_text_view_text_size</item>
     </style>
 
+    <style name="TextViewCardDetail" parent="BaseTextViewPokemonElement">
+        <item name="android:textSize">@dimen/activity_pokemon_card_detail_text_view_text_size</item>
+        <item name="android:background">@color/activity_pokemon_card_detail_text_view_background_color</item>
+        <item name="android:layout_marginTop">@dimen/activity_pokemon_card_detail_text_view_margin_top</item>
+    </style>
+
 </resources>

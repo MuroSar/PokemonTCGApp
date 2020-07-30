@@ -18,6 +18,7 @@ import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.getColumnsByOrientation
 import com.globant.pokemontcgapp.util.pokemonSubtypesResources
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel
+import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,7 +44,7 @@ class PokemonSubtypeFragment : Fragment(), PokemonSecondaryTypeSelected {
         pokemonSubtypeViewModel.getPokemonSubtypes(pokemonSubtypesResources)
     }
 
-    private fun updateUI(data: Event<PokemonSubtypeViewModel.Data>) {
+    private fun updateUI(data: Event<Data>) {
         val pokemonSubtypesData = data.getContentIfNotHandled()
         when (pokemonSubtypesData?.status) {
             Status.LOADING -> binding.pokemonAlltypesLoading.visibility = View.VISIBLE

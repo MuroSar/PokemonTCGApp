@@ -10,7 +10,14 @@ import com.globant.pokemontcgapp.R
 import com.globant.pokemontcgapp.databinding.PokemonCardListElementBinding
 import com.globant.pokemontcgapp.util.Drawable
 
-class PokemonCardListAdapter(private val pokemonCardList: List<PokemonCard>) :
+interface PokemonCardSelected {
+    fun onPokemonCardSelected(pokemonCardSelected: PokemonCard)
+}
+
+class PokemonCardListAdapter(
+    private val pokemonCardList: List<PokemonCard>,
+    private val onPokemonCardClicked: PokemonCardSelected
+) :
     RecyclerView.Adapter<PokemonCardListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -19,7 +26,8 @@ class PokemonCardListAdapter(private val pokemonCardList: List<PokemonCard>) :
                 R.layout.pokemon_card_list_element,
                 parent,
                 false
-            )
+            ),
+            onPokemonCardClicked
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -28,11 +36,12 @@ class PokemonCardListAdapter(private val pokemonCardList: List<PokemonCard>) :
 
     override fun getItemCount(): Int = pokemonCardList.size
 
-    class ViewHolder(itemView: View) :
+    class ViewHolder(itemView: View, private val onPokemonCardClicked: PokemonCardSelected) :
         RecyclerView.ViewHolder(itemView) {
         private val binding = PokemonCardListElementBinding.bind(itemView)
 
         fun bind(item: PokemonCard) = with(itemView) {
+            setOnClickListener { onPokemonCardClicked.onPokemonCardSelected(item) }
             binding.pokemonCardListViewName.text = item.name
             Glide.with(context)
                 .load((item.image))

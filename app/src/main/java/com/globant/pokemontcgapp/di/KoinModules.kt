@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.di
 
+import com.globant.pokemontcgapp.viewmodel.PokemonCardDetailViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonSubtypeViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonSupertypeViewModel
@@ -14,4 +15,5 @@ val viewModelModule = module {
     viewModel { PokemonSupertypeViewModel(get()) }
     viewModel { PokemonSubtypeViewModel(get()) }
     viewModel { PokemonCardListViewModel(get()) }
+    viewModel { PokemonCardDetailViewModel() }
 }
