@@ -98,7 +98,7 @@ class PokemonCardDetailActivity : AppCompatActivity() {
                 activityPokemonCardDetailNumber.text =
                     getString(StringResource.activity_pokemon_card_detail_number_text, card.details?.number)
 
-                if (card.details?.artist == EMPTY_STRING) {
+                if (card.details?.artist.isNullOrEmpty()) {
                     activityPokemonCardDetailArtist.text =
                         getString(StringResource.activity_pokemon_card_detail_artist_text, UNIDENTIFIED)
                 } else {
@@ -106,7 +106,7 @@ class PokemonCardDetailActivity : AppCompatActivity() {
                         getString(StringResource.activity_pokemon_card_detail_artist_text, card.details?.artist)
                 }
 
-                if (card.details?.rarity == EMPTY_STRING) {
+                if (card.details?.rarity.isNullOrEmpty()) {
                     activityPokemonCardDetailRarity.text =
                         getString(StringResource.activity_pokemon_card_detail_rarity_text, UNIDENTIFIED)
                 } else {
@@ -131,7 +131,6 @@ class PokemonCardDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EMPTY_STRING = ""
         private const val NONE = "None"
         private const val UNIDENTIFIED = "Unidentified"
         fun getIntent(context: Context, data: String): Intent =

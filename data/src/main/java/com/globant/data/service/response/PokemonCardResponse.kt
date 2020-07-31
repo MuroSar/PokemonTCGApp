@@ -9,7 +9,7 @@ class PokemonCardResponse(
     var supertype: String?,
     var subtype: String?,
     var evolvesFrom: String?,
-    var hp: String?,
+    var hp: String,
     var number: String,
     var artist: String,
     var rarity: String,
