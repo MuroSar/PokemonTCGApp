@@ -1,4 +1,4 @@
-package com.globant.domain.entity
+package com.globant.data.service.response
 
 class PokemonCardResponse(
     var id: String,

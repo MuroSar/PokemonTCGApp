@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonCard
 import com.globant.pokemontcgapp.adapter.PokemonCardListAdapter
+import com.globant.pokemontcgapp.adapter.PokemonCardSelected
 import com.globant.pokemontcgapp.databinding.ActivityPokemonCardListBinding
 import com.globant.pokemontcgapp.util.Constant.POKEMON_GROUP
 import com.globant.pokemontcgapp.util.Constant.SELECTION
@@ -21,7 +22,7 @@ import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel.Data
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PokemonCardListActivity : AppCompatActivity() {
+class PokemonCardListActivity : AppCompatActivity(), PokemonCardSelected {
 
     private val pokemonCardListViewModel by viewModel<PokemonCardListViewModel>()
     private lateinit var binding: ActivityPokemonCardListBinding
@@ -57,34 +58,53 @@ class PokemonCardListActivity : AppCompatActivity() {
         supportStartPostponedEnterTransition()
     }
 
-    private fun updateUI(data: Event<Data<List<PokemonCard>>>) {
+    private fun updateUI(data: Event<Data>) {
         val pokemonCardListData = data.getContentIfNotHandled()
         when (pokemonCardListData?.status) {
             Status.LOADING -> binding.activityPokemonCardListLoading.visibility = View.VISIBLE
-            Status.SUCCESS -> pokemonCardListData.data?.let { showPokemonCardList(it) }
+            Status.SUCCESS -> showPokemonCardList(pokemonCardListData.data)
             Status.ERROR -> showPokemonCardListError(pokemonCardListData.error?.message)
+            Status.ON_CARD_CLICKED -> onCardClicked(pokemonCardListData.pokemonCard)
         }
     }
 
     private fun showPokemonCardList(pokemonCardList: List<PokemonCard>) {
         binding.activityPokemonCardListLoading.visibility = View.GONE
-        binding.activityPokemonCardListRecyclerView.apply {
-            layoutManager =
-                GridLayoutManager(
-                    context,
-                    resources.configuration.getColumnsByOrientation(
-                        COLUMNS_PORTRAIT,
-                        COLUMNS_LANDSCAPE
+        pokemonCardList.let {
+            val pokemonCardListAdapter = PokemonCardListAdapter(pokemonCardList, this)
+            binding.activityPokemonCardListRecyclerView.apply {
+                layoutManager =
+                    GridLayoutManager(
+                        context,
+                        resources.configuration.getColumnsByOrientation(
+                            COLUMNS_PORTRAIT,
+                            COLUMNS_LANDSCAPE
+                        )
                     )
-                )
-            adapter = PokemonCardListAdapter(pokemonCardList)
-            visibility = View.VISIBLE
+                adapter = pokemonCardListAdapter
+                visibility = View.VISIBLE
+            }
         }
     }
 
     private fun showPokemonCardListError(error: String?) {
         binding.activityPokemonCardListLoading.visibility = View.GONE
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPokemonCardSelected(pokemonCardSelected: PokemonCard) {
+        pokemonCardListViewModel.onPokemonCardSelected(pokemonCardSelected)
+    }
+
+    private fun onCardClicked(pokemonCardSelected: PokemonCard?) {
+        pokemonCardSelected?.let {
+            startActivity(
+                PokemonCardDetailActivity.getIntent(
+                    this,
+                    pokemonCardSelected.id
+                )
+            )
+        }
     }
 
     companion object {
