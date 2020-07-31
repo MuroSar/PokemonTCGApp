@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.globant.domain.entity.PokemonCard
-import com.globant.domain.util.NONE
 import com.globant.pokemontcgapp.databinding.ActivityPokemonCardDetailBinding
 import com.globant.pokemontcgapp.util.Constant.POKEMON_CARD_ID
 import com.globant.pokemontcgapp.util.Drawable
@@ -62,7 +61,7 @@ class PokemonCardDetailActivity : AppCompatActivity() {
 
                 card.details?.nationalPokedexNumber?.let { pokedexNumber ->
                     activityPokemonCardDetailNationalPokedexNumber.apply {
-                        text = getString(StringResource.activity_pokemon_card_detail_national_pokedex_number_text, pokedexNumber)
+                        text = getString(StringResource.activity_pokemon_card_detail_national_pokedex_number_text, pokedexNumber.toString())
                         visibility = View.VISIBLE
                     }
                 }
@@ -87,21 +86,33 @@ class PokemonCardDetailActivity : AppCompatActivity() {
                     }
                 }
 
-                if (card.details?.healthPoints != NONE)
-                    activityPokemonCardDetailHp.apply {
-                        text =
-                            getString(StringResource.activity_pokemon_card_detail_hp_text, card.details?.healthPoints)
-                        visibility = View.VISIBLE
-                    }
+                card.details?.healthPoints?.let { healthPoints ->
+                    if (healthPoints != NONE)
+                        activityPokemonCardDetailHp.apply {
+                            text =
+                                getString(StringResource.activity_pokemon_card_detail_hp_text, healthPoints)
+                            visibility = View.VISIBLE
+                        }
+                }
 
                 activityPokemonCardDetailNumber.text =
                     getString(StringResource.activity_pokemon_card_detail_number_text, card.details?.number)
 
-                activityPokemonCardDetailArtist.text =
-                    getString(StringResource.activity_pokemon_card_detail_artist_text, card.details?.artist)
+                if (card.details?.artist == EMPTY_STRING) {
+                    activityPokemonCardDetailArtist.text =
+                        getString(StringResource.activity_pokemon_card_detail_artist_text, UNIDENTIFIED)
+                } else {
+                    activityPokemonCardDetailArtist.text =
+                        getString(StringResource.activity_pokemon_card_detail_artist_text, card.details?.artist)
+                }
 
-                activityPokemonCardDetailRarity.text =
-                    getString(StringResource.activity_pokemon_card_detail_rarity_text, card.details?.rarity)
+                if (card.details?.rarity == EMPTY_STRING) {
+                    activityPokemonCardDetailRarity.text =
+                        getString(StringResource.activity_pokemon_card_detail_rarity_text, UNIDENTIFIED)
+                } else {
+                    activityPokemonCardDetailRarity.text =
+                        getString(StringResource.activity_pokemon_card_detail_rarity_text, card.details?.rarity)
+                }
 
                 activityPokemonCardDetailSeries.text =
                     getString(StringResource.activity_pokemon_card_detail_series_text, card.details?.series)
@@ -120,6 +131,9 @@ class PokemonCardDetailActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val EMPTY_STRING = ""
+        private const val NONE = "None"
+        private const val UNIDENTIFIED = "Unidentified"
         fun getIntent(context: Context, data: String): Intent =
             Intent(context, PokemonCardDetailActivity::class.java).apply {
                 putExtra(POKEMON_CARD_ID, data)

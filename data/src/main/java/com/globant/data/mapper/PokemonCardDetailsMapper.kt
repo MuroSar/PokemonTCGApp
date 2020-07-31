@@ -19,7 +19,7 @@ class PokemonCardDetailsMapper : BaseMapper<PokemonCardResponse, PokemonCard, Mu
         )
 
     private fun transformToDetails(type: PokemonCardResponse): PokemonCardDetails = PokemonCardDetails(
-        nationalPokedexNumber = type.nationalPokedexNumber.toString(),
+        nationalPokedexNumber = type.nationalPokedexNumber,
         evolvesFrom = type.evolvesFrom,
         healthPoints = type.hp,
         number = type.number,

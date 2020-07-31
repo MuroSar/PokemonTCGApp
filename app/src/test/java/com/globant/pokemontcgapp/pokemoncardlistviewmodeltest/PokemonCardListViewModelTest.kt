@@ -147,7 +147,7 @@ class PokemonCardListViewModelTest {
             "Pokémon",
             "Stage 2",
             PokemonCardDetails(
-                "182",
+                182,
                 "Gloom",
                 "120",
                 "4",

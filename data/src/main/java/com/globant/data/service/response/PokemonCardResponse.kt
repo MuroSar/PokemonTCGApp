@@ -1,7 +1,5 @@
 package com.globant.data.service.response
 
-import com.globant.domain.util.NONE
-
 class PokemonCardResponse(
     var id: String,
     var name: String,
@@ -11,7 +9,7 @@ class PokemonCardResponse(
     var supertype: String?,
     var subtype: String?,
     var evolvesFrom: String?,
-    var hp: String = NONE,
+    var hp: String?,
     var number: String,
     var artist: String,
     var rarity: String,

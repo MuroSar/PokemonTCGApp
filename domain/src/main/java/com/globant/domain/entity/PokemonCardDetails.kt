@@ -1,11 +1,9 @@
 package com.globant.domain.entity
 
-import com.globant.domain.util.NONE
-
 class PokemonCardDetails(
-    var nationalPokedexNumber: String?,
+    var nationalPokedexNumber: Int?,
     var evolvesFrom: String?,
-    var healthPoints: String = NONE,
+    var healthPoints: String?,
     var number: String,
     var artist: String,
     var rarity: String,
