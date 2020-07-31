@@ -15,5 +15,5 @@ val viewModelModule = module {
     viewModel { PokemonSupertypeViewModel(get()) }
     viewModel { PokemonSubtypeViewModel(get()) }
     viewModel { PokemonCardListViewModel(get()) }
-    viewModel { PokemonCardDetailViewModel() }
+    viewModel { PokemonCardDetailViewModel(get()) }
 }

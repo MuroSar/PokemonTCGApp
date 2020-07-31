@@ -4,13 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.globant.domain.entity.PokemonCard
 import com.globant.domain.util.NONE
 import com.globant.pokemontcgapp.databinding.ActivityPokemonCardDetailBinding
-import com.globant.pokemontcgapp.util.Constant.ID
+import com.globant.pokemontcgapp.util.Constant.POKEMON_CARD_ID
 import com.globant.pokemontcgapp.util.Drawable
+import com.globant.pokemontcgapp.util.Event
 import com.globant.pokemontcgapp.util.StringResource
 import com.globant.pokemontcgapp.viewmodel.PokemonCardDetailViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardDetailViewModel.Data
@@ -21,29 +23,34 @@ class PokemonCardDetailActivity : AppCompatActivity() {
 
     private val pokemonCardDetailViewModel by viewModel<PokemonCardDetailViewModel>()
     private lateinit var binding: ActivityPokemonCardDetailBinding
+    private lateinit var pokemonCardId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPokemonCardDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        pokemonCardId = intent.getStringExtra(POKEMON_CARD_ID)
         pokemonCardDetailViewModel.getPokemonCardLiveData().observe(::getLifecycle, ::updateUI)
     }
 
     override fun onResume() {
         super.onResume()
-        binding.activityPokemonCardDetailLoader.visibility = View.GONE
-        pokemonCardDetailViewModel.getPokemonCard()
+        binding.activityPokemonCardDetailLoading.visibility = View.GONE
+        pokemonCardDetailViewModel.getPokemonCard(pokemonCardId)
     }
 
-    private fun updateUI(pokemonCardDetailData: Data) {
-        when (pokemonCardDetailData.status) {
-            Status.LOADING -> binding.activityPokemonCardDetailLoader.visibility = View.VISIBLE
-            Status.SUCCESS -> showPokemonCardDetails(pokemonCardDetailData.data)
+    private fun updateUI(data: Event<Data>) {
+        val pokemonCardDetailData = data.getContentIfNotHandled()
+        when (pokemonCardDetailData?.status) {
+            Status.LOADING -> binding.activityPokemonCardDetailLoading.visibility = View.VISIBLE
+            Status.SUCCESS -> pokemonCardDetailData.data?.let { showPokemonCardDetails(it) }
+            Status.ERROR -> showPokemonCardDetailError(pokemonCardDetailData.error?.message)
         }
     }
 
     private fun showPokemonCardDetails(pokemonCard: PokemonCard) {
+        binding.activityPokemonCardDetailLoading.visibility = View.GONE
         with(binding) {
             pokemonCard.let { card ->
                 activityPokemonCardDetailName.text = getString(StringResource.activity_pokemon_card_detail_name_text, card.name)
@@ -107,10 +114,15 @@ class PokemonCardDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showPokemonCardDetailError(error: String?) {
+        binding.activityPokemonCardDetailLoading.visibility = View.GONE
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
         fun getIntent(context: Context, data: String): Intent =
             Intent(context, PokemonCardDetailActivity::class.java).apply {
-                putExtra(ID, data)
+                putExtra(POKEMON_CARD_ID, data)
             }
     }
 }
