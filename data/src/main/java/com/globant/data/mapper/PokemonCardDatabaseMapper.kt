@@ -20,24 +20,12 @@ class PokemonCardDatabaseMapper : BaseMapper<List<PokemonCardDatabaseEntity>, Li
                     it.type,
                     it.supertype,
                     it.subtype,
-                    transformToDetails(it)
+                    DetailsDatabaseEntityMapper().transformToDetails(it)
                 )
             )
         }
         return pokemonCardDatabaseEntityReturnList
     }
-
-    private fun transformToDetails(type: PokemonCardDatabaseEntity): PokemonCardDetails = PokemonCardDetails(
-        nationalPokedexNumber = type.nationalPokedexNumber,
-        evolvesFrom = type.evolvesFrom,
-        healthPoints = type.healthPoints,
-        number = type.number,
-        artist = type.artist,
-        rarity = type.rarity,
-        series = type.series,
-        set = type.set,
-        setCode = type.setCode
-    )
 
     fun transformToPokemonCardDatabaseEntity(pokemonCard: PokemonCard): PokemonCardDatabaseEntity =
         PokemonCardDatabaseEntity(
@@ -57,4 +45,19 @@ class PokemonCardDatabaseMapper : BaseMapper<List<PokemonCardDatabaseEntity>, Li
             pokemonCard.details.set,
             pokemonCard.details.setCode
         )
+}
+
+class DetailsDatabaseEntityMapper {
+
+    fun transformToDetails(type: PokemonCardDatabaseEntity): PokemonCardDetails = PokemonCardDetails(
+        nationalPokedexNumber = type.nationalPokedexNumber,
+        evolvesFrom = type.evolvesFrom,
+        healthPoints = type.healthPoints,
+        number = type.number,
+        artist = type.artist,
+        rarity = type.rarity,
+        series = type.series,
+        set = type.set,
+        setCode = type.setCode
+    )
 }

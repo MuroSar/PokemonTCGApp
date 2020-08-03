@@ -19,14 +19,20 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
                     it.types?.get(TYPE_VALUE),
                     it.supertype,
                     it.subtype,
-                    transformToDetails(it)
+                    DetailsResponseMapper().transformToDetails(it)
                 )
             )
         }
         return pokemonCardReturnList
     }
 
-    private fun transformToDetails(type: PokemonCardResponse): PokemonCardDetails = PokemonCardDetails(
+    companion object {
+        private const val TYPE_VALUE = 0
+    }
+}
+
+class DetailsResponseMapper {
+    fun transformToDetails(type: PokemonCardResponse): PokemonCardDetails = PokemonCardDetails(
         nationalPokedexNumber = type.nationalPokedexNumber,
         evolvesFrom = type.evolvesFrom,
         healthPoints = type.hp,
@@ -37,8 +43,4 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
         set = type.set,
         setCode = type.setCode
     )
-
-    companion object {
-        private const val TYPE_VALUE = 0
-    }
 }
