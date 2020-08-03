@@ -7,5 +7,5 @@ class PokemonCard(
     var type: String?,
     var supertype: String?,
     var subtype: String?,
-    var details: PokemonCardDetails? = null
+    var details: PokemonCardDetails
 )
