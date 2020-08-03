@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="IconLauncherShape">
+        <ignore path="src/main/res/drawable/app_logo.webp" />
+    </issue>
+    <issue id="IconLocation">
+        <ignore path="src/main/res/drawable/app_logo.webp" />
+        <ignore path="src/main/res/drawable/pokemon_cardback.webp" />
+    </issue>
+</lint>

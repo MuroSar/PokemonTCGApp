@@ -6,7 +6,6 @@
     <color name="gradient_appbar_end_color">#65aaeb</color>
     <color name="gradient_appbar_start_color">#004b8f</color>
     <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
     <color name="gradient_end_color">#ffa401</color>
     <color name="gradient_start_color">#ff112b</color>
     <color name="tab_indicator_red">#fd0d32</color>
