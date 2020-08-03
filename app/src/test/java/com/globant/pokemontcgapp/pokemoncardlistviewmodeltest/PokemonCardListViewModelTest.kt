@@ -3,6 +3,7 @@ package com.globant.pokemontcgapp.pokemoncardlistviewmodeltest
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonCardDatabase
 import com.globant.domain.entity.PokemonCard
+import com.globant.domain.entity.PokemonCardDetails
 import com.globant.domain.service.PokemonCardListService
 import com.globant.domain.usecase.GetPokemonCardListUseCase
 import com.globant.domain.usecase.implementation.GetPokemonCardListUseCaseImpl
@@ -10,7 +11,6 @@ import com.globant.domain.util.FIRST_RESPONSE
 import com.globant.domain.util.Result
 import com.globant.domain.util.SECOND_RESPONSE
 import com.globant.pokemontcgapp.testObserver
-import com.globant.pokemontcgapp.util.Constant
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel
 import com.globant.pokemontcgapp.viewmodel.PokemonCardListViewModel.Status
 import com.globant.pokemontcgapp.viewmodel.contract.PokemonCardListContract
@@ -127,17 +127,36 @@ class PokemonCardListViewModelTest {
     fun `on onPokemonCardSelected called`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        viewModel.onPokemonCardSelected(Constant.pokemonCard)
+        viewModel.onPokemonCardSelected(pokemonCard)
 
         assertEquals(
             Status.ON_CARD_CLICKED,
             liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status
         )
-        assertEquals(Constant.pokemonCard, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonCard)
+        assertEquals(pokemonCard, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonCard)
     }
 
     companion object {
         private const val TYPE = "types"
         private const val COLORLESS = "Colorless"
+        private val pokemonCard: PokemonCard = PokemonCard(
+            "xy7-4",
+            "Bellossom",
+            "https://images.pokemontcg.io/xy7/4.png",
+            "Grass",
+            "Pokémon",
+            "Stage 2",
+            PokemonCardDetails(
+                182,
+                "Gloom",
+                "120",
+                "4",
+                "Mizue",
+                "Uncommon",
+                "XY",
+                "Ancient Origins",
+                "xy7"
+            )
+        )
     }
 }
