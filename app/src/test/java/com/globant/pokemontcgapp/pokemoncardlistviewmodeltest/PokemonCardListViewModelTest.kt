@@ -1,8 +1,10 @@
 package com.globant.pokemontcgapp.pokemoncardlistviewmodeltest
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonCardDatabase
 import com.globant.domain.entity.PokemonCard
+import com.globant.domain.entity.PokemonCardDetails
 import com.globant.domain.service.PokemonCardListService
 import com.globant.domain.usecase.GetPokemonCardListUseCase
 import com.globant.domain.usecase.implementation.GetPokemonCardListUseCaseImpl
@@ -49,6 +51,7 @@ class PokemonCardListViewModelTest {
     private val exception: Exception = mock()
     private val pokemonCardGroup: String = TYPE
     private val pokemonCardGroupSelected: String = COLORLESS
+    private val sharedView: View = mock()
 
     @Before
     fun setUp() {
@@ -122,8 +125,40 @@ class PokemonCardListViewModelTest {
         assertEquals(resultIsFailure.exception, liveDataUnderTest.observedValues[SECOND_RESPONSE]?.peekContent()?.error)
     }
 
+    @Test
+    fun `on onPokemonCardSelected called`() {
+        val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
+
+        viewModel.onPokemonCardSelected(pokemonCard, sharedView)
+
+        assertEquals(
+            Status.ON_CARD_CLICKED,
+            liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status
+        )
+        assertEquals(pokemonCard, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonCard)
+    }
+
     companion object {
         private const val TYPE = "types"
         private const val COLORLESS = "Colorless"
+        private val pokemonCard: PokemonCard = PokemonCard(
+            "xy7-4",
+            "Bellossom",
+            "https://images.pokemontcg.io/xy7/4.png",
+            "Grass",
+            "Pokémon",
+            "Stage 2",
+            PokemonCardDetails(
+                182,
+                "Gloom",
+                "120",
+                "4",
+                "Mizue",
+                "Uncommon",
+                "XY",
+                "Ancient Origins",
+                "xy7"
+            )
+        )
     }
 }

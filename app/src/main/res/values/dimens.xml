@@ -22,4 +22,11 @@
     <dimen name="activity_pokemon_card_list_appbar_margin_top">10dp</dimen>
     <dimen name="activity_pokemon_card_list_title_icon_height">100dp</dimen>
     <dimen name="activity_pokemon_card_list_element_card_name_text_view_text_size">36sp</dimen>
+    <dimen name="activity_pokemon_card_detail_scroll_view_horizontal_margin">10dp</dimen>
+    <dimen name="activity_pokemon_card_detail_text_view_text_size">22sp</dimen>
+    <dimen name="activity_pokemon_card_detail_text_view_margin_top">7dp</dimen>
+    <dimen name="activity_pokemon_card_detail_scroll_view_margin_top">10dp</dimen>
+    <dimen name="activity_pokemon_card_detail_image_view_width">170dp</dimen>
+    <dimen name="activity_pokemon_card_detail_image_view_height">240dp</dimen>
+    <dimen name="activity_pokemon_card_detail_image_view_margin_top">10dp</dimen>
 </resources>

@@ -39,4 +39,7 @@ object Constant {
     const val POKEMON_GROUP = "pokemonGroup"
     const val SELECTION = "selection"
     const val SELECTION_COLOR = "selectionColor"
+    const val POKEMON_CARD_ID = "pokemonCardId"
+    const val POKEMON_CARD_NAME = "pokemonCardName"
+    const val POKEMON_CARD_IMAGE = "pokemonCardImage"
 }

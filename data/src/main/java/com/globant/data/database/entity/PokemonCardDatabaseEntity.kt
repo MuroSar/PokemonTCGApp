@@ -8,7 +8,16 @@ class PokemonCardDatabaseEntity(
     @PrimaryKey var id: String,
     var name: String,
     var image: String,
-    var type: String?,
-    var supertype: String?,
-    var subtype: String?
+    var type: String,
+    var supertype: String,
+    var subtype: String,
+    var nationalPokedexNumber: Int,
+    var evolvesFrom: String,
+    var healthPoints: String,
+    var number: String,
+    var artist: String,
+    var rarity: String,
+    var series: String,
+    var set: String,
+    var setCode: String
 )
