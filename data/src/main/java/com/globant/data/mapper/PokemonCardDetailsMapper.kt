@@ -2,7 +2,7 @@ package com.globant.data.mapper
 
 import com.globant.data.service.response.PokemonCardResponse
 import com.globant.domain.entity.PokemonCard
-import com.globant.domain.entity.PokemonCardDetails
+import com.globant.domain.util.EMPTY_STRING
 
 class PokemonCardDetailsMapper : BaseMapper<PokemonCardResponse, PokemonCard, MutableMap<String, Int>?> {
 
@@ -12,23 +12,11 @@ class PokemonCardDetailsMapper : BaseMapper<PokemonCardResponse, PokemonCard, Mu
             type.id,
             type.name,
             type.imageUrl,
-            type.types?.get(TYPE_VALUE),
+            type.types?.get(TYPE_VALUE) ?: EMPTY_STRING,
             type.supertype,
             type.subtype,
-            transformToDetails(type)
+            DetailsResponseMapper().transformToDetails(type)
         )
-
-    private fun transformToDetails(type: PokemonCardResponse): PokemonCardDetails = PokemonCardDetails(
-        nationalPokedexNumber = type.nationalPokedexNumber,
-        evolvesFrom = type.evolvesFrom,
-        healthPoints = type.hp,
-        number = type.number,
-        artist = type.artist,
-        rarity = type.rarity,
-        series = type.series,
-        set = type.set,
-        setCode = type.setCode
-    )
 
     companion object {
         private const val TYPE_VALUE = 0

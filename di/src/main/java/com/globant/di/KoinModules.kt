@@ -45,7 +45,7 @@ val useCaseModule = module {
     single<GetPokemonSupertypesUseCase> { GetPokemonSupertypesUseCaseImpl(get(), get()) }
     single<GetPokemonSubtypesUseCase> { GetPokemonSubtypesUseCaseImpl(get(), get()) }
     single<GetPokemonCardListUseCase> { GetPokemonCardListUseCaseImpl(get(), get()) }
-    single<GetPokemonCardDetailUseCase> { GetPokemonCardDetailUseCaseImpl(get()) }
+    single<GetPokemonCardDetailUseCase> { GetPokemonCardDetailUseCaseImpl(get(), get()) }
 }
 
 val databaseModule = module {
