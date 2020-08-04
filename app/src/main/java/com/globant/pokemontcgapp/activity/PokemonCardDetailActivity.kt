@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.globant.domain.entity.PokemonCard
+import com.globant.domain.util.NONE
+import com.globant.domain.util.ZERO_INT
 import com.globant.pokemontcgapp.databinding.ActivityPokemonCardDetailBinding
 import com.globant.pokemontcgapp.util.Constant.POKEMON_CARD_ID
 import com.globant.pokemontcgapp.util.Drawable
@@ -59,68 +61,64 @@ class PokemonCardDetailActivity : AppCompatActivity() {
                     .placeholder(Drawable.pokemon_cardback)
                     .into(this.activityPokemonCardDetailImage)
 
-                card.details?.nationalPokedexNumber?.let { pokedexNumber ->
+                if (card.details.nationalPokedexNumber != ZERO_INT)
                     activityPokemonCardDetailNationalPokedexNumber.apply {
-                        text = getString(StringResource.activity_pokemon_card_detail_national_pokedex_number_text, pokedexNumber.toString())
+                        text = getString(
+                            StringResource.activity_pokemon_card_detail_national_pokedex_number_text,
+                            card.details.nationalPokedexNumber.toString()
+                        )
                         visibility = View.VISIBLE
                     }
-                }
 
-                card.type?.let {
+                if (card.type.isNotEmpty())
                     activityPokemonCardDetailType.apply {
                         text = getString(StringResource.activity_pokemon_card_detail_type_text, card.type)
                         visibility = View.VISIBLE
                     }
-                }
 
                 activityPokemonCardDetailSupertype.text =
                     getString(StringResource.activity_pokemon_card_detail_supertype_text, card.supertype)
 
                 activityPokemonCardDetailSubtype.text = getString(StringResource.activity_pokemon_card_detail_subtype_text, card.subtype)
 
-                card.details?.evolvesFrom?.let { evolvesFrom ->
+                if (card.details.evolvesFrom.isNotEmpty())
                     activityPokemonCardDetailEvolvesFrom.apply {
-                        text =
-                            getString(StringResource.activity_pokemon_card_detail_evolves_from_text, evolvesFrom)
+                        text = getString(StringResource.activity_pokemon_card_detail_evolves_from_text, card.details.evolvesFrom)
                         visibility = View.VISIBLE
                     }
-                }
 
-                card.details?.healthPoints?.let { healthPoints ->
-                    if (healthPoints != NONE)
-                        activityPokemonCardDetailHp.apply {
-                            text =
-                                getString(StringResource.activity_pokemon_card_detail_hp_text, healthPoints)
-                            visibility = View.VISIBLE
-                        }
-                }
+                if (card.details.healthPoints != NONE)
+                    activityPokemonCardDetailHp.apply {
+                        text = getString(StringResource.activity_pokemon_card_detail_hp_text, card.details.healthPoints)
+                        visibility = View.VISIBLE
+                    }
 
                 activityPokemonCardDetailNumber.text =
-                    getString(StringResource.activity_pokemon_card_detail_number_text, card.details?.number)
+                    getString(StringResource.activity_pokemon_card_detail_number_text, card.details.number)
 
-                if (card.details?.artist.isNullOrEmpty()) {
+                if (card.details.artist.isEmpty()) {
                     activityPokemonCardDetailArtist.text =
                         getString(StringResource.activity_pokemon_card_detail_artist_text, UNIDENTIFIED)
                 } else {
                     activityPokemonCardDetailArtist.text =
-                        getString(StringResource.activity_pokemon_card_detail_artist_text, card.details?.artist)
+                        getString(StringResource.activity_pokemon_card_detail_artist_text, card.details.artist)
                 }
 
-                if (card.details?.rarity.isNullOrEmpty()) {
+                if (card.details.rarity.isEmpty()) {
                     activityPokemonCardDetailRarity.text =
                         getString(StringResource.activity_pokemon_card_detail_rarity_text, UNIDENTIFIED)
                 } else {
                     activityPokemonCardDetailRarity.text =
-                        getString(StringResource.activity_pokemon_card_detail_rarity_text, card.details?.rarity)
+                        getString(StringResource.activity_pokemon_card_detail_rarity_text, card.details.rarity)
                 }
 
                 activityPokemonCardDetailSeries.text =
-                    getString(StringResource.activity_pokemon_card_detail_series_text, card.details?.series)
+                    getString(StringResource.activity_pokemon_card_detail_series_text, card.details.series)
 
-                activityPokemonCardDetailSet.text = getString(StringResource.activity_pokemon_card_detail_set_text, card.details?.set)
+                activityPokemonCardDetailSet.text = getString(StringResource.activity_pokemon_card_detail_set_text, card.details.set)
 
                 activityPokemonCardDetailSetCode.text =
-                    getString(StringResource.activity_pokemon_card_detail_set_code_text, card.details?.setCode)
+                    getString(StringResource.activity_pokemon_card_detail_set_code_text, card.details.setCode)
             }
         }
     }
@@ -131,7 +129,6 @@ class PokemonCardDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val NONE = "None"
         private const val UNIDENTIFIED = "Unidentified"
         fun getIntent(context: Context, data: String): Intent =
             Intent(context, PokemonCardDetailActivity::class.java).apply {

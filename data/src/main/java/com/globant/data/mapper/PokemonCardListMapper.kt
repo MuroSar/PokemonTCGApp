@@ -2,7 +2,7 @@ package com.globant.data.mapper
 
 import com.globant.data.service.response.PokemonCardResponse
 import com.globant.domain.entity.PokemonCard
-import com.globant.domain.entity.PokemonCardDetails
+import com.globant.domain.util.EMPTY_STRING
 
 class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<PokemonCard>, MutableMap<String, Int>?> {
 
@@ -16,7 +16,7 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
                     it.id,
                     it.name,
                     it.imageUrl,
-                    it.types?.get(TYPE_VALUE),
+                    it.types?.get(TYPE_VALUE) ?: EMPTY_STRING,
                     it.supertype,
                     it.subtype,
                     DetailsResponseMapper().transformToDetails(it)
@@ -29,18 +29,4 @@ class PokemonCardListMapper : BaseMapper<List<PokemonCardResponse>, List<Pokemon
     companion object {
         private const val TYPE_VALUE = 0
     }
-}
-
-class DetailsResponseMapper {
-    fun transformToDetails(type: PokemonCardResponse): PokemonCardDetails = PokemonCardDetails(
-        nationalPokedexNumber = type.nationalPokedexNumber,
-        evolvesFrom = type.evolvesFrom,
-        healthPoints = type.hp,
-        number = type.number,
-        artist = type.artist,
-        rarity = type.rarity,
-        series = type.series,
-        set = type.set,
-        setCode = type.setCode
-    )
 }

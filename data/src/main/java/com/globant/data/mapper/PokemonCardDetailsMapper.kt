@@ -2,6 +2,7 @@ package com.globant.data.mapper
 
 import com.globant.data.service.response.PokemonCardResponse
 import com.globant.domain.entity.PokemonCard
+import com.globant.domain.util.EMPTY_STRING
 
 class PokemonCardDetailsMapper : BaseMapper<PokemonCardResponse, PokemonCard, MutableMap<String, Int>?> {
 
@@ -11,7 +12,7 @@ class PokemonCardDetailsMapper : BaseMapper<PokemonCardResponse, PokemonCard, Mu
             type.id,
             type.name,
             type.imageUrl,
-            type.types?.get(TYPE_VALUE),
+            type.types?.get(TYPE_VALUE) ?: EMPTY_STRING,
             type.supertype,
             type.subtype,
             DetailsResponseMapper().transformToDetails(type)
