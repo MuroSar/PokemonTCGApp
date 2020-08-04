@@ -2,12 +2,14 @@ package com.globant.data.database
 
 import com.globant.data.database.entity.PokemonCardDatabaseEntity
 import com.globant.data.mapper.PokemonCardDatabaseMapper
+import com.globant.data.mapper.PokemonCardDetailsDatabaseMapper
 import com.globant.domain.database.PokemonCardDatabase
 import com.globant.domain.entity.PokemonCard
 import com.globant.domain.util.Result
 
 class PokemonCardDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonCardDatabase {
     private val pokemonCardDatabaseMapper = PokemonCardDatabaseMapper()
+    private val pokemonCardDetailsDatabaseMapper = PokemonCardDetailsDatabaseMapper()
 
     override fun getLocalPokemonCardList(pokemonCardGroup: String, pokemonCardGroupSelected: String): Result<List<PokemonCard>> {
         val pokemonCardList: List<PokemonCardDatabaseEntity> =
@@ -31,8 +33,26 @@ class PokemonCardDatabaseImpl(private val pokemonDao: PokemonDao) : PokemonCardD
         }
     }
 
+    override fun getLocalPokemonCard(pokemonCardId: String): Result<PokemonCard> {
+
+        try {
+            val pokemonCardDatabaseEntity: PokemonCardDatabaseEntity = pokemonDao.getPokemonCard(pokemonCardId)
+
+            pokemonCardDatabaseEntity.let {
+                return Result.Success(pokemonCardDetailsDatabaseMapper.transform(it))
+            }
+        } catch (e: Exception) {
+            return Result.Failure(Exception(CARD_NOT_FOUND))
+        }
+    }
+
+    override fun insertLocalPokemonCard(pokemonCard: PokemonCard) {
+        pokemonDao.insertPokemonCard(pokemonCardDatabaseMapper.transformToPokemonCardDatabaseEntity(pokemonCard))
+    }
+
     companion object {
         private const val CARDS_NOT_FOUND = "Pokemon Cards Not Found"
+        private const val CARD_NOT_FOUND = "Pokemon Card Not Found"
         private const val TYPE = "types"
         private const val SUPERTYPE = "supertype"
         private const val SUBTYPE = "subtype"

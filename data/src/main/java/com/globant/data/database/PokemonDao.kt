@@ -40,4 +40,7 @@ interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemonCard(pokemonCardDatabaseEntity: PokemonCardDatabaseEntity)
+
+    @Query("SELECT * FROM pokemon_card_table WHERE id = :pokemonCardId")
+    fun getPokemonCard(pokemonCardId: String): PokemonCardDatabaseEntity
 }

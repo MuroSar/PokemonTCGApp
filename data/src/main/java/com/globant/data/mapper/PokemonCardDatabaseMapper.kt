@@ -11,7 +11,17 @@ class PokemonCardDatabaseMapper : BaseMapper<List<PokemonCardDatabaseEntity>, Li
         val pokemonCardDatabaseEntityReturnList: MutableList<PokemonCard> = mutableListOf()
 
         type.map {
-            pokemonCardDatabaseEntityReturnList.add(PokemonCard(it.id, it.name, it.image, it.type, it.supertype, it.subtype))
+            pokemonCardDatabaseEntityReturnList.add(
+                PokemonCard(
+                    it.id,
+                    it.name,
+                    it.image,
+                    it.type,
+                    it.supertype,
+                    it.subtype,
+                    DetailsDatabaseEntityMapper().transformToDetails(it)
+                )
+            )
         }
         return pokemonCardDatabaseEntityReturnList
     }
@@ -23,6 +33,15 @@ class PokemonCardDatabaseMapper : BaseMapper<List<PokemonCardDatabaseEntity>, Li
             pokemonCard.image,
             pokemonCard.type,
             pokemonCard.supertype,
-            pokemonCard.subtype
+            pokemonCard.subtype,
+            pokemonCard.details.nationalPokedexNumber,
+            pokemonCard.details.evolvesFrom,
+            pokemonCard.details.healthPoints,
+            pokemonCard.details.number,
+            pokemonCard.details.artist,
+            pokemonCard.details.rarity,
+            pokemonCard.details.series,
+            pokemonCard.details.set,
+            pokemonCard.details.setCode
         )
 }
