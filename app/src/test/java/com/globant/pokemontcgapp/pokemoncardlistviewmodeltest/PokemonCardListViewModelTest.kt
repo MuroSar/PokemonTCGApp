@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.pokemoncardlistviewmodeltest
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.globant.domain.database.PokemonCardDatabase
 import com.globant.domain.entity.PokemonCard
@@ -50,6 +51,7 @@ class PokemonCardListViewModelTest {
     private val exception: Exception = mock()
     private val pokemonCardGroup: String = TYPE
     private val pokemonCardGroupSelected: String = COLORLESS
+    private val sharedView: View = mock()
 
     @Before
     fun setUp() {
@@ -127,7 +129,7 @@ class PokemonCardListViewModelTest {
     fun `on onPokemonCardSelected called`() {
         val liveDataUnderTest = viewModel.getPokemonCardListLiveData().testObserver()
 
-        viewModel.onPokemonCardSelected(pokemonCard)
+        viewModel.onPokemonCardSelected(pokemonCard, sharedView)
 
         assertEquals(
             Status.ON_CARD_CLICKED,

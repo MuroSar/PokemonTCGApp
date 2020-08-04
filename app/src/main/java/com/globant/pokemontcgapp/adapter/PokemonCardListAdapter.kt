@@ -11,7 +11,7 @@ import com.globant.pokemontcgapp.databinding.PokemonCardListElementBinding
 import com.globant.pokemontcgapp.util.Drawable
 
 interface PokemonCardSelected {
-    fun onPokemonCardSelected(pokemonCardSelected: PokemonCard)
+    fun onPokemonCardSelected(pokemonCardSelected: PokemonCard, sharedView: View)
 }
 
 class PokemonCardListAdapter(
@@ -41,12 +41,14 @@ class PokemonCardListAdapter(
         private val binding = PokemonCardListElementBinding.bind(itemView)
 
         fun bind(item: PokemonCard) = with(itemView) {
-            setOnClickListener { onPokemonCardClicked.onPokemonCardSelected(item) }
+            val pokemonCardImageView = binding.pokemonCardListImageViewImage
+            pokemonCardImageView.transitionName = item.name
+            setOnClickListener { onPokemonCardClicked.onPokemonCardSelected(item, pokemonCardImageView) }
             binding.pokemonCardListViewName.text = item.name
             Glide.with(context)
                 .load((item.image))
                 .placeholder(Drawable.pokemon_cardback)
-                .into(binding.pokemonCardListImageViewImage)
+                .into(pokemonCardImageView)
         }
     }
 }

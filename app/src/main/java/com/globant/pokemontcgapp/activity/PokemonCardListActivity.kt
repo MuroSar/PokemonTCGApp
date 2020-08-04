@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.activity
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.globant.domain.entity.PokemonCard
 import com.globant.pokemontcgapp.adapter.PokemonCardListAdapter
@@ -64,7 +66,7 @@ class PokemonCardListActivity : AppCompatActivity(), PokemonCardSelected {
             Status.LOADING -> binding.activityPokemonCardListLoading.visibility = View.VISIBLE
             Status.SUCCESS -> showPokemonCardList(pokemonCardListData.data)
             Status.ERROR -> showPokemonCardListError(pokemonCardListData.error?.message)
-            Status.ON_CARD_CLICKED -> onCardClicked(pokemonCardListData.pokemonCard)
+            Status.ON_CARD_CLICKED -> onCardClicked(pokemonCardListData.pokemonCard, pokemonCardListData.sharedView)
         }
     }
 
@@ -92,17 +94,19 @@ class PokemonCardListActivity : AppCompatActivity(), PokemonCardSelected {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onPokemonCardSelected(pokemonCardSelected: PokemonCard) {
-        pokemonCardListViewModel.onPokemonCardSelected(pokemonCardSelected)
+    override fun onPokemonCardSelected(pokemonCardSelected: PokemonCard, sharedView: View) {
+        pokemonCardListViewModel.onPokemonCardSelected(pokemonCardSelected, sharedView)
     }
 
-    private fun onCardClicked(pokemonCardSelected: PokemonCard?) {
+    private fun onCardClicked(pokemonCardSelected: PokemonCard?, sharedView: View?) {
         pokemonCardSelected?.let {
             startActivity(
                 PokemonCardDetailActivity.getIntent(
                     this,
-                    pokemonCardSelected.id
-                )
+                    Triple(pokemonCardSelected.id, pokemonCardSelected.name, pokemonCardSelected.image)
+                ),
+                ActivityOptions.makeSceneTransitionAnimation(this, sharedView, sharedView?.let { ViewCompat.getTransitionName(it) })
+                    .toBundle()
             )
         }
     }

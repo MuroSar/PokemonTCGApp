@@ -1,5 +1,6 @@
 package com.globant.pokemontcgapp.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,11 +34,12 @@ class PokemonCardListViewModel(private val getPokemonCardListUseCase: GetPokemon
         }
     }
 
-    override fun onPokemonCardSelected(cardSelected: PokemonCard) {
+    override fun onPokemonCardSelected(cardSelected: PokemonCard, sharedView: View) {
         pokemonCardListMutableLiveData.value = Event(
             Data(
                 status = Status.ON_CARD_CLICKED,
-                pokemonCard = cardSelected
+                pokemonCard = cardSelected,
+                sharedView = sharedView
             )
         )
     }
@@ -45,6 +47,7 @@ class PokemonCardListViewModel(private val getPokemonCardListUseCase: GetPokemon
     data class Data(
         var status: Status,
         var data: List<PokemonCard> = emptyList(),
+        var sharedView: View? = null,
         var error: Exception? = null,
         var pokemonCard: PokemonCard? = null
     )
