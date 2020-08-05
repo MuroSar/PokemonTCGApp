@@ -127,7 +127,7 @@ class PokemonSupertypeViewModelTest {
     fun `on onPokemonSupertypeSelected called`() {
         val liveDataUnderTest = viewModel.getPokemonSupertypesLiveData().testObserver()
 
-        sharedView?.let { viewModel.onPokemonSupertypeSelected(supertypeSelected, it) }
+        viewModel.onPokemonSupertypeSelected(supertypeSelected, sharedView)
 
         assertEquals(Status.ON_SUPERTYPE_CLICKED, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.status)
         assertEquals(supertypeSelected, liveDataUnderTest.observedValues[FIRST_RESPONSE]?.peekContent()?.pokemonSupertype)
